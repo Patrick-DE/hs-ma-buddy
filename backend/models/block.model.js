@@ -14,19 +14,19 @@ blockSchema
         return (this.end_time - this.start_time)/60;
     })
 
-    blockSchema
+blockSchema
     .virtual('duration_m')
     .get(function(){
         return (this.end_time - this.start_time);
     })
 
-    blockSchema
+blockSchema
     .virtual('start')
     .get(function(){
         return this.start_time/60;
     })
 
-    blockSchema
+blockSchema
     .virtual('end')
     .get(function(){
         return this.end_time/60;
@@ -34,3 +34,5 @@ blockSchema
 
 var Block = mongoose.model('blocks', blockSchema);
 module.exports = Block;
+
+//TODO: Buddy id als referenz hinzufügen

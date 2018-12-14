@@ -16,3 +16,5 @@ var buddySchema = new Schema({
 });
 var Buddy = mongoose.model('buddies', buddySchema);
 module.exports = Buddy
+
+//TODO: Block_id als referenz hinzufügen
