@@ -1,0 +1,55 @@
+Drugbuddies!
+Drogendealer -> Orderportal für Studies!
+
+Studi hat da drin ein problem.
+Anzeige wann Buddies(plus Anzahl) die helfen können wann die Verfügbar
+Buddies Anfragenpool für die Kategorie
+Pro Buddy/Block => 3 Leute
+Nachhilfe 1Fach pro Buddy
+
+
+buddy:
+    buddy_id: Int
+    name: String
+    surename: String
+    mobile: String
+    email: String
+    available: Bool  //spontan im arbeitraum
+    room: String        //spontan im arbeitraum
+    tutoring[]: Int (enum)
+    blocked: bool        //buddy noch gültig
+    away: bool
+    away_reason: String
+
+block:
+    block_id
+    starttime TIME
+    endtime TIME
+    dayofweek Int (enum 0-4)
+
+buddy_block:
+    block_id
+    buddy_id
+
+buddy_category:
+    buddy_id
+    category_id
+
+category
+    category_id
+    category_name
+
+appointment:
+    appointment_id: Int
+    category_id: Int (enum)
+    buddy_id: Int
+    room: String
+    block_id: Int
+    fullname: erster Buchstabe: String von moodle
+    description: String
+    status: (Annehmen/Ablehnen)
+    change: DateTime
+    urgency: 0-1
+
+Kalender:
+    Termine anzeigt
