@@ -3,7 +3,7 @@ var Buddy = require('../models/buddy.model');
 // Display list of all buddies.
 exports.buddy_list = function(req, res) {
     Buddy.find(function (err, buddies) {
-        if (err) return console.error(err);
+        if (err) return res.send(err.errmsg);
         res.json(buddies);
     })
 };
@@ -12,38 +12,34 @@ exports.buddy_list = function(req, res) {
 exports.buddy_detail = function(req, res) {
     var id = req.params.id;
     Buddy.findById(id, function (err, buddy) {
-        if (err) return console.error(err);
+        if (err) return res.send(err.errmsg);
         res.json(buddy);
     })
 };
 
 // Handle buddy create on POST.
 exports.buddy_create = function(req, res) {
-    var newBuddy = new Buddy({
-        moodle_id: req.body.moodle_id,
-        name: req.body.name,
-        surename: req.body.surename,
-        mobile: req.body.mobile,
-        email: req.body.email,
-    })
+    var newBuddy = new Buddy(req.body);
     newBuddy.save(function(err) {
-        if (err) return console.error(err);
-        req.send("Buddy " + newBuddy.name + " " + newBuddy.surename + " was added!");
+        if (err) return res.send(err.errmsg);
+        res.send(newBuddy);
     });
 };
 
-// Handle buddy delete on POST.
+// Handle buddy delete on DELETE.
 exports.buddy_delete = function(req, res) {
+    var id = req.params.id;
     Buddy.findByIdAndDelete(id, function(err, buddy){
-        if (err) return console.error(err);
-        res.send("Buddy " + buddy.name + " " + buddy.surename + " was deleted!");
+        if (err) return res.send(err.errmsg);
+        res.send(buddy);
     })
 };
 
-// Handle buddy update on POST.
+// Handle buddy update on PUT.
 exports.buddy_update = function(req, res) {
+    var id = req.params.id;
     Buddy.findByIdAndUpdate(id, req.body, function(err, buddy){
-        if (err) return console.error(err);
-        res.send("Buddy " + buddy.name + " " + buddy.surename + " was updated!");
+        if (err) return res.send(err.errmsg);
+        res.send(buddy);
     })
 };

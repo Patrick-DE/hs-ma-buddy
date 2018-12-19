@@ -40,6 +40,7 @@ exports.block_update = function(req, res) {
     var id = req.params.id;
     Block.findOneAndUpdate(id, req.body, function(err, block){
         if (err) return res.send(err.errmsg);
+        /*TODO: sends back the old block not the new one...not good*/
         res.send(block);
     })
     

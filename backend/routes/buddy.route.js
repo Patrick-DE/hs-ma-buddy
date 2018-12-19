@@ -13,9 +13,9 @@ router.get('/:id', buddy_controller.buddy_detail);
 router.post('/', buddy_controller.buddy_create);
 
 //Update a buddy
-router.put('/:id', buddy_controller.buddy_delete);
+router.delete('/:id', buddy_controller.buddy_delete);
 
 //Delete a buddy
-router.delete('/:id', buddy_controller.buddy_update);
+router.put('/:id', buddy_controller.buddy_update);
 
 module.exports = router;

@@ -8,10 +8,10 @@ var buddySchema = new Schema({
     surename: { type: String, required: true},
     mobile: String,
     email: String,
-    available: Boolean,
+    available: { type: Boolean, required: true, default: false},
     room: String,
     blocked: { type: Boolean, required: true, default: false},
-    away: Boolean,
+    away: { type: Boolean, required: true, default: false},
     away_reason: String
 });
 var Buddy = mongoose.model('buddies', buddySchema);
