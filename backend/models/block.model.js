@@ -3,9 +3,8 @@ var mongoose = require('../dbconnection');
 var Schema = mongoose.Schema;
 
 var blockSchema = new Schema({
-    block_id: { type: Number, required: true, unique: true},
-    start_time: { type: Number, required: true},//Minutes SINCE 00:00
-    end_time: { type: Number, required: true},
+    start_time: { type: Number, required: true, unique: true},//Minutes SINCE 00:00
+    end_time: { type: Number, required: true, unique: true},
 });
 
 blockSchema

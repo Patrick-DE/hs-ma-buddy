@@ -4,6 +4,11 @@ const bodyParser = require('body-parser');
 // create the app
 const app = express();
 
+// parse requests of content-type - application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true }))
+// parse requests of content-type - application/json
+app.use(bodyParser.json())
+
 //require('./models/dummyData.model');
 
 // Require routes
@@ -17,13 +22,9 @@ app.use('/category', category);
 app.use('/block', block);
 app.use('/appointment', appointment);
 
-// parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }))
-// parse requests of content-type - application/json
-app.use(bodyParser.json())
-
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
+/*
+  // catch 404 and forward to error handler
+  app.use(function(req, res, next) {
     next(createError(404));
   });
   
@@ -37,7 +38,7 @@ app.use(function(req, res, next) {
     res.status(err.status || 500);
     res.render('error');
   });
-
+*/
 app.listen(3000, () => {
  console.log("Server running on port 3000");
 });

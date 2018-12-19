@@ -21,8 +21,8 @@ exports.appointment_detail = function(req, res) {
 exports.appointment_create = function(req, res) {
     var newAppointment = new Appointment(req.body)
     newAppointment.save(function(err) {
-        if (err) return console.error(err);
-        req.send("Appointment was added!");
+        if (err) return res.send(err.errmsg);
+        req.send(newAppointment);
     });
 };
 
@@ -36,7 +36,7 @@ exports.appointment_delete = function(req, res) {
 
 // Handle appointment update on POST.
 exports.appointment_update = function(req, res) {
-    Appointment.findByIdAndUpdate(id, req.body, function(err, appointment){
+    Appointment.findOneAndUpdate(id, req.body, function(err, appointment){ //{ $set: req.body, $setOnInsert: {}}
         if (err) return console.error(err);
         res.send("Appointment was updated!");
     })
