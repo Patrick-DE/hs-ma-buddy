@@ -13,9 +13,9 @@ router.get('/:id', category_controller.category_detail);
 router.post('/', category_controller.category_create);
 
 //Update a category
-router.put('/:id', category_controller.category_delete);
+router.delete('/:id', category_controller.category_delete);
 
 //Delete a category
-router.delete('/:id', category_controller.category_update);
+router.put('/:id', category_controller.category_update);
 
 module.exports = router;

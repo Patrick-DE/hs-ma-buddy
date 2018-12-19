@@ -38,7 +38,7 @@ exports.buddy_delete = function(req, res) {
 // Handle buddy update on PUT.
 exports.buddy_update = function(req, res) {
     var id = req.params.id;
-    Buddy.findByIdAndUpdate(id, req.body, function(err, buddy){
+    Buddy.findOneAndUpdate(id, req.body, function(err, buddy){ //TODO: check what is allowed to be changed!
         if (err) return res.send(err.errmsg);
         res.send(buddy);
     })
