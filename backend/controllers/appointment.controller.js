@@ -5,7 +5,7 @@ exports.appointment_list = function(req, res) {
     Appointment.find(function (err, appointments) {
         if (err) return res.send(err.errmsg);
         res.json(appointments);
-    })
+    });
 };
 
 // Display detail page for a specific appointment.
@@ -14,7 +14,7 @@ exports.appointment_detail = function(req, res) {
     Appointment.findById(id, function (err, appointment) {
         if (err) return res.send(err.errmsg);
         res.json(appointment);
-    })
+    });
 };
 
 // Handle appointment create on POST.
@@ -32,14 +32,16 @@ exports.appointment_delete = function(req, res) {
     Appointment.findByIdAndDelete(id, function(err, appointment){
         if (err) return res.send(err.errmsg);
         res.send(appointment);
-    })
+    });
 };
 
 // Handle appointment update on POST.
 exports.appointment_update = function(req, res) {
     var id = req.params.id;
     Appointment.findOneAndUpdate(id, req.body, function(err, appointment){ //{ $set: req.body, $setOnInsert: {}}
-        if (err) return res.send(err.errmsg);
-        res.send(appointment);
-    })
+        Appointment.findById(id, function (err, appointment) {
+            if (err) return res.send(err.errmsg);
+            res.json(appointment);
+        });
+    });
 };

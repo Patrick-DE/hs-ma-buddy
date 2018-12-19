@@ -14,7 +14,7 @@ exports.buddy_detail = function(req, res) {
     Buddy.findById(id, function (err, buddy) {
         if (err) return res.send(err.errmsg);
         res.json(buddy);
-    })
+    });
 };
 
 // Handle buddy create on POST.
@@ -32,14 +32,16 @@ exports.buddy_delete = function(req, res) {
     Buddy.findByIdAndDelete(id, function(err, buddy){
         if (err) return res.send(err.errmsg);
         res.send(buddy);
-    })
+    });
 };
 
 // Handle buddy update on PUT.
 exports.buddy_update = function(req, res) {
     var id = req.params.id;
-    Buddy.findOneAndUpdate(id, req.body, function(err, buddy){ //TODO: check what is allowed to be changed!
-        if (err) return res.send(err.errmsg);
-        res.send(buddy);
-    })
+    Buddy.findOneAndUpdate(id, req.body, function(err, buddy){ //TODO: check what is allowed to be changed! //{ $set: req.body, $setOnInsert: {}}
+        Buddy.findById(id, function (err, buddy) {
+            if (err) return res.send(err.errmsg);
+            res.json(buddy);
+        });
+    });
 };

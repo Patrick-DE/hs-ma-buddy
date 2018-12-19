@@ -5,7 +5,7 @@ exports.category_list = function(req, res) {
     Category.find(function (err, categories) {
         if (err) return res.json(err.errmsg);
         res.json(categories);
-    })
+    });
 };
 
 // Display detail page for a specific category.
@@ -14,7 +14,7 @@ exports.category_detail = function(req, res) {
     Category.findById(id, function (err, category) {
         if (err) return res.json(err.errmsg);
         res.json(category);
-    })
+    });
 };
 
 // Handle category create on POST.
@@ -32,14 +32,16 @@ exports.category_delete = function(req, res) {
     Category.findByIdAndDelete(id, function(err, category){
         if (err) return res.json(err.errmsg);
         res.send(category);
-    })
+    });
 };
 
 // Handle category update on PUT.
 exports.category_update = function(req, res) {
     var id = req.params.id;
-    Category.findOneAndUpdate(id, req.body, function(err, category){  //TODO: check what is allowed to be changed!
-        if (err) return res.json(err.errmsg);
-        res.send(category);
-    })
+    Category.findOneAndUpdate(id, req.body, function(err, category){  //TODO: check what is allowed to be changed! //{ $set: req.body, $setOnInsert: {}}
+        Category.findById(id, function (err, category) {
+            if (err) return res.json(err.errmsg);
+            res.json(category);
+        });
+    });
 };
