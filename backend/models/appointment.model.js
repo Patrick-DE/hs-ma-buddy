@@ -13,7 +13,7 @@ var appointmentSchema = new Schema({
     status: Boolean, //annehmen/ablehnen
     urgency: { type: Boolean, default: false },
     description: { type: String, required: true},
-    start_time: Number, //currentdate.getHours()+":"+currentdate.getMinutes()+":"+currentdate.getSeconds();
+    start_time: Number, //minutes since day started -- optional since u have to specify the block
     end_time: Number
 });
 

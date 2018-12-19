@@ -12,7 +12,6 @@ app.use(bodyParser.json())
 //require('./models/dummyData.model');
 
 // Require routes
-//require('./routes/task.route')(app);
 var buddy = require('./routes/buddy.route');
 var category = require('./routes/category.route');
 var block = require('./routes/block.route');

@@ -13,9 +13,9 @@ router.get('/:id', appointment_controller.appointment_detail);
 router.post('/', appointment_controller.appointment_create);
 
 //Update a appointment
-router.put('/:id', appointment_controller.appointment_delete);
+router.delete('/:id', appointment_controller.appointment_delete);
 
 //Delete a appointment
-router.delete('/:id', appointment_controller.appointment_update);
+router.put('/:id', appointment_controller.appointment_update);
 
 module.exports = router;
