@@ -18,10 +18,14 @@ var buddy = require('./routes/buddy.route');
 var category = require('./routes/category.route');
 var block = require('./routes/block.route');
 var appointment = require('./routes/appointment.route');
+var user = require('./routes/user.route');
+var auth = require('./routes/auth.route');
 app.use('/buddy', buddy);
 app.use('/category', category);
 app.use('/block', block);
 app.use('/appointment', appointment);
+app.use('/user', user);
+app.use('/', auth); //webroot
 
 app.listen(3000, () => {
  console.log("Server running on port 3000");

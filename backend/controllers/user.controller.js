@@ -20,15 +20,11 @@ exports.user_detail = function (req, res) {
 
 // CREATES A NEW USER FROM MOODLE POST REDIRECT //TODO: GET PROPER VALUES
 exports.user_create = function (req, res) {
-    User.create({
-            name : req.body.name,
-            email : req.body.email,
-            password : req.body.password
-        }, 
-        function (err, user) {
-            if (err) return res.status(500).send("There was a problem adding the information to the database.");
-            res.status(200).send(user);
-        });
+    var newUser = new User(req.body);
+    User.create(newUser, function (err, user) {
+        if (err) return res.status(500).send("There was a problem adding the information to the database.");
+        res.status(200).send(user);
+    });
 };
 
 // DELETES A USER FROM THE DATABASE

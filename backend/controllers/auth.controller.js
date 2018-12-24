@@ -1,5 +1,4 @@
 var User = require('../models/user.model');
-var VerifyToken = require('../verifyToken');
 
 /**
  * Configure JWT
@@ -59,5 +58,3 @@ exports.user_detail = function(req, res, next) {
     res.status(200).send(user);
   });
 };
-
-module.exports = router;
