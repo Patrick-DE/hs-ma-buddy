@@ -38,10 +38,8 @@ exports.appointment_delete = function(req, res) {
 // Handle appointment update on POST.
 exports.appointment_update = function(req, res) {
     var id = req.params.id;
-    Appointment.findOneAndUpdate(id, req.body, function(err, appointment){ //{ $set: req.body, $setOnInsert: {}}
-        Appointment.findById(id, function (err, appointment) {
-            if (err) return res.send(err.errmsg);
-            res.json(appointment);
-        });
+    Appointment.findOneAndUpdate(id, req.body, {new: true}, function(err, appointment){ //{ $set: req.body, $setOnInsert: {}}
+        if (err) return res.send(err.errmsg);
+        res.json(appointment);
     });
 };

@@ -38,12 +38,8 @@ exports.block_delete = function(req, res) {
 // Handle block update on PUT.
 exports.block_update = function(req, res) {
     var id = req.params.id;
-    Block.findOneAndUpdate(id, req.body, function(err, block){
+    Block.findOneAndUpdate(id, req.body, {new: true}, function(err, block){
         if (err) return res.send(err.errmsg);
-        Block.findById(id, function(err, block){
-            if (err) return res.send(err.errmsg);
-            res.send(block);
-        });
+        res.send(block);
     });
-    
 };
