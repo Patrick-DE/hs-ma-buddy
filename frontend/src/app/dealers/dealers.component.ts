@@ -12,6 +12,7 @@ export class DealersComponent implements OnInit {
   constructor( private dealerService: DealerService) { }
 
   ngOnInit() {
+    this.getDealers();
   }
 
   getDealers(): void {
