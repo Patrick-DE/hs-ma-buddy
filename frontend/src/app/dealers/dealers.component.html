@@ -1,5 +1,5 @@
 <div class= "container">
-  <div class="dealer-part">
+  <div class="dealer-part" *ngIf='dealers.length > 0'>
     <div class="dealers" *ngFor='let dealer of dealers'>
       <div class = "dealer">
         <span class="dealer-header"> {{dealer.first_name}} {{dealer.last_name}}</span>
@@ -12,4 +12,5 @@
     </div>
   </div>
 </div>
+<div *ngIf='dealers.length == 0'> There are no Dealers in the Database</div>
 </div>
