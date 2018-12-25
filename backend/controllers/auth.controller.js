@@ -9,9 +9,9 @@ var bcrypt = require('bcryptjs');
 
 exports.user_login = function (req, res) {
 	// if no user exists create user with moodle data
-	console.log(req.host + " - " + req.hostname);
+	console.log(req.hostname);
 	//TODO: check for real identifier not fakable things
-	if(req.host !== "127.0.0.1" || req.hostname !== "moodle.hs-mannheim.de");
+	if(req.hostname !== "127.0.0.1" && req.hostname !== "moodle.hs-mannheim.de") return res.status(403).send("Forbidden.");
 	if(req.body.tool_consumer_instance_guid !==  " moodle.hs-mannheim.de") return res.status(403).send("Forbidden.");
 
 	User.findOne({ moodle_id: req.body.user_id }, function (err, user) {
