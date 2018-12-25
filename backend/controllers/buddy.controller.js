@@ -22,7 +22,7 @@ exports.buddy_create = function(req, res) {
     var newBuddy = new Buddy(req.body);
     newBuddy.save(function(err) {
         if (err) return res.send(err.errmsg);
-        res.send(newBuddy);
+        res.status(201).send(newBuddy);
     });
 };
 
@@ -38,10 +38,8 @@ exports.buddy_delete = function(req, res) {
 // Handle buddy update on PUT.
 exports.buddy_update = function(req, res) {
     var id = req.params.id;
-    Buddy.findOneAndUpdate(id, req.body, function(err, buddy){ //TODO: check what is allowed to be changed! //{ $set: req.body, $setOnInsert: {}}
-        Buddy.findById(id, function (err, buddy) {
-            if (err) return res.send(err.errmsg);
-            res.json(buddy);
-        });
+    Buddy.findOneAndUpdate(id, req.body, {new: true}, function(err, buddy){ //TODO: check what is allowed to be changed! //{ $set: req.body, $setOnInsert: {}}
+        if (err) return res.send(err.errmsg);
+        res.json(buddy);
     });
 };

@@ -22,7 +22,7 @@ exports.category_create = function(req, res) {
     var newCategory = new Category(req.body);
     newCategory.save(function(err) {
         if (err) return res.json(err.errmsg);
-        res.send(newCategory);
+        res.status(201).send(newCategory);
     });
 };
 
@@ -38,10 +38,8 @@ exports.category_delete = function(req, res) {
 // Handle category update on PUT.
 exports.category_update = function(req, res) {
     var id = req.params.id;
-    Category.findOneAndUpdate(id, req.body, function(err, category){  //TODO: check what is allowed to be changed! //{ $set: req.body, $setOnInsert: {}}
-        Category.findById(id, function (err, category) {
-            if (err) return res.json(err.errmsg);
-            res.json(category);
-        });
+    Category.findOneAndUpdate(id, req.body, {new: true}, function(err, category){  //TODO: check what is allowed to be changed! //{ $set: req.body, $setOnInsert: {}}
+        if (err) return res.json(err.errmsg);
+        res.json(category);
     });
 };

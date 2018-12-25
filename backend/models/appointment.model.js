@@ -6,10 +6,8 @@ var appointmentSchema = new Schema({
     block_id: {type: Schema.Types.ObjectId, ref: 'Block', required: true},
     buddy_id: {type: Schema.Types.ObjectId, ref: 'Buddy', required: true},
     category_id: {type: Schema.Types.ObjectId, ref: 'Category', required: true},
-    moodle_id: { type: Number, required: true},
+    user_id: {type: Schema.Types.ObjectId, ref: 'User', required: true},
     room: { type: String, required: true},
-    first_name: { type: String, required: true},
-    last_name: { type: String, required: true},    
     status: Boolean, //annehmen/ablehnen
     urgency: { type: Boolean, default: false },
     description: { type: String, required: true},
