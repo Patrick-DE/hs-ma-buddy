@@ -1,4 +1,5 @@
 var User = require('../models/user.model');
+var UserController = require('../controllers/user.controller');
 
 /**
  * Configure JWT
@@ -6,55 +7,53 @@ var User = require('../models/user.model');
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var bcrypt = require('bcryptjs');
 
-exports.user_login = function(req, res) {
-  User.findOne({ email: req.body.email }, function (err, user) {
-    if (err) return res.status(500).send('Error on the server.');
-    if (!user) return res.status(404).send('No user found.');
-    
-    // check if the password is valid
-    var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
-    if (!passwordIsValid) return res.status(401).send({ auth: false, token: null });
+exports.user_login = function (req, res) {
+	// if no user exists create user with moodle data
+	console.log(req.host + " - " + req.hostname);
+	//TODO: check for real identifier not fakable things
+	if(req.host !== "127.0.0.1" || req.hostname !== "moodle.hs-mannheim.de");
+	if(req.body.tool_consumer_instance_guid !==  " moodle.hs-mannheim.de") return res.status(403).send("Forbidden.");
 
-    // if user is found and password is valid
-    // create a token
-    var token = jwt.sign({ id: user._id }, process.env.SECRET, {
-      expiresIn: 86400 // expires in 24 hours
-    });
-
-    // return the information including token as JSON
-    res.status(200).send({ auth: true, token: token });
-  });
+	User.findOne({ moodle_id: req.body.user_id }, function (err, user) {
+		if (err) return res.status(500).send('Error on the server.');
+		if (!user) {
+			UserController.user_create(req.body, function (err, user){
+				if (err) return res.status(500).send('Error on the server.');
+				if (!user) return res.status(500).send("There was a problem registering the user.");
+		
+				//user should exist here
+				var token = create_token(user, req.ip);
+				// return the information including token as JSON
+				res.status(201).send({ auth: true, token: token, user: user});
+			});
+		}else{
+			if (user.demo) return res.status(403).send('Only users provided by moodle are allowed!');
+			
+			//user should exist here
+			var token = create_token(user, req.ip);
+			// return the information including token as JSON
+			res.status(200).send({ auth: true, token: token, user: user });
+		}
+	});
 };
 
-exports.user_logout = function(req, res) {
-  res.status(200).send({ auth: false, token: null });
+exports.user_logout = function (req, res) {
+	res.status(200).send({ auth: false, token: null });
 };
 
-exports.user_register = function(req, res) {
-  var hashedPassword = bcrypt.hashSync(req.body.password, 8);
-
-  User.create({ //TODO: FIX REGISTER
-    name : req.body.name,
-    email : req.body.email,
-    password : hashedPassword
-  }, 
-  function (err, user) {
-    if (err) return res.status(500).send("There was a problem registering the user`.");
-
-    // if user is registered without errors
-    // create a token
-    var token = jwt.sign({ id: user._id }, process.env.SECRET, {
-      expiresIn: 86400 // expires in 24 hours
-    });
-
-    res.status(200).send({ auth: true, token: token });
-  });
+exports.user_detail = function (req, res, next) {
+	User.findById(req.userId, function (err, user) {
+		if (err) return res.status(500).send("There was a problem finding the user.");
+		if (!user) return res.status(404).send("No user found.");
+		res.status(200).send(user);
+	});
 };
 
-exports.user_detail = function(req, res, next) {
-  User.findById(req.userId, { password: 0 }, function (err, user) {
-    if (err) return res.status(500).send("There was a problem finding the user.");
-    if (!user) return res.status(404).send("No user found.");
-    res.status(200).send(user);
-  });
-};
+function create_token(user, ip){
+	// create a token
+	var token = jwt.sign({ id: user._id, ip: ip}, process.env.SECRET, {
+		expiresIn: 3600//1h, 86400 expires in 24 hours
+	});
+
+	return token;
+}

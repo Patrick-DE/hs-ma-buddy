@@ -22,7 +22,7 @@ exports.block_create = function(req, res) {
     var newBlock = new Block(req.body);
     newBlock.save(function(err) {
         if (err) return res.send(err.errmsg);
-        res.send(newBlock);
+        res.status(201).send(newBlock);
     });
 };
 

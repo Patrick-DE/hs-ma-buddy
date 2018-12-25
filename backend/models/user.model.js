@@ -6,9 +6,12 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({  
     first_name: { type: String, required: true},
     last_name: { type: String, required: true},      
-    moodle_id: { type: Number, required: true},
-    email: { type: String, required: true }
+    moodle_id: { type: Number, required: true, unique: true},
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true, select: false},
+    demo: { type: Boolean, required: true, default: false} //TODO: MAKE IT NOT EDITABLE
 });
+
 var User = mongoose.model('User', userSchema);
 
 module.exports = User;

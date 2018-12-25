@@ -10,7 +10,7 @@ router.get('/', user_controller.user_list);
 router.get('/:id', user_controller.user_detail);
 
 //Create a new user
-router.post('/', user_controller.user_create);
+//router.post('/', user_controller.user_create);
 
 //Update a user
 router.delete('/:id', user_controller.user_delete);

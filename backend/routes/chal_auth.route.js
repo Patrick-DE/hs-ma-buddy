@@ -1,11 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
-var auth_controller = require('../controllers/auth.controller');
+var auth_controller = require('../controllers/chal_auth.controller');
 var VerifyToken = require('../verifyToken');
 
 //Get logged in user
 router.get('/me', VerifyToken, auth_controller.user_detail);
+
+//Register user only CHALLENGE
+router.post('/register', auth_controller.user_register);
 
 //Invalidate token
 router.get('/logout', auth_controller.user_logout);

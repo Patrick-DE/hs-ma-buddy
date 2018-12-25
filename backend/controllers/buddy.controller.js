@@ -22,7 +22,7 @@ exports.buddy_create = function(req, res) {
     var newBuddy = new Buddy(req.body);
     newBuddy.save(function(err) {
         if (err) return res.send(err.errmsg);
-        res.send(newBuddy);
+        res.status(201).send(newBuddy);
     });
 };
 

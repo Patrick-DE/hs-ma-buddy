@@ -1,4 +1,4 @@
-require('dotenv').load(); //process.env.SECRET
+require('dotenv').load({ path: __dirname + '/.env'}); //process.env.SECRET
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -19,14 +19,19 @@ var category = require('./routes/category.route');
 var block = require('./routes/block.route');
 var appointment = require('./routes/appointment.route');
 var user = require('./routes/user.route');
-var auth = require('./routes/auth.route');
 app.use('/buddy', buddy);
 app.use('/category', category);
 app.use('/block', block);
 app.use('/appointment', appointment);
 app.use('/user', user);
-app.use('/', auth); //webroot
 
+if (process.env.CHALLENGE === true) {
+    var auth = require('./routes/chal_auth.route');
+    app.use('/', auth); //webroot
+}else{
+    var auth = require('./routes/auth.route');
+    app.use('/', auth); //webroot
+}
 app.listen(3000, () => {
  console.log("Server running on port 3000");
 });

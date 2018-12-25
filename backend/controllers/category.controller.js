@@ -22,7 +22,7 @@ exports.category_create = function(req, res) {
     var newCategory = new Category(req.body);
     newCategory.save(function(err) {
         if (err) return res.json(err.errmsg);
-        res.send(newCategory);
+        res.status(201).send(newCategory);
     });
 };
 

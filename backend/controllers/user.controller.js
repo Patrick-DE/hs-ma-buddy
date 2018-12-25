@@ -1,6 +1,8 @@
 var User = require('../models/user.model');
 var VerifyToken = require('../verifyToken');
 
+var bcrypt = require('bcryptjs');
+
 // RETURNS ALL THE USERS IN THE DATABASE
 exports.user_list = function (req, res) {
     User.find(function (err, users) {
@@ -18,12 +20,30 @@ exports.user_detail = function (req, res) {
     });
 };
 
-// CREATES A NEW USER FROM MOODLE POST REDIRECT //TODO: GET PROPER VALUES
-exports.user_create = function (req, res) {
-    var newUser = new User(req.body);
+// creates user for register function
+// if no pw set create random pw and send it back else delete pw
+exports.user_create = function (body, callback) {
+    var generatedPass = false;
+    var tmpPass = "";
+    var newUser = new User({
+        first_name: body.lis_person_name_given,
+        last_name: body.lis_person_name_family,      
+        moodle_id: body.user_id,
+        email: body.lis_person_contact_email_primary
+    });
+    
+    if(newUser.password === undefined){
+        generatedPass = true;
+        tmpPass = Math.random().toString(36).substr(2, 8);
+    } 
+        
+    newUser.password = bcrypt.hashSync(tmpPass, 7);
+
     User.create(newUser, function (err, user) {
-        if (err) return res.status(500).send("There was a problem adding the information to the database.");
-        res.status(200).send(user);
+        //if generatedPassword return it
+        if(generatedPass) user.password = tmpPass;
+
+        callback(err, user);
     });
 };
 
