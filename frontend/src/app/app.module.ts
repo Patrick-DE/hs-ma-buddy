@@ -11,6 +11,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DealersComponent } from './dealers/dealers.component';
 import { ProductsComponent } from './products/products.component';
 import { AppRoutingModule } from './/app-routing.module';
+import { HttpClientModule } from '@angular/common/http';
 
 const appRoutes: Routes = [
   { path: 'overview', component: CalendarComponent },
@@ -33,10 +34,11 @@ const appRoutes: Routes = [
     CalendarComponent,
     PageNotFoundComponent,
     DealersComponent,
-    ProductsComponent
+    ProductsComponent,
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     BrowserAnimationsModule,
     CalendarModule.forRoot({
       provide: DateAdapter,

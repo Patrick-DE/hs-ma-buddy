@@ -2,7 +2,7 @@ require('dotenv').load({ path: __dirname + '/.env'}); //process.env.SECRET
 
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const cors = require('cors')
 // create the app
 const app = express();
 
@@ -10,7 +10,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }))
 // parse requests of content-type - application/json
 app.use(bodyParser.json())
-
+app.use(cors())
 //require('./models/dummyData.model');
 
 // Require routes

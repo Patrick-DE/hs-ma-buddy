@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Dealer, DealerService } from './dealer.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dealers',
@@ -6,10 +8,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dealers.component.scss']
 })
 export class DealersComponent implements OnInit {
-
-  constructor() { }
+  public dealers: Dealer[];
+  constructor( private dealerService: DealerService) { }
 
   ngOnInit() {
   }
 
+  getDealers(): void {
+       this.dealerService.getDealers().subscribe(dealers => this.dealers = dealers);
+  }
 }

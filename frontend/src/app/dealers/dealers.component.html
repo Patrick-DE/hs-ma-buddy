@@ -1,3 +1,16 @@
-<p>
-  dealers works!
-</p>
+<div class= "container">
+  <button (click)=getDealers()>GetDealers</button>
+  <div class="dealer-part">
+    <div class="dealers" *ngFor='let dealer of dealers'>
+      <div class = "dealer">
+        <span class="dealer-header"> {{dealer.first_name}} {{dealer.last_name}}</span>
+        <span>Telefonnummer: {{dealer.mobile}}</span>
+        <span>Email: {{dealer.email2}} </span>
+        <span>Aufenthalt: {{dealer.room}}</span>
+        <span>Verfügbar: {{dealer.available}}</span>
+        <span>Verschwunden: {{dealer.away}}</span>
+        <span>Grund: {{dealer.away_reason}}</span>
+    </div>
+  </div>
+</div>
+</div>
