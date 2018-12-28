@@ -21,9 +21,7 @@
 	* Functional/NonFunctional
 	* Sicherheitsanforderungen
 	* Fit Kreterium
-	* Zugriffkontrollmatrix (Berechtigungskonzept auf Methodenbasis)
-	
-* Design
+	* Zugriffkontrollmatrix (Berechtigungskonzept auf Methodenbasis)	
 * Review
 * Code Review
 * Security Testing 
