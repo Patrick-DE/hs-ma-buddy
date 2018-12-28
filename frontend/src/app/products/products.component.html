@@ -1,3 +1,11 @@
-<p>
-  products works!
-</p>
+<div class="container">
+  <div class= "products" *ngFor='let product of products'>
+    <button class='product' (click)='showDealersForProducts(product.name)' >{{product.name}}</button>
+    <div class="dealers" *ngIf="dealerProduct == product.name " >
+        <span class='dealer_list'>Anbieter:</span>
+      <div class="dealer" *ngFor= 'let dealer of dealers'>
+        <span> - {{dealer.first_name}} {{dealer.last_name}} </span>
+      </div>
+    </div>
+  </div>
+</div>
