@@ -5,19 +5,29 @@
 	* Stakeholder
 * Produktspezifikation
 	* Functional non/functional Anforderungen 
-	* Use Cases MisUse caces
+	* Use Cases MisUse caces (Mit Verweiß auf zugehörige Sicherheitsanforderung)
 * Technische Anforderungen 
 	* {server usw.}
-* Architektur 
+* Architektur
+	* Umgebung
+	* Nutzungs-Szenarien in BPMN
+	* Component View
+	* UML-Klassendiragramm
 * Threat modeling
 * Security Requirements
+	* Stakeholder
+	* Quelle
+	* Beschreibung
+	* Functional/NonFunctional
+	* Sicherheitsanforderungen
+	* Fit Kreterium
 	* Zugriffkontrollmatrix (Berechtigungskonzept auf Methodenbasis)
+	
 * Design
 * Review
 * Code Review
 * Security Testing 
-* Deployment
-* Ur MoM GaY
+* Deployment Handbuch
 
 -->
 # Deployment
