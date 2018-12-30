@@ -12,13 +12,21 @@ import { DealersComponent } from './dealers/dealers.component';
 import { ProductsComponent } from './products/products.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './_guards/auth.guard';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {  AuthenticationService } from './_services/authentication.service';
 
 const appRoutes: Routes = [
-  { path: 'overview', component: CalendarComponent },
-  { path: 'products', component: ProductsComponent },
+  { path: 'overview', component: CalendarComponent, canActivate: [AuthGuard] },
+  { path: 'products', component: ProductsComponent, canActivate: [AuthGuard] },
   {
     path: 'dealers',
     component: DealersComponent,
+    canActivate: [AuthGuard]
+  },
+  { path: 'login',
+    component: LoginComponent
   },
   { path: '',
     redirectTo: '/overview',
@@ -35,10 +43,12 @@ const appRoutes: Routes = [
     PageNotFoundComponent,
     DealersComponent,
     ProductsComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    ReactiveFormsModule,
     BrowserAnimationsModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
@@ -51,7 +61,9 @@ const appRoutes: Routes = [
     // other imports here
     AppRoutingModule
   ],
-  providers: [],
+  providers: [AuthenticationService,
+    AuthGuard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

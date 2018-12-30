@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./dealers.component.scss']
 })
 export class DealersComponent implements OnInit {
-  public dealers: Dealer[];
+  public dealers: Dealer[] = [];
   constructor( private dealerService: DealerService) { }
 
   ngOnInit() {
