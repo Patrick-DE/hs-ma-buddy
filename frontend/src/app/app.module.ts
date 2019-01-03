@@ -16,10 +16,12 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './_guards/auth.guard';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {  AuthenticationService } from './_services/authentication.service';
+import { RegisterComponent } from './register/register.component';
 
 const appRoutes: Routes = [
   { path: 'overview', component: CalendarComponent, canActivate: [AuthGuard] },
   { path: 'products', component: ProductsComponent, canActivate: [AuthGuard] },
+  { path: 'register', component: RegisterComponent},
   {
     path: 'dealers',
     component: DealersComponent,
@@ -44,6 +46,7 @@ const appRoutes: Routes = [
     DealersComponent,
     ProductsComponent,
     LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

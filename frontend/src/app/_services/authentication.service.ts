@@ -24,4 +24,14 @@ export class AuthenticationService {
         // remove user from local storage to log user out
         localStorage.removeItem('currentUser');
     }
+    register(user: User) {
+        return this.http.post(`'http://localhost:3000/user`, user);
+    }
+}
+export interface User {
+    first_name: String;
+    last_name: String;
+    moodle_id: Number;
+    email: String;
+    password: String;
 }
