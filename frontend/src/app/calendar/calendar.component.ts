@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { CalendarService } from './calendar.service';
 
 @Component({
   selector: 'app-calendar',
@@ -9,9 +10,13 @@ export class CalendarComponent implements OnInit {
   viewDate: Date = new Date();
   events = [];
   weekStartsOn = 1;
-  constructor() { }
+  constructor(private calendarService: CalendarService) { }
 
   ngOnInit() {
-  }
+    this.getEvents();
 
+  }
+  getEvents() {
+     this.calendarService.getEventsforUser().subscribe(userEvents => this.events = userEvents);
+  }
 }
