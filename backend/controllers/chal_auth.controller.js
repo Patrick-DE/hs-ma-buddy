@@ -63,7 +63,7 @@ exports.user_detail = function (req, res, next) {
 
 function create_token(user){
 	// create a token
-	var token = jwt.sign({ id: user._id, ip: ip }, process.env.SECRET, {
+	var token = jwt.sign({ id: user._id }, process.env.SECRET, {
 		expiresIn: 86400 //expires in 24 hours
 	});
 
