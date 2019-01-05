@@ -6,8 +6,8 @@ import { map } from 'rxjs/operators';
 export class AuthenticationService {
     constructor(private http: HttpClient) { }
 
-    login(username: string, password: string) {
-        return this.http.post<any>('http://localhost:3000/login', { user_id: username,
+    login(email: string, password: string) {
+        return this.http.post<any>('http://localhost:3000/login', { email,
         password: password, tool_consumer_instance_guid: 'moodle.hs-mannheim.de' })
             .pipe(map(user => {
                 // login successful if there's a jwt token in the response
