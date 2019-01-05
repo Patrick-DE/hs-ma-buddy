@@ -4,7 +4,7 @@ var Block = require('../models/block.model');
 exports.block_list = function(req, res) {
     Block.find(function (err, blocks) {
         if (err) return console.error(err.errmsg);
-        res.json(blocks);
+        res.status(200).send(blocks);
     });
 };
 
@@ -13,7 +13,7 @@ exports.block_detail = function(req, res) {
     var id = req.params.id;
     Block.findById(id, function (err, block) {
         if (err) return console.error(err.errmsg);
-        res.json(block);
+        res.status(200).send(block);
     });
 };
 
@@ -31,7 +31,7 @@ exports.block_delete = function(req, res) {
     var id = req.params.id;
     Block.findByIdAndDelete(id, function(err, block){
         if (err) return res.send(err.errmsg);
-        res.send(block);
+        res.status(200).send(block);
     });
 };
 
@@ -40,6 +40,6 @@ exports.block_update = function(req, res) {
     var id = req.params.id;
     Block.findOneAndUpdate(id, req.body, {new: true}, function(err, block){
         if (err) return res.send(err.errmsg);
-        res.send(block);
+        res.status(200).send(block);
     });
 };

@@ -2,7 +2,7 @@ var Appointment = require('../models/appointment.model');
 
 // Display list of all appointments.
 exports.appointment_list = function(req, res) {
-    Appointment.find(function (err, appointments) {
+    Appointment.findById(req.userId, function (err, appointments) {
         if (err) return res.send(err.errmsg);
         res.json(appointments);
     });
