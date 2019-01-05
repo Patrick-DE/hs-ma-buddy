@@ -9,7 +9,7 @@ var bcrypt = require('bcryptjs');
 
 exports.user_login = function (req, res) {
 	//USED FOR CHALLENGE
-	User.findOne({ email: req.body.email }.select("+password"), function (err, user) {
+	User.findOne({ email: req.body.email }, function (err, user) {
 		if (err) return res.status(500).send('Error on the server.');
 		if (!user) return res.status(404).send('No matching user found.');
 		if (!user.demo) return res.status(403).send('Only manual users are allowed.');
@@ -36,14 +36,14 @@ exports.user_register = function (req, res) {//MaybeCallback
 	//USED FOR CHALLENGE - register and login
 	req.body.moodle_id = 666666;
 	req.body.demo = true;
-	
-	var user = UserController.user_create(req);
-	
-	if (!user) return res.status(500).send("There was a problem registering the user`.");
-	// if user is registered without errors create a token
-	var token = create_token(user);
 
-	res.status(200).send({ auth: true, token: token });
+	UserController.user_create(req.body, function(user) {
+    if (!user) return res.status(500).send("There was a problem registering the user`.");
+    // if user is registered without errors create a token
+    var token = create_token(user);
+
+    res.status(200).send({ auth: true, token: token });
+  });
 };
 
 

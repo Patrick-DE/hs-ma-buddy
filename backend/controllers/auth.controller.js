@@ -11,16 +11,26 @@ exports.user_login = function (req, res) {
 	// if no user exists create user with moodle data
 	console.log(req.hostname);
 	//TODO: check for real identifier not fakable things
-	if(req.hostname !== "127.0.0.1" && req.hostname !== "moodle.hs-mannheim.de") return res.status(403).send("Forbidden.");
-	if(req.body.tool_consumer_instance_guid !==  " moodle.hs-mannheim.de") return res.status(403).send("Forbidden.");
+  const hostnameWhitelist = ["127.0.0.1", "localhost", "moodle.hs-mannheim.de"]
+	if(!hostnameWhitelist.includes(req.hostname)) return res.status(403).send("Forbidden.");
+	if(req.body.tool_consumer_instance_guid !==  "moodle.hs-mannheim.de") return res.status(403).send("Forbidden.");
 
 	User.findOne({ moodle_id: req.body.user_id }, function (err, user) {
-		if (err) return res.status(500).send('Error on the server.');
+		if (err) {
+		  console.log(err)
+      res.status(500).send('Error on the server.')
+      return
+	  }
+
 		if (!user) {
 			UserController.user_create(req.body, function (err, user){
-				if (err) return res.status(500).send('Error on the server.');
+        if (err) {
+          console.log(err)
+          res.status(500).send('Error on the server.')
+          return
+        }
 				if (!user) return res.status(500).send("There was a problem registering the user.");
-		
+
 				//user should exist here
 				var token = create_token(user, req.ip);
 				// return the information including token as JSON
@@ -28,7 +38,7 @@ exports.user_login = function (req, res) {
 			});
 		}else{
 			if (user.demo) return res.status(403).send('Only users provided by moodle are allowed!');
-			
+
 			//user should exist here
 			var token = create_token(user, req.ip);
 			// return the information including token as JSON

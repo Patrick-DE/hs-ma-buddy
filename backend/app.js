@@ -25,10 +25,13 @@ app.use('/block', block);
 app.use('/appointment', appointment);
 app.use('/user', user);
 
-if (process.env.CHALLENGE === true) {
+console.log(process.env.CHALLENGE)
+if (process.env.CHALLENGE === 'true') {
+  console.log("use chal_auth.route")
     var auth = require('./routes/chal_auth.route');
     app.use('/', auth); //webroot
 }else{
+  console.log("use auth.route")
     var auth = require('./routes/auth.route');
     app.use('/', auth); //webroot
 }

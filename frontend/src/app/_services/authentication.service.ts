@@ -25,7 +25,7 @@ export class AuthenticationService {
         localStorage.removeItem('currentUser');
     }
     register(user: User) {
-        return this.http.post(`http://localhost:3000/user`, user);
+        return this.http.post(`http://localhost:3000/register`, user);
     }
 }
 export interface User {
