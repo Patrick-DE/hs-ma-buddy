@@ -9,7 +9,7 @@ var bcrypt = require('bcryptjs');
 
 exports.user_login = function (req, res) {
 	//USED FOR CHALLENGE
-	User.findOne({ email: req.body.email }, function (err, user) {
+	User.findOne({ email: req.body.email }).select("+password").exec(function (err, user) {
 		if (err) return res.status(500).send('Error on the server.');
 		if (!user) return res.status(404).send('No matching user found.');
 		if (!user.demo) return res.status(403).send('Only manual users are allowed.');
