@@ -3,8 +3,8 @@ var Buddy = require('../models/buddy.model');
 // Display list of all buddies.
 exports.buddy_list = function(req, res) {
     Buddy.find(function (err, buddies) {
-        if (err) return res.send(err.errmsg);
-        res.json(buddies);
+        if (err) return res.send({ err: err.errmsg});
+        res.status(200).send(buddies);
     })
 };
 
@@ -12,8 +12,8 @@ exports.buddy_list = function(req, res) {
 exports.buddy_detail = function(req, res) {
     var id = req.params.id;
     Buddy.findById(id, function (err, buddy) {
-        if (err) return res.send(err.errmsg);
-        res.json(buddy);
+        if (err) return res.send({ err: err.errmsg});
+        res.status(200).send(buddy);
     });
 };
 
@@ -21,7 +21,7 @@ exports.buddy_detail = function(req, res) {
 exports.buddy_create = function(req, res) {
     var newBuddy = new Buddy(req.body);
     newBuddy.save(function(err) {
-        if (err) return res.send(err.errmsg);
+        if (err) return res.send({ err: err.errmsg});
         res.status(201).send(newBuddy);
     });
 };
@@ -30,8 +30,8 @@ exports.buddy_create = function(req, res) {
 exports.buddy_delete = function(req, res) {
     var id = req.params.id;
     Buddy.findByIdAndDelete(id, function(err, buddy){
-        if (err) return res.send(err.errmsg);
-        res.send(buddy);
+        if (err) return res.send({ err: err.errmsg});
+        res.status(200).send(buddy);
     });
 };
 
@@ -39,7 +39,7 @@ exports.buddy_delete = function(req, res) {
 exports.buddy_update = function(req, res) {
     var id = req.params.id;
     Buddy.findOneAndUpdate(id, req.body, {new: true}, function(err, buddy){ //TODO: check what is allowed to be changed! //{ $set: req.body, $setOnInsert: {}}
-        if (err) return res.send(err.errmsg);
-        res.json(buddy);
+        if (err) return res.send({ err: err.errmsg});
+        res.status(200).send(buddy);
     });
 };

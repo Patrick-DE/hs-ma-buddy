@@ -54,7 +54,6 @@ SECRET="${Math.random().toString(36).substr(2, 24)}"
 DATABASE="mongodb://127.0.0.1:27017/buddy"
 `;
 		fs.writeFileSync(envPath + "_sample", sampleFile);
-    console.log("Sample file saved!");
     console.log("==========================================================")
     console.log("!!!!!!!!!!!!!!!!!!! Sample file saved !!!!!!!!!!!!!!!!!!!!")
     console.log(" Please customize this file, rename it to .env and restart!")

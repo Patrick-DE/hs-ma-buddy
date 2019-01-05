@@ -18,7 +18,7 @@ exports.user_login = function (req, res) {
 	User.findOne({ moodle_id: req.body.user_id }, function (err, user) {
 		if (err) {
 		  console.log(err)
-      res.status(500).send('Error on the server.')
+      res.status(500).send({ err: 'Error on the server.'})
       return
 	  }
 
@@ -26,7 +26,7 @@ exports.user_login = function (req, res) {
 			UserController.user_create(req.body, function (err, user){
         if (err) {
           console.log(err)
-          res.status(500).send('Error on the server.')
+          res.status(500).send({ err: 'Error on the server.'})
           return
         }
 				if (!user) return res.status(500).send("There was a problem registering the user.");
@@ -37,7 +37,7 @@ exports.user_login = function (req, res) {
 				res.status(201).send({ auth: true, token: token, user: user});
 			});
 		}else{
-			if (user.demo) return res.status(403).send('Only users provided by moodle are allowed!');
+			if (user.demo) return res.status(403).send({ err: 'Only users provided by moodle are allowed!'});
 
 			//user should exist here
 			var token = create_token(user, req.ip);
@@ -53,8 +53,8 @@ exports.user_logout = function (req, res) {
 
 exports.user_detail = function (req, res, next) {
 	User.findById(req.userId, function (err, user) {
-		if (err) return res.status(500).send("There was a problem finding the user.");
-		if (!user) return res.status(404).send("No user found.");
+		if (err) return res.status(500).send({err: "There was a problem finding the user."});
+		if (!user) return res.status(404).send({err: "No user found."});
 		res.status(200).send(user);
 	});
 };

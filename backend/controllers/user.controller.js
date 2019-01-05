@@ -6,7 +6,7 @@ var bcrypt = require('bcryptjs');
 // RETURNS ALL THE USERS IN THE DATABASE
 exports.user_list = function (req, res) {
     User.find(function (err, users) {
-        if (err) return res.status(500).send("There was a problem finding the users.");
+        if (err) return res.status(500).send({ err: "There was a problem finding the users."});
         res.status(200).send(users);
     });
 };
@@ -14,8 +14,8 @@ exports.user_list = function (req, res) {
 // GETS A SINGLE USER FROM THE DATABASE
 exports.user_detail = function (req, res) {
     User.findById(req.params.id, function (err, user) {
-        if (err) return res.status(500).send("There was a problem finding the user.");
-        if (!user) return res.status(404).send("No user found.");
+        if (err) return res.status(500).send({ err: "There was a problem finding the user."});
+        if (!user) return res.status(404).send({ err: "No user found."});
         res.status(200).send(user);
     });
 };
@@ -61,7 +61,7 @@ exports.user_create = function (body, callback) {
 // DELETES A USER FROM THE DATABASE
 exports.user_delete = function (req, res) {
     User.findByIdAndRemove(req.params.id, function (err, user) {
-        if (err) return res.status(500).send("There was a problem deleting the user.");
+        if (err) return res.status(500).send({ err: "There was a problem deleting the user."});
         res.status(200).send(user);
     });
 };
@@ -70,7 +70,7 @@ exports.user_delete = function (req, res) {
 // Added VerifyToken middleware to make sure only an authenticated user can put to this route
 exports.user_update = /* VerifyToken, */ function (req, res) {
     User.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, user) {
-        if (err) return res.status(500).send("There was a problem updating the user.");
+        if (err) return res.status(500).send({ err: "There was a problem updating the user."});
         res.status(200).send(user);
     });
 };

@@ -3,8 +3,8 @@ var Category = require('../models/category.model');
 // Display list of all categories.
 exports.category_list = function(req, res) {
     Category.find(function (err, categories) {
-        if (err) return res.json(err.errmsg);
-        res.json(categories);
+        if (err) return res.send({ err: err.errmsg});
+        res.status(200).send(categories);
     });
 };
 
@@ -12,8 +12,8 @@ exports.category_list = function(req, res) {
 exports.category_detail = function(req, res) {
     var id = req.params.id;
     Category.findById(id, function (err, category) {
-        if (err) return res.json(err.errmsg);
-        res.json(category);
+        if (err) return res.send({ err: err.errmsg});
+        res.status(200).send(category);
     });
 };
 
@@ -21,7 +21,7 @@ exports.category_detail = function(req, res) {
 exports.category_create = function(req, res) {
     var newCategory = new Category(req.body);
     newCategory.save(function(err) {
-        if (err) return res.json(err.errmsg);
+        if (err) return res.send({ err: err.errmsg});
         res.status(201).send(newCategory);
     });
 };
@@ -30,8 +30,8 @@ exports.category_create = function(req, res) {
 exports.category_delete = function(req, res) {
     var id = req.params.id;
     Category.findByIdAndDelete(id, function(err, category){
-        if (err) return res.json(err.errmsg);
-        res.send(category);
+        if (err) return res.send({ err: err.errmsg});
+        res.status(200).send(category);
     });
 };
 
@@ -39,7 +39,7 @@ exports.category_delete = function(req, res) {
 exports.category_update = function(req, res) {
     var id = req.params.id;
     Category.findOneAndUpdate(id, req.body, {new: true}, function(err, category){  //TODO: check what is allowed to be changed! //{ $set: req.body, $setOnInsert: {}}
-        if (err) return res.json(err.errmsg);
-        res.json(category);
+        if (err) return res.send({ err: err.errmsg});
+        res.status(200).send(category);
     });
 };
