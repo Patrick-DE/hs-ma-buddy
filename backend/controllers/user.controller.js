@@ -27,21 +27,22 @@ exports.user_create = function (body, callback) {
     var tmpPass = "";
     var newUser = new User({
         first_name: body.lis_person_name_given,
-        last_name: body.lis_person_name_family,      
+        last_name: body.lis_person_name_family,
         moodle_id: body.user_id,
         email: body.lis_person_contact_email_primary
     });
-    
+
     if(body.password === undefined){
         generatedPass = true;
         tmpPass = Math.random().toString(36).substr(2, 8);
     }else{
         tmpPass = body.password;
     }
-        
+
     newUser.password = bcrypt.hashSync(tmpPass, 7);
 
     User.create(newUser, function (err, user) {
+        if (err) return callback(err, null);
         //if generatedPassword return it
         if(generatedPass) user.password = tmpPass;
 

@@ -37,8 +37,12 @@ exports.user_register = function (req, res) {//MaybeCallback
 	req.body.moodle_id = 666666;
 	req.body.demo = true;
 
-	UserController.user_create(req.body, function(user) {
-    if (!user) return res.status(500).send("There was a problem registering the user`.");
+	UserController.user_create(req.body, function(err, user) {
+    if (!user) {
+      console.log(err);
+      return res.status(500).send("There was a problem registering the user`.");
+    }
+
     // if user is registered without errors create a token
     var token = create_token(user);
 
