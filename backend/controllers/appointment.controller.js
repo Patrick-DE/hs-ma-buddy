@@ -25,7 +25,12 @@ exports.appointment_detail = function(req, res) {
 
 // Handle appointment create on POST.
 exports.appointment_create = function(req, res) {
-    var newAppointment = new Appointment(req.body)
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    var newAppointment = new Appointment({
+      ...req.body,
+      date: today,
+    })
     newAppointment.save(function(err) {
         if (err) return res.send(err.errmsg);
         res.status(201).send(newAppointment);
