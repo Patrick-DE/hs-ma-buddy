@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
+const verifyToken = require('../verifyToken')
 
 var appointment_controller = require('../controllers/appointment.controller');
 
 //Get all appointment
-router.get('/', appointment_controller.appointment_list);
+router.get('/', verifyToken, appointment_controller.appointment_list);
 
 //Get appointment details
 router.get('/:id', appointment_controller.appointment_detail);

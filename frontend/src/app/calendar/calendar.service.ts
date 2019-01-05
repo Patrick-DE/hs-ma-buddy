@@ -10,8 +10,8 @@ export class CalendarService {
   constructor(private http: HttpClient) { }
 
   getEventsforUser(): Observable<UserEvent[]> {
-    const currentUserMoodleId = JSON.parse(localStorage.getItem('currentUser'));
-    console.log(currentUserMoodleId.user._id);
+    //const currentUserMoodleId = JSON.parse(localStorage.getItem('currentUser'));
+    //console.log(currentUserMoodleId.user._id);
     // this.http.get<Appointment[]>('http://localhost:3000/appointment');
     return of([{
       'start': new Date(2019, 0, 12),
