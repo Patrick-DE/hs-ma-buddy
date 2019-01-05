@@ -34,7 +34,7 @@ exports.user_logout = function (req, res) {
 
 exports.user_register = function (req, res) {//MaybeCallback
 	//USED FOR CHALLENGE - register and login
-	req.body.moodle_id = 666666;
+	req.body.moodle_id = Math.random().toString(36).substr(0, 24);
 	req.body.demo = true;
 
 	UserController.user_create(req.body, function(err, user) {
