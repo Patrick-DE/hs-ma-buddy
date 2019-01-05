@@ -1,4 +1,5 @@
-require('dotenv').load({ path: __dirname + '/.env'}); //process.env.SECRET
+checkConfigfile();
+require('dotenv').load({ path: __dirname + '/.env' }); //process.env.SECRET
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -25,16 +26,37 @@ app.use('/block', block);
 app.use('/appointment', appointment);
 app.use('/user', user);
 
-console.log(process.env.CHALLENGE)
 if (process.env.CHALLENGE === 'true') {
-  console.log("use chal_auth.route")
-    var auth = require('./routes/chal_auth.route');
-    app.use('/', auth); //webroot
-}else{
-  console.log("use auth.route")
-    var auth = require('./routes/auth.route');
-    app.use('/', auth); //webroot
+	console.log("use chal_auth.route")
+	var auth = require('./routes/chal_auth.route');
+	app.use('/', auth); //webroot
+} else {
+	console.log("use auth.route")
+	var auth = require('./routes/auth.route');
+	app.use('/', auth); //webroot
 }
 app.listen(3000, () => {
- console.log("Server running on port 3000");
+	console.log("Server running on port 3000");
 });
+
+
+
+function checkConfigfile() {
+	const fs = require('fs');
+	pfad = __dirname + '\\.env';
+	if (!fs.existsSync(pfad)) {
+		console.log("==========================================================")
+		console.log("!!!!!!!!!!!!!!! The '.env' file is missing !!!!!!!!!!!!!!!")
+		console.log("==========================================================")
+		sampleFile = 'CHALLENGE=true\nSECRET="' + Math.random().toString(36).substr(2, 24) + '"';
+		fs.writeFile(pfad + "_sample", sampleFile, (err) => {
+			if (err) throw err;
+			console.log("Sample file saved!");
+			console.log("==========================================================")
+			console.log("!!!!!!!!!!!!!!!!!!! Sample file saved !!!!!!!!!!!!!!!!!!!!")
+			console.log(" Please customize this file, rename it to .env and restart!")
+			console.log("==========================================================")
+			process.exit(9);
+		});
+	}
+}

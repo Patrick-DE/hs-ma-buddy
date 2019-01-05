@@ -13,6 +13,9 @@ var appointmentSchema = new Schema({
     description: { type: String, required: true},
     start_time: Number, //minutes since day started -- optional since u have to specify the block
     end_time: Number
+}, {
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true }
 });
 
 appointmentSchema

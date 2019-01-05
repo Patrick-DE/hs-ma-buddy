@@ -5,6 +5,9 @@ var Schema = mongoose.Schema;
 var blockSchema = new Schema({
     start_time: { type: Number, required: true, unique: true},//Minutes SINCE 00:00
     end_time: { type: Number, required: true, unique: true},
+}, {
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true }
 });
 
 blockSchema
