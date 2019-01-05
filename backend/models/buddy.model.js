@@ -13,6 +13,9 @@ var buddySchema = new Schema({
     blocked: { type: Boolean, required: true, default: false},
     away: { type: Boolean, required: true, default: false},
     away_reason: String
+}, {
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true }
 });
 
 buddySchema

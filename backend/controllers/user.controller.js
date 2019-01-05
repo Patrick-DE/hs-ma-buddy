@@ -32,10 +32,12 @@ exports.user_create = function (body, callback) {
         email: body.lis_person_contact_email_primary
     });
     
-    if(newUser.password === undefined){
+    if(body.password === undefined){
         generatedPass = true;
         tmpPass = Math.random().toString(36).substr(2, 8);
-    } 
+    }else{
+        tmpPass = body.password;
+    }
         
     newUser.password = bcrypt.hashSync(tmpPass, 7);
 
