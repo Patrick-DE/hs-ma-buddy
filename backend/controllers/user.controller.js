@@ -25,17 +25,24 @@ exports.user_detail = function (req, res) {
 exports.user_create = function (body, callback) {
     var generatedPass = false;
     var tmpPass = "";
-    var newUser = new User({
-        first_name: body.lis_person_name_given,
-        last_name: body.lis_person_name_family,
-        moodle_id: body.user_id,
-        email: body.lis_person_contact_email_primary
-    });
-
+    
+    var newUser;
     if(body.password === undefined){
+        newUser = new User({
+            first_name: body.lis_person_name_given,
+            last_name: body.lis_person_name_family,
+            moodle_id: body.user_id,
+            email: body.lis_person_contact_email_primary
+        });
         generatedPass = true;
         tmpPass = Math.random().toString(36).substr(2, 8);
     }else{
+        newUser = new User({
+            first_name: body.first_name,
+            last_name: body.last_name,
+            moodle_id: body.moodle_id,
+            email: body.email
+        });
         tmpPass = body.password;
     }
 
