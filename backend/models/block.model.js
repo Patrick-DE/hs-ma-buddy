@@ -34,6 +34,31 @@ blockSchema
         return this.end_time/60;
     })
 
+blockSchema
+  .virtual('start_hour')
+  .get(function(){
+    return Math.floor(this.start_time / 60);
+  })
+
+blockSchema
+  .virtual('start_minute')
+  .get(function(){
+    return this.start_time % 60;
+  })
+
+blockSchema
+  .virtual('end_hour')
+  .get(function(){
+    return Math.floor(this.end_time / 60);
+  })
+
+
+blockSchema
+  .virtual('end_minute')
+  .get(function(){
+    return this.end_time % 60;
+  })
+
 var Block = mongoose.model('blocks', blockSchema);
 module.exports = Block;
 
