@@ -41,7 +41,8 @@ exports.user_create = function (body, callback) {
             first_name: body.first_name,
             last_name: body.last_name,
             moodle_id: body.moodle_id,
-            email: body.email
+            email: body.email,
+            demo: body.demo
         });
         tmpPass = body.password;
     }
