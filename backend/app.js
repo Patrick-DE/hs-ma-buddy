@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 checkConfigfile();
 require('dotenv').load({ path: __dirname + '/.env' }); //process.env.SECRET
 
@@ -42,21 +44,21 @@ app.listen(3000, () => {
 
 
 function checkConfigfile() {
-	const fs = require('fs');
-	pfad = __dirname + '\\.env';
-	if (!fs.existsSync(pfad)) {
+	const envPath = path.join(__dirname, '.env');
+	if (!fs.existsSync(envPath)) {
 		console.log("==========================================================")
 		console.log("!!!!!!!!!!!!!!! The '.env' file is missing !!!!!!!!!!!!!!!")
 		console.log("==========================================================")
-		sampleFile = 'CHALLENGE=true\nSECRET="' + Math.random().toString(36).substr(2, 24) + '"';
-		fs.writeFile(pfad + "_sample", sampleFile, (err) => {
-			if (err) throw err;
-			console.log("Sample file saved!");
-			console.log("==========================================================")
-			console.log("!!!!!!!!!!!!!!!!!!! Sample file saved !!!!!!!!!!!!!!!!!!!!")
-			console.log(" Please customize this file, rename it to .env and restart!")
-			console.log("==========================================================")
-			process.exit(9);
-		});
+		sampleFile = `CHALLENGE=true
+SECRET="${Math.random().toString(36).substr(2, 24)}"
+DATABASE="mongodb://127.0.0.1:27017/buddy"
+`;
+		fs.writeFileSync(envPath + "_sample", sampleFile);
+    console.log("Sample file saved!");
+    console.log("==========================================================")
+    console.log("!!!!!!!!!!!!!!!!!!! Sample file saved !!!!!!!!!!!!!!!!!!!!")
+    console.log(" Please customize this file, rename it to .env and restart!")
+    console.log("==========================================================")
+    process.exit(9);
 	}
 }
