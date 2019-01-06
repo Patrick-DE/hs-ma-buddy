@@ -1,5 +1,6 @@
 var User = require('../models/user.model');
 var UserController = require('../controllers/user.controller');
+const moment = require('moment')
 
 /**
  * Configure JWT
@@ -28,7 +29,7 @@ exports.user_login = function (req, res) {
 
 
 exports.user_logout = function (req, res) {
-	res.status(200).append("set-cookie", exports.setCookie("token", null, 1)).send();
+	res.status(200).append("set-cookie", exports.setCookie("token", null, 0)).send();
 };
 
 
@@ -71,8 +72,7 @@ function create_token(user){
 }
 
 exports.setCookie = function(cname, cvalue, exhour) {
-    var d = new Date();
-    d.setTime(d.getTime() + (exhour*60*60*1000));
+    var d = moment().add(exhour, 'h').toDate();
     var expires = "expires="+ d.toUTCString();
 	return cname + "=" + cvalue + ";" + expires + ";path=/";
 }

@@ -17,6 +17,8 @@ import { AuthGuard } from './_guards/auth.guard';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {  AuthenticationService } from './_services/authentication.service';
 import { RegisterComponent } from './register/register.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { CookieInterceptor} from "./cookie.interceptor";
 
 const appRoutes: Routes = [
   { path: 'overview', component: CalendarComponent, canActivate: [AuthGuard] },
@@ -65,7 +67,12 @@ const appRoutes: Routes = [
     AppRoutingModule
   ],
   providers: [AuthenticationService,
-    AuthGuard
+    AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CookieInterceptor,
+      multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })
