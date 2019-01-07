@@ -19,6 +19,8 @@ import {  AuthenticationService } from './_services/authentication.service';
 import { RegisterComponent } from './register/register.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CookieInterceptor} from "./cookie.interceptor";
+import { AlertComponent } from './alert/alert.component';
+import { AlertService } from './alert/alert.service';
 
 const appRoutes: Routes = [
   { path: 'overview', component: CalendarComponent, canActivate: [AuthGuard] },
@@ -49,6 +51,7 @@ const appRoutes: Routes = [
     ProductsComponent,
     LoginComponent,
     RegisterComponent,
+    AlertComponent,
   ],
   imports: [
     BrowserModule,
@@ -68,6 +71,7 @@ const appRoutes: Routes = [
   ],
   providers: [AuthenticationService,
     AuthGuard,
+    AlertService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: CookieInterceptor,

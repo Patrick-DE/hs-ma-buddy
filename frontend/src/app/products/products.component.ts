@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductsService } from './products.service';
 import { Dealer } from '../dealers/dealer.service';
+import { AlertService } from '../alert/alert.service';
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
@@ -10,12 +11,20 @@ export class ProductsComponent implements OnInit {
   public products = [];
   public dealerProduct: String = '';
   public dealers: Dealer[] = [];
-  constructor(private productService: ProductsService) { }
+  constructor(private productService: ProductsService,
+    private alertService: AlertService) { }
   ngOnInit() {
     this.getProducts();
   }
   getProducts(): void {
-    this.productService.getProducts().subscribe(products => this.products = products);
+    this.productService.getProducts().subscribe(
+      products => {this.products = products; }, error => {
+        if (error.error.err) {
+          this.alertService.error(error.error.err);
+          } else {
+            this.alertService.error('Backend down');
+          }
+  });
 }
   showDealersForProducts(productName: String): void  {
     console.log(productName);

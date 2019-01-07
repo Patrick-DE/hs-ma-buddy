@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
 import {  AuthenticationService } from '../_services/authentication.service';
+import { AlertService } from '../alert/alert.service';
 
 @Component({
 selector: 'app-login',
@@ -19,6 +20,7 @@ export class LoginComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService,
+        private alertService: AlertService
         ) {}
 
     ngOnInit() {
@@ -53,7 +55,13 @@ export class LoginComponent implements OnInit {
                     this.router.navigate([this.returnUrl]);
                 },
                 error => {
+                  if (error.error.err) {
+                    this.alertService.error(error.error.err);
                     this.loading = false;
-                });
+                    } else {
+                      this.alertService.error('Backend down');
+                      this.loading = false;
+                    }
+              });
     }
 }
