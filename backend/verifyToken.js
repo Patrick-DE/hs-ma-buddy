@@ -7,20 +7,17 @@ function verifyToken(req, res, next) {
 	var tokenHeader = req.headers.cookie;
   if (!tokenHeader) return res.status(403).send({ err: 'No token available, please login.'});
 
+  var deserialise = tokenHeader.split(',');
   //for challenge set header with FLAG
-  var deserialise = Buffer.from(tokenHeader.split(',')[1], 'base64');
-  var boolToken = deserialise.toString();
+  var boolTokenBase = Buffer.from(deserialise[1], 'base64');
+  var boolToken = boolTokenBase.toString();
   if(boolToken == "true") res.append("key", "aHNtYXtncm91cDRfbjBfNTNjdXIxN3lfYnlfMGI1Y3VyMTd5fQ==");
 
-  var cookies = tokenHeader.split(',').split(';')[0];
-
 	var token = "null";
-	cookies.forEach(function(elem, index){
-		var tokens = elem.split('=');
-		if(tokens[0].trim() === "token"){
-			if(tokens[1].trim() !== undefined && tokens[1].trim() !== "null") token = tokens[1];
-		}
-	});
+  var tokens = deserialise[0].split('=');
+	if(tokens[0].trim() === "token"){
+		if(tokens[1].trim() !== undefined && tokens[1].trim() !== "null") token = tokens[1];
+	}
 	if (token === "null") return res.status(403).send({ err: 'No token available, please login.'});
 
   // verifies secret and checks exp
