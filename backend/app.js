@@ -6,6 +6,7 @@ require('dotenv').load({ path: __dirname + '/.env' }); //process.env.SECRET
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors')
+const serveIndex = require('serve-index')
 // create the app
 const app = express();
 
@@ -37,10 +38,13 @@ if (process.env.CHALLENGE === 'true') {
 	var auth = require('./routes/auth.route');
 	app.use('/', auth); //webroot
 }
+
+// Insecure Configuration Management
+app.use(express.static('public'), serveIndex('public', {}))
+
 app.listen(3000, () => {
 	console.log("Server running on port 3000");
 });
-
 
 
 function checkConfigfile() {
