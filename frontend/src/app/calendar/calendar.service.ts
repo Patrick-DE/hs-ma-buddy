@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import 'rxjs/add/operator/map';
 import {User} from '../_services/authentication.service';
+import { DealerService } from '../dealers/dealer.service';
 
 
 @Injectable({
@@ -13,7 +14,6 @@ export class CalendarService {
   getEventsforUser(): Observable<UserEvent[]> {
     return this.http.get<Appointment[]>('http://localhost:3000/appointment')
     .map((appointments) => {
-    console.log(appointments);
       if (!appointments || appointments == null) {
         return [];
       }
@@ -26,6 +26,17 @@ export class CalendarService {
       });
     });
   }
+  getAppointmentsForUser(): Observable<Appointment[]> {
+    return this.http.get<Appointment[]>('http://localhost:3000/appointment');
+  }
+  sendAppointment(appointment: any) {
+    return this.http.post(`http://localhost:3000/appointment`, appointment
+    );
+  }
+  getBlocks(): Observable<Block[]> {
+
+    return this.http.get<Block[]>('http://localhost:3000/block');
+  }
 }
 export interface UserEvent {
   start: Date;
@@ -37,4 +48,25 @@ export interface Appointment {
   start_date: string;
   end_date: string;
   description: string;
+  status: Boolean;
+  block_id: String;
+  buddy_id: String;
+  category_id: String;
+  room: String;
+  urgency: Boolean;
 }
+export interface Block {
+  id: String;
+  start_date: Number;
+  end_date: Number;
+}
+export interface CreateAppointment {
+  description: string;
+  status: Boolean;
+  block_id: String;
+  buddy_id: String;
+  category_id: String;
+  room: String;
+  urgency?: Boolean;
+}
+

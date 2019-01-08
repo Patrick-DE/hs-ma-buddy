@@ -3,3 +3,8 @@
   [events]=events
   [weekStartsOn]= weekStartsOn>
 </mwl-calendar-month-view>
+<div class= appointments>
+  <div class = checklist *ngFor="let appointment of appointments">
+    <span>appointment.description</span>
+  </div>
+</div>

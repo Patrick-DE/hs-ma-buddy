@@ -11,6 +11,7 @@ export class CalendarComponent implements OnInit {
   viewDate: Date = new Date();
   events = [];
   weekStartsOn = 1;
+  appointments = [];
   constructor(private calendarService: CalendarService,
     private alertService: AlertService) { }
 
@@ -29,5 +30,11 @@ export class CalendarComponent implements OnInit {
             this.alertService.error('Backend down');
           }
     });
+  }
+  getOpenAppointments() {
+    this.calendarService.getAppointmentsForUser().subscribe( appointments => {
+        this.appointments = appointments.filter( appointment => appointment.status === false);
+    }
+    );
   }
 }

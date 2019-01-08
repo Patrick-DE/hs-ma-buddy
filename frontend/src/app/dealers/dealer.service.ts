@@ -17,6 +17,8 @@ export class DealerService {
 }
 }
 export interface Dealer {
+  dealer_id: String;
+  id?: String;
   moodle_id: number;
   first_name: String;
   last_name: String;

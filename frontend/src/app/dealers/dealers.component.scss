@@ -11,16 +11,21 @@
         display: flex;
         flex-direction: row;
         .dealers{
-            background-color: #558833;
-            margin:20px;
+
             .dealer{
+              background-color: #558833;
+              margin:20px;
                 .dealer-header{
                     font-weight :bold;
                 }
                 display: flex;
                 margin: 5px;
                 flex-direction: column;
+              .appointments{
+                margin-top: 5px;
+              }
             }
+
         }
     }
 }

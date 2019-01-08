@@ -30,6 +30,7 @@ export class ProductsComponent implements OnInit {
     console.log(productName);
     this.dealerProduct = productName;
     this.dealers = [{
+    'dealer_id': '',
     'moodle_id': 2,
     'first_name': 'cornelius',
     'last_name': 'black',
@@ -41,6 +42,7 @@ export class ProductsComponent implements OnInit {
     'away': true,
     'away_reason': 'no bock'},
     {
+      'dealer_id': '',
       'moodle_id': 2,
       'first_name': 'Albus',
       'last_name': 'Dumbledore',

@@ -18,4 +18,5 @@ export class ProductsService {
 }
 export interface Products {
   name: String;
+  _id: String;
 }
