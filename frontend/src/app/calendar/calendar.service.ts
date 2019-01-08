@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import 'rxjs/add/operator/map';
 import {User} from '../_services/authentication.service';
@@ -33,6 +33,14 @@ export class CalendarService {
     return this.http.post(`http://localhost:3000/appointment`, appointment
     );
   }
+  acceptAppointment(appointment: Appointment) {
+    appointment.status = true;
+    console.log(appointment);
+    return this.http.put(`http://localhost:3000/appointment/${appointment._id}`, appointment);
+  }
+  denyAppointment(appointment: Appointment) {
+    return this.http.delete(`http://localhost:3000/appointment/${appointment._id}`);
+  }
   getBlocks(): Observable<Block[]> {
 
     return this.http.get<Block[]>('http://localhost:3000/block');
@@ -44,6 +52,7 @@ export interface UserEvent {
   title: string;
 }
 export interface Appointment {
+  _id: String;
   user_id: string;
   start_date: string;
   end_date: string;

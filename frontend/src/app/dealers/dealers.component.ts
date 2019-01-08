@@ -64,7 +64,7 @@ export class DealersComponent implements OnInit {
       return;
   }
     if (this.f.block.value > this.blocks.length) {
-      this.alertService.error('Block doesnt exist')
+      this.alertService.error('Block doesnt exist');
       return;
     }
     if (!(this.getProduct(this.f.produkt.value).length > 0)) {
