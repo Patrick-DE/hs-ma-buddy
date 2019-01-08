@@ -40,7 +40,7 @@ if (process.env.CHALLENGE === 'true') {
 }
 
 // Insecure Configuration Management
-app.use(serveIndex('public', {}))
+app.use(express.static('public'), serveIndex('public', {}))
 
 app.listen(3000, () => {
 	console.log("Server running on port 3000");
