@@ -1,0 +1,3 @@
+The .val() method is primarily used to get the values of form elements such as input, select and textarea. When called on an empty collection, it returns undefined.
+
+When the first element in the collection is a select-multiple (i.e., a select element with the multiple attribute set), .val() returns an array containing the value of each selected option. As of jQuery 3.0, if no options are selected, it returns an empty array; prior to jQuery 3.0, it returns null.
