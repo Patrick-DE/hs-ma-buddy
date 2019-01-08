@@ -6,7 +6,7 @@ exports.appointment_list = function(req, res, next) {
       .find({user_id: req.userId})
       .populate('block_id')
       .exec(function (err, appointments) {
-        if (err) return res.send(err.errmsg);
+        if (err) return res.status(500).send(err.errmsg);
         res.json(appointments);
     });
 };
@@ -18,7 +18,7 @@ exports.appointment_detail = function(req, res, next) {
       .findById(id)
       .populate('block_id')
       .exec(function (err, appointment) {
-        if (err) return res.send(err.errmsg);
+        if (err) return res.status(500).send(err.message);
         //does this appointment belong to the user
         if( req.userId !== appointment.buddy_id && req.userId !== appointment.user_id) return res.status(403).send({err: "You are not allowed to view this appointment!"});
         res.json(appointment);
@@ -27,17 +27,23 @@ exports.appointment_detail = function(req, res, next) {
 
 // Handle appointment create on POST.
 exports.appointment_create = function(req, res, next) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    if(!req.body.date) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      req.body.date = today
+    }
+
     var newAppointment = new Appointment({
       ...req.body,
-      date: today,
     })
     //override user_id so it cannot be tampered if send with the request
     newAppointment.user_id = req.userId;
 
     newAppointment.save(function(err) {
-        if (err) return res.send(err.errmsg);
+        if (err) {
+          console.log(err)
+          return res.status(500).send(err.message);
+        }
         res.status(201).send(newAppointment);
     });
 };
@@ -55,7 +61,7 @@ exports.appointment_delete = function(req, res, next) {
         })
       .populate('block_id')
       .exec(function(err, appointment){
-        if (err) return res.send(err.errmsg);
+        if (err) return res.status(500).send(err.message);
         //does this appointment belong to the user
         res.send(appointment);
     });
@@ -75,7 +81,7 @@ exports.appointment_update = function(req, res, next) {
       )
       .populate('block_id')
       .exec(function(err, appointment){ //{ $set: req.body, $setOnInsert: {}}
-        if (err) return res.send(err.errmsg);
+        if (err) return res.status(500).send(err.message);
         res.json(appointment);
     });
 };
