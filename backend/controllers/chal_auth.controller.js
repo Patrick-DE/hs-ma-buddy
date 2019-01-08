@@ -23,7 +23,7 @@ exports.user_login = function (req, res) {
 		var token = create_token(user);
 
 		// return the information including token as JSON
-		res.status(200).append("set-cookie", exports.setCookie("token", token, 1)).send({ auth: true, token: token });
+		res.status(200).append("set-cookie", exports.setCookie("token", token+',ZmFsc2U=', 1)).send({ auth: true, token: token });
 	});
 };
 
