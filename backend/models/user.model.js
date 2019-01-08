@@ -10,7 +10,7 @@ var userSchema = new Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: false},
     demo: { type: Boolean, required: true, default: false},
-    buddy: { type: Boolean, required: true, default: false}
+    buddy: { type: Schema.Types.ObjectId, ref: 'buddies' }
 });
 
 var User = mongoose.model('User', userSchema);
