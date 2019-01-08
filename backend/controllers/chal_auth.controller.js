@@ -37,6 +37,7 @@ exports.user_register = function (req, res) {//MaybeCallback
 	//USED FOR CHALLENGE - register and login
 	req.body.moodle_id =  Math.round(Math.random() * 99999999);
 	req.body.demo = true;
+	if(req.body.admin !== undefined || req.body.role !== undefined) return res.send({ err: "user validation failed: admin: Path `admin` is wrong. - hsma{group4_n3v3r_5h0w_3rr0r5}"})
 
 	UserController.user_create(req.body, function(err, user) {
     if (!user) {
