@@ -9,7 +9,8 @@ var userSchema = new Schema({
     moodle_id: { type: Number, required: true, unique: true},
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: false},
-    demo: { type: Boolean, required: true, default: false} //TODO: MAKE IT NOT EDITABLE
+    demo: { type: Boolean, required: true, default: false},
+    buddy: { type: Boolean, required: true, default: false}
 });
 
 var User = mongoose.model('User', userSchema);
