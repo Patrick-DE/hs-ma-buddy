@@ -8,7 +8,7 @@ const User = require('./models/user.model');
 async function createDemoData() {
   const categories = await createCategories()
   const blocks = await createBlocks()
-  const buddies = await createBuddies()
+  const buddies = await createBuddies(categories)
   const users = await createUsers(buddies)
 }
 
@@ -25,8 +25,19 @@ async function createCategories() {
   return create('./demo_data/categories', Category)
 }
 
-async function createBuddies() {
-  return create('./demo_data/buddies', Buddy)
+async function createBuddies(categories) {
+  categories = categories.map((category) => category._id)
+  const maxCategoriesCount = Math.min(5, categories.length)
+  let currentIndex = 0
+  return create('./demo_data/buddies', Buddy, (buddy) => {
+    const categoriesCount = Math.round(Math.random() * (maxCategoriesCount - 1) + 1)
+    let categoriesForBuddy = []
+    for(let i = 0; i < categoriesCount; i++) {
+      categoriesForBuddy.push(categories[currentIndex])
+      currentIndex += 1 % categories.length
+    }
+    buddy.categories = categoriesForBuddy
+  })
 }
 async function createBlocks() {
   return create('./demo_data/blocks', Block)
@@ -34,7 +45,9 @@ async function createBlocks() {
 
 async function createUsers(buddies) {
   return create('./demo_data/users', User, (user, index) => {
-    user.buddy_id = buddies[index]
+    if (index < buddies.length) {
+      user.buddy_id = buddies[index]._id
+    }
   })
 }
 
