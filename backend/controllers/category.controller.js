@@ -19,6 +19,8 @@ exports.category_detail = function(req, res) {
 
 // Handle category create on POST.
 exports.category_create = function(req, res) {
+    if(req.body.name === undefined) return res.status(400).send({err: "Please enter a name."});
+    
     var filtered = req.body.name.replace("<", "").replace(">", "").replace("script", "").replace("alert", "").replace("\"", "");
     var newCategory = new Category({name: filtered});
     newCategory.save(function(err) {
