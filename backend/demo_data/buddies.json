@@ -1,0 +1,98 @@
+[
+  {
+    "first_name": "Jackson",
+    "last_name": "MacLice",
+    "email2": "jmaclice0@netlog.com",
+    "moodle_id": 1,
+    "room": "Lighthouse Bay",
+    "mobile": "+420-480-217-0092"
+  },
+  {
+    "first_name": "Kellby",
+    "last_name": "Harrell",
+    "email2": "kharrell1@rediff.com",
+    "moodle_id": 2,
+    "room": "Del Sol",
+    "mobile": "+57-591-735-2660"
+  },
+  {
+    "first_name": "Sephira",
+    "last_name": "Fancutt",
+    "email2": "sfancutt2@indiegogo.com",
+    "moodle_id": 3,
+    "room": "Vernon",
+    "mobile": "+380-674-458-2170"
+  },
+  {
+    "first_name": "Isidora",
+    "last_name": "McGannon",
+    "email2": "imcgannon3@nyu.edu",
+    "moodle_id": 4,
+    "room": "Buell",
+    "mobile": "+57-808-489-7716"
+  },
+  {
+    "first_name": "Jareb",
+    "last_name": "Benka",
+    "email2": "jbenka4@cdbaby.com",
+    "moodle_id": 5,
+    "room": "Paget",
+    "mobile": "+81-357-743-2619"
+  },
+  {
+    "first_name": "Orelie",
+    "last_name": "Bertlin",
+    "email2": "obertlin5@trellian.com",
+    "moodle_id": 6,
+    "room": "Mallory",
+    "mobile": "+81-383-733-2368"
+  },
+  {
+    "first_name": "Karyl",
+    "last_name": "Billo",
+    "email2": "kbillo6@imdb.com",
+    "moodle_id": 7,
+    "room": "Mallory",
+    "mobile": "+57-824-350-3665"
+  },
+  {
+    "first_name": "Susannah",
+    "last_name": "Hunt",
+    "email2": "shunt7@berkeley.edu",
+    "moodle_id": 8,
+    "room": "Fairview",
+    "mobile": "+52-616-296-9185"
+  },
+  {
+    "first_name": "Mellisent",
+    "last_name": "Vaines",
+    "email2": "mvaines8@flickr.com",
+    "moodle_id": 9,
+    "room": "Maple",
+    "mobile": "+1-915-214-2678"
+  },
+  {
+    "first_name": "Tiler",
+    "last_name": "Gylle",
+    "email2": "tgylle9@comsenz.com",
+    "moodle_id": 10,
+    "room": "Katie",
+    "mobile": "+46-945-166-3877"
+  },
+  {
+    "first_name": "Maud",
+    "last_name": "Ayce",
+    "email2": "maycea@devhub.com",
+    "moodle_id": 11,
+    "room": "Algoma",
+    "mobile": "+380-983-315-3475"
+  },
+  {
+    "first_name": "Valentine",
+    "last_name": "Burles",
+    "email2": "vburlesb@amazonaws.com",
+    "moodle_id": 12,
+    "room": "Kingsford",
+    "mobile": "+351-251-910-3005"
+  }
+]
