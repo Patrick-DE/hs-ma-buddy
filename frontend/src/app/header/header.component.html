@@ -5,13 +5,17 @@
   <div class ="logout" *ngIf="logout">
       <button (click)= "logout()">Logout</button>
   </div>
-  <input placeholder="Search">
-  <div class = 'links'>
+  <form [formGroup]="searchForm" (ngSubmit)="sendSearch()">
+    <div class="form-group">
+      <input style="width:400px;" placeholder="Suche was" type="text" formControlName="suche" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.beschreibung.errors }" />
+      <button class="my_button">Send</button>
+    </div>
+</form>
+<div class = 'links'>
     <nav>
       <a routerLink="/overview" routerLinkActive="active">Overview</a>
       <a routerLink="/dealers" routerLinkActive="active">Dealers</a>
       <a routerLink="/products" routerLinkActive="active">Products</a>
     </nav>
  </div>
-
 </div>
