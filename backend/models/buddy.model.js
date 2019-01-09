@@ -13,7 +13,7 @@ var buddySchema = new Schema({
     blocked: { type: Boolean, required: true, default: false},
     away: { type: Boolean, required: true, default: false},
     away_reason: String,
-    category: [{type: Schema.Types.ObjectId, ref: 'categories'}]
+    categories: [{type: Schema.Types.ObjectId, ref: 'categories'}]
 }, {
     toObject: { virtuals: true },
     toJSON: { virtuals: true }
