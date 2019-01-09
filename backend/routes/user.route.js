@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var user_controller = require('../controllers/user.controller');
-var Verify = require('../verifyToken');
+var verfyToken = require('../verifyToken');
 
 //Get all user
 router.get('/', user_controller.user_list);

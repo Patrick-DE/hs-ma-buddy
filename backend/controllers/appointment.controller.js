@@ -3,7 +3,7 @@ var Appointment = require('../models/appointment.model');
 // Display list of all appointments.
 exports.appointment_list = function(req, res, next) {
     Appointment
-      .find({user_id: req.userId})
+      .find({$or: [ {user_id: req.userId}, {buddy_id: req.userId}]})
       .populate('block_id')
       .exec(function (err, appointments) {
         if (err) return res.status(500).send(err.errmsg);
@@ -15,12 +15,17 @@ exports.appointment_list = function(req, res, next) {
 exports.appointment_detail = function(req, res, next) {
     var id = req.params.id;
     Appointment
-      .findById(id)
+      .findOne({
+        $and: [
+          {_id: id},
+          {$or: [ {user_id: req.userId}, {buddy_id: req.userId}]}
+        ],
+      })
       .populate('block_id')
       .exec(function (err, appointment) {
         if (err) return res.status(500).send(err.message);
-        //does this appointment belong to the user
-        if( req.userId !== appointment.buddy_id && req.userId !== appointment.user_id) return res.status(403).send({err: "You are not allowed to view this appointment!"});
+        if (!appointment) return res.status(404).send("not found")
+
         res.json(appointment);
     });
 };
@@ -55,8 +60,8 @@ exports.appointment_delete = function(req, res, next) {
     Appointment
       .findOneAndDelete({
           $and: [
-            {id: id},
-            {$or: [ {user_id: req.userId}, {user_id: req.userId}]}
+            {_id: id},
+            {$or: [ {user_id: req.userId}, {buddy_id: req.userId}]}
           ]
         })
       .populate('block_id')
@@ -73,8 +78,8 @@ exports.appointment_update = function(req, res, next) {
     Appointment
       .findOneAndUpdate({
         $and: [
-            {id: id},
-            {$or: [ {user_id: req.userId}, {user_id: req.userId}]}
+            {_id: id},
+            {$or: [ {user_id: req.userId}, {buddy_id: req.userId}]}
           ]},
         req.body,
         {new: true}
