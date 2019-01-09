@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+import { Products } from '../products/products.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,4 +30,5 @@ export interface Dealer {
   blocked: boolean;
   away: boolean;
   away_reason: String;
+  categories: String[];
 }

@@ -37,7 +37,7 @@ export class DealersComponent implements OnInit {
       jahr: [2019],
       monat: [1],
       tag: [15],
-      raum:[ '', Validators.required]
+      raum: [ '', Validators.required]
   });
   }
   get f() { return this.appointmentForm.controls; }

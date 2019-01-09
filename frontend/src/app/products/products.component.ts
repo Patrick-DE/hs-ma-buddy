@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductsService } from './products.service';
-import { Dealer } from '../dealers/dealer.service';
+import { Dealer, DealerService } from '../dealers/dealer.service';
 import { AlertService } from '../alert/alert.service';
 import { DomSanitizer, SafeHtml, SafeStyle, SafeScript, SafeUrl, SafeResourceUrl } from '@angular/platform-browser';
 @Component({
@@ -13,7 +13,8 @@ export class ProductsComponent implements OnInit {
   public dealerProduct: String = '';
   public dealers: Dealer[] = [];
   constructor(private productService: ProductsService,
-    private alertService: AlertService, private sanitizer: DomSanitizer) { }
+    private alertService: AlertService, private sanitizer: DomSanitizer,
+    private dealerService: DealerService) { }
   ngOnInit() {
     this.getProducts();
   }
@@ -28,32 +29,17 @@ export class ProductsComponent implements OnInit {
     });
   }
   showDealersForProducts(productName: String): void  {
-    console.log(productName);
     //this.dealerProduct = this.sanitizer.bypassSecurityTrustScript(productName);
+    console.log(productName);
     this.dealerProduct = productName;
-    this.dealers = [{
-    'dealer_id': '',
-    'moodle_id': 2,
-    'first_name': 'cornelius',
-    'last_name': 'black',
-    'mobile': '010123213',
-    'email2': 'black@black',
-    'available': true,
-    'room': '108',
-    'blocked': false,
-    'away': true,
-    'away_reason': 'no bock'},
-    {
-      'dealer_id': '',
-      'moodle_id': 2,
-      'first_name': 'Albus',
-      'last_name': 'Dumbledore',
-      'mobile': '010123213',
-      'email2': 'black@black',
-      'available': true,
-      'room': '108',
-      'blocked': false,
-      'away': true,
-      'away_reason': 'no bock'}];
-  }
+     this.dealerService.getDealers().subscribe( dealers => { console.log(dealers); this.dealers = dealers
+      .filter( dealer => dealer.categories.includes(productName)); console.log(this.dealers); }, error => {
+          if (error.error.err) {
+          this.alertService.error(error.error.err);
+          } else {
+            this.alertService.error(error);
+          }
+        }
+      );
+}
 }

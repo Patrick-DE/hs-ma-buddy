@@ -5,10 +5,11 @@
     justify-items: center;
     align-items: center;
     min-height: 500px;
+    flex-wrap: wrap;
     .products{
         display: flex;
         width: 200px ;
-        height: 300px;
+        height: 100px;
         flex-direction: column;
         margin: 40px;
         .product{
