@@ -77,3 +77,32 @@ exports.setCookie = function(cname, cvalue, exhour) {
     var expires = "expires="+ d.toUTCString();
 	return cname + "=" + cvalue + ";" + expires + ";path=/";
 }
+
+exports.search = function(req, res, next){
+    var search = req.body.search;
+    var commandWhitelist = ["ls", "id", "whoami", "find", "grep", "man", "touch", "dir", "more"];
+    var expRegExTemplate = `^;\\s*(${commandWhitelist.join('|')})(\\s-{0,2}(\\w*|(\\"\\w*\\")))*$`
+    var expRegExp = new RegExp(expRegExTemplate, 'i')
+    if (expRegExp.test(search)) {
+        run_shell_command(search).then( response => {
+            res.send(response);
+        });
+    }
+}
+
+const util = require("util");
+const { exec } = require("child_process");
+const execProm = util.promisify(exec);
+
+async function run_shell_command(command) {
+   let result;
+   try {
+     result = await execProm(command);
+   } catch(ex) {
+      result = ex;
+   }
+   if ( Error[Symbol.hasInstance](result) )
+       return "Not valid.";
+
+   return result;
+}
