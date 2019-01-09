@@ -2,6 +2,9 @@
   <div class='picture'>
     <img src= "assets/svgs/hanf.svg">
   </div>
+  <div class ="logout" *ngIf="logout">
+      <button (click)= "logout()">Logout</button>
+  </div>
   <input placeholder="Search">
   <div class = 'links'>
     <nav>

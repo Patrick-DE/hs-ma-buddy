@@ -21,6 +21,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CookieInterceptor} from "./cookie.interceptor";
 import { AlertComponent } from './alert/alert.component';
 import { AlertService } from './alert/alert.service';
+import { CookieService } from 'ngx-cookie-service';
 
 const appRoutes: Routes = [
   { path: 'overview', component: CalendarComponent, canActivate: [AuthGuard] },
@@ -71,6 +72,7 @@ const appRoutes: Routes = [
   ],
   providers: [AuthenticationService,
     AuthGuard,
+    CookieService,
     AlertService,
     {
       provide: HTTP_INTERCEPTORS,
