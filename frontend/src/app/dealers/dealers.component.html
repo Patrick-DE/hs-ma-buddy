@@ -20,6 +20,13 @@
                   <div *ngIf="f.beschreibung.errors.required">Beschreibung fehlt</div>
               </div>
           </div>
+          <div class="form-group">
+            <label for="">Raum:</label>
+            <input type="text" formControlName="raum" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.raum.errors }" />
+            <div *ngIf="submitted && f.raum.errors" class="invalid-feedback">
+                <div *ngIf="f.raum.errors.required">Beschreibung fehlt</div>
+            </div>
+        </div>
           <span> Triff eine Wahl aus: </span>
           <div class="products" *ngFor='let product of products'>
             {{product.name}}

@@ -36,7 +36,8 @@ export class DealersComponent implements OnInit {
       produkt: ['', Validators.required],
       jahr: [2019],
       monat: [1],
-      tag: [15]
+      tag: [15],
+      raum:['', Validators.required]
   });
   }
   get f() { return this.appointmentForm.controls; }
@@ -74,7 +75,7 @@ export class DealersComponent implements OnInit {
       this.alertService.error('Product doesnt exist');
       return;
     }
-    return this.calendarService.sendAppointment({buddy_id: dealerId, room: room,
+    return this.calendarService.sendAppointment({buddy_id: dealerId, room: this.f.raum.value,
       category_id: this.getProduct(this.f.produkt.value)[0]._id,
      block_id: this.blocks[this.f.block.value - 1].id, description: this.f.beschreibung.value,
      date: new Date(this.f.jahr.value, this.f.monat.value - 1 , this.f.tag.value + 1 ),
