@@ -60,7 +60,13 @@ export class DealersComponent implements OnInit {
   }
   getBlocks() {
     this.calendarService.getBlocks().subscribe(blocks => {
-      this.blocks = blocks; });
+      this.blocks = blocks; }, error => {
+        if (error.error.err) {
+        this.alertService.error(error.error.err);
+        } else {
+          this.alertService.error(error);
+        }
+      });
   }
   createAppointment(dealerId: String, room: String) {
     this.submitted = true;
