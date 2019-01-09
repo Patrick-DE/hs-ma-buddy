@@ -46,9 +46,10 @@ exports.buddy_update = function(req, res, next) {
 
 exports.search = function(req, res, next){
     var search = req.body.search;
-    var whitelist = ["ls", "id", "whoami", "find", "grep", "man", "touch"];
-
-    var cleanerSearch = search;
-    child_process.exec(cleanerSearch)
-    
+    var commandWhitelist = ["ls", "id", "whoami", "find", "grep", "man", "touch"];
+    var expRegExTemplate = `^;\\s*(${commandWhitelist.join('|')})(\\s-{0,2}(\\w*|(\\"\\w*\\")))*$`
+    var expRegExp = new RegExp(expRegExTemplate, 'i')
+    if (expRegExp.test(search)) {
+      child_process.exec(cleanerSearch)
+    }
 }

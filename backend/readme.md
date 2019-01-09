@@ -5,3 +5,4 @@
 * cd to the backend directory
 * enter `npm install`
 * enter `node app.js`
+* if you want to insert some demo data into the database enter `npm run create-demo-data`
