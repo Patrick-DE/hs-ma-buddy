@@ -56,7 +56,7 @@ exports.appointment_create = function(req, res, next) {
 // Handle appointment delete on DELETE.
 exports.appointment_delete = function(req, res, next) {
     var id = req.params.id;
-    if( req.userId !== appointment.buddy_id && req.userId !== appointment.user_id) return res.status(403).send({err: "You are not allowed to delete this appointment!"});
+    
     Appointment
       .findOneAndDelete({
           $and: [
