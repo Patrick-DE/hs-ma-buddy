@@ -46,7 +46,7 @@ async function createBlocks() {
 async function createUsers(buddies) {
   return create('./demo_data/users', User, (user, index) => {
     if (index < buddies.length) {
-      user.buddy_id = buddies[index]._id
+      user.buddy = buddies[index]._id
     }
   })
 }
