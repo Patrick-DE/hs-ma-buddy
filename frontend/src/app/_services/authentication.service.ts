@@ -1,19 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable()
 export class AuthenticationService {
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient,
+      private coockieService: CookieService) { }
 
     login(email: string, password: string) {
         return this.http.post<any>('http://localhost:3000/login', { email,
         password: password, tool_consumer_instance_guid: 'moodle.hs-mannheim.de' })
             .pipe(map(user => {
                 // login successful if there's a jwt token in the response
-                if (user && user.token) {
+                if (user ) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    localStorage.setItem('currentUser', this.coockieService.get('token'));
                 }
 
                 return user;

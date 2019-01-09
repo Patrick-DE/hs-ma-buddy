@@ -35,7 +35,6 @@ export class CalendarService {
   }
   acceptAppointment(appointment: Appointment) {
     appointment.status = true;
-    console.log(appointment);
     return this.http.put(`http://localhost:3000/appointment/${appointment._id}`, appointment);
   }
   denyAppointment(appointment: Appointment) {

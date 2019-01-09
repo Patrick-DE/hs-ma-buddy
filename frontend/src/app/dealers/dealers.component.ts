@@ -33,7 +33,10 @@ export class DealersComponent implements OnInit {
     this.appointmentForm = this.formBuilder.group({
       beschreibung: ['', Validators.required],
       block: ['', Validators.required],
-      produkt: ['', Validators.required]
+      produkt: ['', Validators.required],
+      jahr: [2019],
+      monat: [1],
+      tag: [15]
   });
   }
   get f() { return this.appointmentForm.controls; }
@@ -74,6 +77,7 @@ export class DealersComponent implements OnInit {
     return this.calendarService.sendAppointment({buddy_id: dealerId, room: room,
       category_id: this.getProduct(this.f.produkt.value)[0]._id,
      block_id: this.blocks[this.f.block.value - 1].id, description: this.f.beschreibung.value,
+     date: new Date(this.f.jahr.value, this.f.monat.value - 1 , this.f.tag.value + 1 ),
   status: false }).pipe()
   .subscribe(
       data => {this.appointment = '';

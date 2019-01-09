@@ -5,8 +5,10 @@
   [weekStartsOn]= weekStartsOn>
 </mwl-calendar-month-view>
 <div class= appointments>
+  <h1>Offene Termine:</h1>
   <div class = checklist *ngFor="let appointment of openAppointments">
     <span>{{appointment.description}}</span>
+    <span> Am: {{appointment.date}}</span>
     <button class="checkButton" (click)= accept(appointment)>Accept</button>
     <button class= "checkButton" (click)= deny(appointment)>Deny</button>
   </div>

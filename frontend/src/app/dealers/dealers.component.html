@@ -40,6 +40,15 @@
             </div>
           </div>
           <div class="form-group">
+            <label for="">Produkt:</label>
+            <input type="number"  style="width:50px;"  formControlName="jahr" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.jahr.errors }" />
+            <input type="number"  style="width:50px;"  formControlName="monat" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.monat.errors }" />
+            <input type="number"  style="width:50px;"  formControlName="tag" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.tag.errors }" />
+            <div *ngIf="submitted && f.produkt.errors" class="invalid-feedback">
+                <div *ngIf="f.produkt.errors.required">Username is required</div>
+            </div>
+        </div>
+          <div class="form-group">
               <button [disabled]="loading" class="my_button">Send</button>
           </div>
         </form>

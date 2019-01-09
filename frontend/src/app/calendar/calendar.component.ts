@@ -40,7 +40,7 @@ export class CalendarComponent implements OnInit {
     );
   }
   deny(appointment: Appointment) {
-    this.calendarService.denyAppointment(appointment).pipe().subscribe( data => {}, error => {
+    this.calendarService.denyAppointment(appointment).pipe().subscribe( data => { this.getOpenAppointments(); }, error => {
       if (error.error.err) {
         this.alertService.error(error.error.err);
         } else {
@@ -49,7 +49,8 @@ export class CalendarComponent implements OnInit {
   });
   }
   accept(appointment: Appointment) {
-    this.calendarService.acceptAppointment(appointment).pipe().subscribe( data => {}, error => {
+    this.calendarService.acceptAppointment(appointment).pipe().subscribe( data => {this.getOpenAppointments();
+       this.getEvents(); }, error => {
       if (error.error.err) {
         this.alertService.error(error.error.err);
         } else {
