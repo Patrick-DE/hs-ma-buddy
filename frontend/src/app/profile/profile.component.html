@@ -1,0 +1,26 @@
+<div class="container" *ngIf="profile">
+  <div class="profile" >
+  <h2>  {{myProfile.first_name}} {{myProfile.last_name}}</h2>
+  <span class="attribute">Telefonnummer: {{myProfile.mobile}}</span>
+  <span class="attribute">Email: {{myProfile.email2}} </span>
+  <span class="attribute">Aufenthalt: {{myProfile.room}}</span>
+  <span class="attribute" >Verfügbar: {{myProfile.available}}</span>
+  <span class="attribute">Untergetaucht: {{myProfile.away}}</span>
+  <span class="attribute">Grund: {{myProfile.away_reason}}</span>
+  <div class=options *ngIf="false">
+    <button (click)= "available()">Ändere Verfügbarkeit</button>
+  </div>
+  <div class='available' *ngIf="reason">
+      <form [formGroup]="availableForm" (ngSubmit)="changeAvailable(myProfile)">
+          <div class="form-group">
+            <label for="grund">Grund:</label>
+            <input type="text" formControlName="grund" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.grund.errors }" />
+          </div>
+        <div class="form-group">
+            <button  class="my_button">Sende</button>
+        </div>
+      </form>
+  </div>
+</div>
+</div>
+<span *ngIf="!profile">Only Dealers can edit they Profile</span>

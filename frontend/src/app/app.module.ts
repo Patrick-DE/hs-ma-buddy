@@ -18,10 +18,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {  AuthenticationService } from './_services/authentication.service';
 import { RegisterComponent } from './register/register.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { CookieInterceptor} from "./cookie.interceptor";
+import { CookieInterceptor} from './cookie.interceptor';
 import { AlertComponent } from './alert/alert.component';
 import { AlertService } from './alert/alert.service';
 import { CookieService } from 'ngx-cookie-service';
+import { ProfileComponent } from './profile/profile.component';
 
 const appRoutes: Routes = [
   { path: 'overview', component: CalendarComponent, canActivate: [AuthGuard] },
@@ -34,6 +35,10 @@ const appRoutes: Routes = [
   },
   { path: 'login',
     component: LoginComponent
+  },
+  { path: 'profile',
+    component: ProfileComponent,
+    canActivate: [AuthGuard]
   },
   { path: '',
     redirectTo: '/overview',
@@ -53,6 +58,7 @@ const appRoutes: Routes = [
     LoginComponent,
     RegisterComponent,
     AlertComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

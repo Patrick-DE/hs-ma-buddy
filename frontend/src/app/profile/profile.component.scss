@@ -1,0 +1,18 @@
+.container{
+  display: flex;
+  height: 100%;
+  width:100%;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+.profile{
+  margin:10%;
+  padding:10%;
+  display: flex;
+  flex-direction: column;
+  background-color:  #558833;
+  .attribute{
+    margin:5px;
+  }
+}
+}
