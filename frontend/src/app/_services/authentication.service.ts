@@ -6,17 +6,13 @@ import { CookieService } from 'ngx-cookie-service';
 @Injectable()
 export class AuthenticationService {
     constructor(private http: HttpClient,
-      private coockieService: CookieService) { }
+      private cookieService: CookieService) { }
 
     login(email: string, password: string) {
         return this.http.post<any>('http://localhost:3000/login', { email,
         password: password, tool_consumer_instance_guid: 'moodle.hs-mannheim.de' })
             .pipe(map(user => {
                 // login successful if there's a jwt token in the response
-                if (user ) {
-                    // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('currentUser', this.coockieService.get('token'));
-                }
 
                 return user;
             }));
@@ -24,7 +20,7 @@ export class AuthenticationService {
 
     logout() {
         // remove user from local storage to log user out
-        localStorage.removeItem('currentUser');
+        this.cookieService.delete('token');
     }
     register(user: User) {
         return this.http.post(`http://localhost:3000/register`, user);
