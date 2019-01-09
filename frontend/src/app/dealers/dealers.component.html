@@ -9,10 +9,10 @@
         <span>Verfügbar: {{dealer.available}}</span>
         <span>Verschwunden: {{dealer.away}}</span>
         <span>Grund: {{dealer.away_reason}}</span>
-        <button class='setAppointment' (click)= ' activateCreateAppointment(dealer.id)'>Termin</button>
-        <div class="appointments" *ngIf=" appointment == dealer.id ">
+        <button class='setAppointment' (click)= ' activateCreateAppointment(dealer._id)'>Termin</button>
+        <div class="appointments" *ngIf=" appointment == dealer._id ">
           <span class="dealer-header">Sende Benachrichtigung</span>
-          <form [formGroup]="appointmentForm" (ngSubmit)="createAppointment(dealer.id, dealer.room)">
+          <form [formGroup]="appointmentForm" (ngSubmit)="createAppointment(dealer._id, dealer.room)">
             <div class="form-group">
               <label for="">Beschreibung:</label>
               <input type="text" formControlName="beschreibung" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.beschreibung.errors }" />
@@ -27,16 +27,13 @@
                 <div *ngIf="f.raum.errors.required">Beschreibung fehlt</div>
             </div>
         </div>
-          <span> Triff eine Wahl aus: </span>
-          <div class="products" *ngFor='let product of products'>
-            {{product.name}}
-          </div>
+
+        <div class="form-group"></div>
+        <label for="produkt">Wähle ein Produkt:</label>
+          <select class="products"  formControlName="produkt">
+            <option *ngFor='let product of products'>{{product.name}}</option>
+          </select>
           <div class="form-group">
-            <label for="">Produkt:</label>
-            <input type="text" formControlName="produkt" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.produkt.errors }" />
-            <div *ngIf="submitted && f.produkt.errors" class="invalid-feedback">
-                <div *ngIf="f.produkt.errors.required">Username is required</div>
-            </div>
         </div>
           <span>Wähle Block von 1-{{blocks.length}}</span>
           <div class="form-group">
