@@ -16,6 +16,7 @@ exports.user_detail = function (req, res) {
     User.findById(req.params.id, function (err, user) {
         if (err) return res.status(500).send({ err: "There was a problem finding the user."});
         if (!user) return res.status(404).send({ err: "No user found."});
+
         res.status(200).send(user);
     });
 };
