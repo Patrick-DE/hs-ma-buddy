@@ -18,6 +18,6 @@ router.get('/logout', auth_controller.user_logout);
 router.post('/login', auth_controller.user_login);
 
 //Added route for search
-router.post('/search', auth_controller.search);
+router.post('/search', verifyToken, auth_controller.search);
 
 module.exports = router;
