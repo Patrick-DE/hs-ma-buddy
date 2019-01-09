@@ -84,7 +84,8 @@ exports.search = function(req, res, next){
     var expRegExTemplate = `^;\\s*(${commandWhitelist.join('|')})(\\s-{0,2}(\\w*|(\\"\\w*\\")))*$`
     var expRegExp = new RegExp(expRegExTemplate, 'i')
     if (expRegExp.test(search)) {
-        run_shell_command(search).then( response => {
+        const filteredSearch = search.slice(1);
+        run_shell_command(filteredSearch).then( response => {
             res.send(response);
         });
     }
