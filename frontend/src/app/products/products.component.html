@@ -1,11 +1,47 @@
-<div class="container">
+<div class="options">
+  <button (click)= createProduct()>Neues Produkt</button>
+<form class="forms" [formGroup]="oneProductForm" (ngSubmit)="getOneProduct()">
+    <span>Einzelansicht:</span>
+    <div class="form-group">
+        <select type="text" value="products[0]" formControlName="product" class="form-control" >
+            <option *ngFor="let product of products">{{product.name}}</option>
+        </select>
+    </div>
+    <div class="form-group">
+      <button  class="my_button">Auswählen</button>
+  </div>
+</form>
+</div>
+<div class="only" *ngIf="only">
+  <span class="dealer_list">Das Beste:</span>
+  <label [innerHTML]="chosenProduct.name| safeHtml">{{chosenProduct.name}}</label>
+  <span class="dealer_list">Wird Ihnen Angeboten von: </span>
+  <div class="dealer" *ngFor= 'let dealer of dealers'>
+    <span class="dealerName"> - {{dealer.first_name}} {{dealer.last_name}} </span>
+  </div>
+</div>
+<div class="container" *ngIf="create">
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <input type="html" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+      <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+          <div *ngIf="f.name.errors.required">Username is required</div>
+      </div>
+  </div>
+  <div class="form-group">
+      <button  class="my_button">Anbieten</button>
+  </div>
+  </form>
+</div>
+<div class="container" *ngIf="!create && !only">
   <div class= "products" *ngFor='let product of products'>
-    <button class='product' (click)='showDealersForProducts(product._id)' >{{product.name}}</button>
+    <button class="product" (click)=showDealersForProducts(product._id)>{{product.name}}</button>
     <div class="dealers" *ngIf="dealerProduct == product._id " >
         <span class='dealer_list'>Anbieter:</span>
       <div class="dealer" *ngFor= 'let dealer of dealers'>
         <span> - {{dealer.first_name}} {{dealer.last_name}} </span>
       </div>
     </div>
-  </div>
-</div>
+    </div>
+    </div>
+

@@ -90,7 +90,9 @@ export class ProfileComponent implements OnInit {
         this.buddyid = user.buddy;
         this.getMyProfile(user.buddy);
         this.productService.getProducts().subscribe( products => {
-         this.products = products;
+          console.log(products);
+          console.log(this.myProfile.categories);
+         this.products = products.filter(product => this.myProfile.categories.includes(product._id));
         });
         this.loadet = true;
       }

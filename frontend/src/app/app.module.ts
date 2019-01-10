@@ -23,6 +23,7 @@ import { AlertComponent } from './alert/alert.component';
 import { AlertService } from './alert/alert.service';
 import { CookieService } from 'ngx-cookie-service';
 import { ProfileComponent } from './profile/profile.component';
+import { SafeHtmlPipe } from './html.pipe';
 
 const appRoutes: Routes = [
   { path: 'overview', component: CalendarComponent, canActivate: [AuthGuard] },
@@ -59,6 +60,7 @@ const appRoutes: Routes = [
     RegisterComponent,
     AlertComponent,
     ProfileComponent,
+    [SafeHtmlPipe]
   ],
   imports: [
     BrowserModule,
