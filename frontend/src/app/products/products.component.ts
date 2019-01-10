@@ -13,7 +13,6 @@ import { PipeTransform, Pipe } from '@angular/core';
 })
 
 export class ProductsComponent implements OnInit {
-  public test = `<b>This text is bold</b> and this one is <i>italics</i> <img src=x onerror='alert("hello there")'>`;
   public chosenProduct;
   public only = false;
   public productForm: FormGroup;
