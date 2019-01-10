@@ -4,6 +4,7 @@ const Block = require('./models/block.model');
 const Buddy = require('./models/buddy.model');
 const Category = require('./models/category.model');
 const User = require('./models/user.model');
+const bcrypt = require('bcryptjs');
 
 async function createDemoData() {
   const categories = await createCategories()
@@ -47,6 +48,7 @@ async function createUsers(buddies) {
   return create('./demo_data/users', User, (user, index) => {
     if (index < buddies.length) {
       user.buddy = buddies[index]._id
+      user.password = bcrypt.hashSync(user.password, 7)
     }
   })
 }
