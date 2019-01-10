@@ -36,14 +36,14 @@ export class ProductsComponent implements OnInit {
       name: ['', Validators.required],
   });
   this.oneProductForm = this.formBuilder.group({
-    product: [this.products[0],Validators.required],
+    product: [this.products[0], Validators.required],
   });
   }
   getOneProduct() {
     this.only = true;
     this.chosenProduct = this.products.filter( product => product.name === this.one.product.value)[0];
     this.showDealersForProducts(this.chosenProduct._id);
-    //this.chosenProduct.name = `<b>This text is bold</b> and this one is <i>italics</i> <img src=x onerror='alert("hello there")'>`;
+    // this.chosenProduct.name = `<b>This text is bold</b> and this one is <i>italics</i> <img src=x onerror='alert("hello there")'>`;
   }
   createProduct() {
     this.create = true;

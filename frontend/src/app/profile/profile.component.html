@@ -7,6 +7,10 @@
   <span class="attribute" >Verfügbar: {{myProfile.available}}</span>
   <span class="attribute">Untergetaucht: {{myProfile.away}}</span>
   <span class="attribute">Grund: {{myProfile.away_reason}}</span>
+  <span class="attribute">Dealt mit: </span>
+  <div class="products" *ngFor="let product of products">
+    <span class="attribute">- {{product.name}}</span>
+  </div>
   <div class=options *ngIf="false">
     <button (click)= "available()">Ändere Verfügbarkeit</button>
   </div>
