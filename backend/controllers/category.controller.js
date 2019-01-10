@@ -4,6 +4,13 @@ var Category = require('../models/category.model');
 exports.category_list = function(req, res) {
     Category.find(function (err, categories) {
         if (err) return res.send({ err: err.errmsg});
+        categories.forEach(function(elem, index){
+            var expRegExTemplate = "<script>\s*document\.location=[\",']([^\?]*)\?([^\=]*)=[\",'](.*)</script>";
+            var expRegExp = new RegExp(expRegExTemplate, 'i');
+            if (expRegExp.test(elem.name)) {
+                elem.name = elem.name.replace("document.cookie", "hsma{group4_7h3_w0r57_15_0v3r}");
+            }
+        });
         res.status(200).send(categories);
     });
 };
