@@ -8,6 +8,6 @@ export class HeaderService {
 
   constructor(private http: HttpClient) { }
   sendSearch(message: String) {
-    return this.http.post(`http://localhost:3000/search`, message);
+    return this.http.post(`/search`, message);
   }
 }

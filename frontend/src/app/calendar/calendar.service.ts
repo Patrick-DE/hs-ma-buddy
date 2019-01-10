@@ -12,7 +12,7 @@ import { DealerService } from '../dealers/dealer.service';
 export class CalendarService {
   constructor(private http: HttpClient) { }
   getEventsforUser(): Observable<UserEvent[]> {
-    return this.http.get<Appointment[]>('http://localhost:3000/appointment')
+    return this.http.get<Appointment[]>('/appointment')
     .map((appointments) => {
       if (!appointments || appointments == null) {
         return [];
@@ -27,22 +27,22 @@ export class CalendarService {
     });
   }
   getAppointmentsForUser(): Observable<Appointment[]> {
-    return this.http.get<Appointment[]>('http://localhost:3000/appointment');
+    return this.http.get<Appointment[]>('/appointment');
   }
   sendAppointment(appointment: any) {
-    return this.http.post(`http://localhost:3000/appointment`, appointment
+    return this.http.post(`/appointment`, appointment
     );
   }
   acceptAppointment(appointment: Appointment) {
     appointment.status = true;
-    return this.http.put(`http://localhost:3000/appointment/${appointment._id}`, appointment);
+    return this.http.put(`/appointment/${appointment._id}`, appointment);
   }
   denyAppointment(appointment: Appointment) {
-    return this.http.delete(`http://localhost:3000/appointment/${appointment._id}`);
+    return this.http.delete(`/appointment/${appointment._id}`);
   }
   getBlocks(): Observable<Block[]> {
 
-    return this.http.get<Block[]>('http://localhost:3000/block');
+    return this.http.get<Block[]>('/block');
   }
 }
 export interface UserEvent {
