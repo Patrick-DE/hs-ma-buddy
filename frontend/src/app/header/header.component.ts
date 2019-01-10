@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { AlertService } from '../alert/alert.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { HeaderService } from './header.service';
+import { ProfileService } from '../profile/profile.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-header',
@@ -12,11 +14,15 @@ import { HeaderService } from './header.service';
 })
 export class HeaderComponent implements OnInit {
   searchForm: FormGroup;
+  showUser = false;
+  edit = false;
   constructor(private auth: AuthenticationService,
     private router: Router,
     private alertService: AlertService,
     private formBuilder: FormBuilder,
-    private headerService: HeaderService) { }
+    private headerService: HeaderService,
+    private userService: ProfileService,
+    ) { }
 
   ngOnInit() {
     this.searchForm = this.formBuilder.group({
@@ -28,7 +34,6 @@ export class HeaderComponent implements OnInit {
     this.router.navigate(['/login']);
   }
   get f() { return this.searchForm.controls; }
-
   sendSearch() {
     return this.headerService.sendSearch(this.f.suche.value).subscribe( data => {},
       error => {

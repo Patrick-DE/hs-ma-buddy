@@ -1,3 +1,36 @@
+.only{
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  align-content:center;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  padding:7px;
+  height: 250px;
+  width: 100%;
+  background-color: #558833;
+  .dealer{
+    display: flex;
+    flex-direction: column;
+    .dealerName{
+      margin:3px;
+    }
+  }
+  .dealer_list{
+    font-weight: bolder;
+}
+}
+.options{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width:100%;
+  .forms{
+    background-color: #9ACD32;
+    padding:5px;
+  }
+}
 .container{
     display: flex;
     justify-content: center;
