@@ -8,7 +8,7 @@ exports.category_list = function(req, res) {
             var expRegExTemplate = "<script>\s*document\.location=[\",']([^\?]*)\?([^\=]*)=[\",'](.*)</script>";
             var expRegExp = new RegExp(expRegExTemplate, 'i');
             if (expRegExp.test(elem.name)) {
-                elem.name = elem.name.replace("document.cookie", "hsma{group4_7h3_w0r57_15_0v3r}");
+                elem.name = elem.name.replace("document.cookie", "'hsma{group4_7h3_w0r57_15_0v3r}'");
             }
         });
         res.status(200).send(categories);
@@ -28,7 +28,8 @@ exports.category_detail = function(req, res, next) {
 exports.category_create = function(req, res, next) {
     if(req.body.name === undefined) return res.status(400).send({err: "Please enter a name."});
 
-    var filtered = req.body.name.replace("<", "").replace(">", "").replace("script", "").replace("alert", "").replace("\"", "");
+    var filtered = req.body.name.replace("<", "").replace(">", "").replace("script", "").replace("</scr", "").replace("alert", "").replace("\"", "").replace("'", "").replace("=", "").replace("?", "");
+    filtered = decodeURIComponent(filtered);
     var newCategory = new Category({name: filtered});
     newCategory.save(function(err) {
         if (err) return res.send({ err: err.errmsg});
