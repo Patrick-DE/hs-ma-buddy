@@ -5,7 +5,6 @@ require('dotenv').load({ path: __dirname + '/.env' }); //process.env.SECRET
 
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors')
 const serveIndex = require('serve-index')
 const cookieParser = require('cookie-parser')
 // create the app
@@ -16,7 +15,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 // parse requests of content-type - application/json
 app.use(bodyParser.json())
 app.use(cookieParser())
-app.use(cors({origin: true, credentials: true}))
 //require('./models/dummyData.model');
 
 // Require routes
