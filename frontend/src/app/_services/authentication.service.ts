@@ -9,7 +9,7 @@ export class AuthenticationService {
       private cookieService: CookieService) { }
 
     login(email: string, password: string) {
-        return this.http.post<any>('http://localhost:3000/login', { email,
+        return this.http.post<any>('/login', { email,
         password: password, tool_consumer_instance_guid: 'moodle.hs-mannheim.de' })
             .pipe(map(user => {
                 // login successful if there's a jwt token in the response
@@ -23,7 +23,7 @@ export class AuthenticationService {
         this.cookieService.delete('token');
     }
     register(user: User) {
-        return this.http.post(`http://localhost:3000/register`, user);
+        return this.http.post(`/register`, user);
     }
 }
 export interface User {

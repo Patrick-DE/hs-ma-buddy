@@ -15,11 +15,11 @@ export class ProductsService {
 
   getProducts(): Observable<Products[]> {
 
-    return this.http.get<Products[]>('http://localhost:3000/category');
+    return this.http.get<Products[]>('/category');
 }
 
 createProduct(product: SafeScript) {
-  return this.http.post<Products[]>('http://localhost:3000/category', product);
+  return this.http.post<Products[]>('/category', product);
 }
 }
 export interface Products {

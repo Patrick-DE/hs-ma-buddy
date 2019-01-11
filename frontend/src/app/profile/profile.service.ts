@@ -11,13 +11,13 @@ export class ProfileService {
   constructor(private http: HttpClient) {
    }
    myUser(): Observable<User> {
-     return this.http.get<User>('http://localhost:3000/me');
+     return this.http.get<User>('/me');
    }
    myProfile(id: String): Observable<Dealer> {
-    return this.http.get<Dealer>(`http://localhost:3000/buddy/${id}`);
+    return this.http.get<Dealer>(`/buddy/${id}`);
   }
   updateProfile( dealer: Dealer) {
-    return this.http.put(`http://localhost:3000/buddy/`, dealer);
+    return this.http.put(`/buddy/`, dealer);
   }
 }
 export interface User {

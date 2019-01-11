@@ -7,7 +7,7 @@
   </div>
   <form [formGroup]="searchForm" (ngSubmit)="sendSearch()">
     <div class="form-group">
-      <input style="width:400px;" placeholder="Suche was" type="text" formControlName="suche" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.beschreibung.errors }" />
+      <input style="width:400px;" placeholder="Suche was" type="text" formControlName="suche" class="form-control"  />
       <button class="my_button">Send</button>
     </div>
 </form>

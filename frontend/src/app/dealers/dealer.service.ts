@@ -14,7 +14,7 @@ export class DealerService {
   ) { }
 
   getDealers(): Observable<Dealer[]> {
-    return this.http.get<Dealer[]>('http://localhost:3000/buddy');
+    return this.http.get<Dealer[]>('/buddy');
 }
 }
 export interface Dealer {
