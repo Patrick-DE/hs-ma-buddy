@@ -17,7 +17,6 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(cors({origin: true, credentials: true}))
-//require('./models/dummyData.model');
 
 // Require routes
 var buddy = require('./routes/buddy.route');
@@ -40,6 +39,9 @@ if (process.env.CHALLENGE === 'true') {
 	var auth = require('./routes/auth.route');
 	app.use('/', auth); //webroot
 }
+
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.listen(3000, () => {
 	console.log("Server running on port 3000");
 });
@@ -58,7 +60,7 @@ DATABASE="mongodb://127.0.0.1:27017/buddy"
 		fs.writeFileSync(envPath + "_sample", sampleFile);
     console.log("==========================================================")
     console.log("!!!!!!!!!!!!!!!!!!! Sample file saved !!!!!!!!!!!!!!!!!!!!")
-    console.log(" Please customize this file, rename it to .env and restart!")
+    console.log("Please customize this file, rename it to .env and restart!")
     console.log("==========================================================")
     process.exit(9);
 	}
