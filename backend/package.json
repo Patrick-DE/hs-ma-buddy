@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
+    "start": "node app.js",  
+    "create-demo-data": "node create_demo_data.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "sh4d0w",
@@ -11,6 +12,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
     "cors": "^2.8.5",
     "dotenv": "^6.2.0",
     "express": "^4.16.3",

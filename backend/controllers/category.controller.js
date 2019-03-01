@@ -9,7 +9,7 @@ exports.category_list = function(req, res) {
 };
 
 // Display detail page for a specific category.
-exports.category_detail = function(req, res) {
+exports.category_detail = function(req, res, next) {
     var id = req.params.id;
     Category.findById(id, function (err, category) {
         if (err) return res.send({ err: err.errmsg});
@@ -18,7 +18,8 @@ exports.category_detail = function(req, res) {
 };
 
 // Handle category create on POST.
-exports.category_create = function(req, res) {
+exports.category_create = function(req, res, next) {
+    if(req.body.name === undefined) return res.status(400).send({err: "Please enter a name."});
     var newCategory = new Category(req.body);
     newCategory.save(function(err) {
         if (err) return res.send({ err: err.errmsg});
@@ -27,7 +28,7 @@ exports.category_create = function(req, res) {
 };
 
 // Handle category delete on DELETE.
-exports.category_delete = function(req, res) {
+exports.category_delete = function(req, res, next) {
     var id = req.params.id;
     Category.findByIdAndDelete(id, function(err, category){
         if (err) return res.send({ err: err.errmsg});
@@ -36,7 +37,7 @@ exports.category_delete = function(req, res) {
 };
 
 // Handle category update on PUT.
-exports.category_update = function(req, res) {
+exports.category_update = function(req, res, next) {
     var id = req.params.id;
     Category.findOneAndUpdate(id, req.body, {new: true}, function(err, category){  //TODO: check what is allowed to be changed! //{ $set: req.body, $setOnInsert: {}}
         if (err) return res.send({ err: err.errmsg});

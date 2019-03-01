@@ -12,7 +12,8 @@ var buddySchema = new Schema({
     room: String,
     blocked: { type: Boolean, required: true, default: false},
     away: { type: Boolean, required: true, default: false},
-    away_reason: String
+    away_reason: String,
+    categories: [{type: Schema.Types.ObjectId, ref: 'categories'}]
 }, {
     toObject: { virtuals: true },
     toJSON: { virtuals: true }

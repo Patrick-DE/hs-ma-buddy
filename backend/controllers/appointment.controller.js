@@ -3,7 +3,7 @@ var Appointment = require('../models/appointment.model');
 // Display list of all appointments.
 exports.appointment_list = function(req, res, next) {
     Appointment
-      .find({user_id: req.userId})
+      .find({$or: [ {user_id: req.userId}, {buddy_id: req.userId}]})
       .populate('block_id')
       .exec(function (err, appointments) {
         if (err) return res.send(err.errmsg);
@@ -15,20 +15,28 @@ exports.appointment_list = function(req, res, next) {
 exports.appointment_detail = function(req, res, next) {
     var id = req.params.id;
     Appointment
-      .findById(id)
+      .findOne({
+        $and: [
+          {_id: id},
+          {$or: [ {user_id: req.userId}, {buddy_id: req.userId}]}
+        ],
+      })
       .populate('block_id')
       .exec(function (err, appointment) {
-        if (err) return res.send(err.errmsg);
-        //does this appointment belong to the user
-        if( req.userId !== appointment.buddy_id && req.userId !== appointment.user_id) return res.status(403).send({err: "You are not allowed to view this appointment!"});
+        if (err) return res.status(500).send(err.message);
+        if (!appointment) return res.status(404).send("not found")
+
         res.json(appointment);
     });
 };
 
 // Handle appointment create on POST.
 exports.appointment_create = function(req, res, next) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+  if(!req.body.date) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      req.body.date = today
+    }
     var newAppointment = new Appointment({
       ...req.body,
       date: today,
@@ -37,7 +45,10 @@ exports.appointment_create = function(req, res, next) {
     newAppointment.user_id = req.userId;
 
     newAppointment.save(function(err) {
-        if (err) return res.send(err.errmsg);
+      if (err) {
+        console.log(err)
+        return res.status(500).send(err.message);
+      }
         res.status(201).send(newAppointment);
     });
 };
@@ -45,17 +56,17 @@ exports.appointment_create = function(req, res, next) {
 // Handle appointment delete on DELETE.
 exports.appointment_delete = function(req, res, next) {
     var id = req.params.id;
-    if( req.userId !== appointment.buddy_id && req.userId !== appointment.user_id) return res.status(403).send({err: "You are not allowed to delete this appointment!"});
+
     Appointment
       .findOneAndDelete({
           $and: [
-            {id: id},
-            {$or: [ {user_id: req.userId}, {user_id: req.userId}]}
+            {_id: id},
+            {$or: [ {user_id: req.userId}, {buddy_id: req.userId}]}
           ]
         })
       .populate('block_id')
       .exec(function(err, appointment){
-        if (err) return res.send(err.errmsg);
+        if (err) return res.status(500).send(err.message);
         //does this appointment belong to the user
         res.send(appointment);
     });
@@ -67,15 +78,15 @@ exports.appointment_update = function(req, res, next) {
     Appointment
       .findOneAndUpdate({
         $and: [
-            {id: id},
-            {$or: [ {user_id: req.userId}, {user_id: req.userId}]}
+            {_id: id},
+            {$or: [ {user_id: req.userId}, {buddy_id: req.userId}]}
           ]},
         req.body,
         {new: true}
       )
       .populate('block_id')
       .exec(function(err, appointment){ //{ $set: req.body, $setOnInsert: {}}
-        if (err) return res.send(err.errmsg);
+        if (err) return res.status(500).send(err.message);
         res.json(appointment);
     });
 };

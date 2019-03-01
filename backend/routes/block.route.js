@@ -10,12 +10,12 @@ router.get('/', block_controller.block_list);
 router.get('/:id', block_controller.block_detail);
 
 //Create a new block
-router.post('/', block_controller.block_create);
+//router.post('/', block_controller.block_create);
 
 //Update a block
-router.delete('/:id', block_controller.block_delete);
+//router.delete('/:id', block_controller.block_delete);
 
 //Delete a block
-router.put('/:id', block_controller.block_update);
+//router.put('/:id', block_controller.block_update);
 
 module.exports = router;

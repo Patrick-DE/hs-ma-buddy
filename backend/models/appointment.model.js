@@ -23,7 +23,7 @@ appointmentSchema
     .virtual('start_date')
     .get(function(){
       const start_date = moment(this.date);
-      if(typeof this.block_id === "object") {
+      if(typeof this.block_id === "object" && this.block_id !== null) {
         start_date.minute(this.block_id.start_minute);
         start_date.hour(this.block_id.start_hour);
       }
@@ -34,7 +34,7 @@ appointmentSchema
     .virtual('end_date')
     .get(function(){
       const end_date = moment(this.date);
-      if(typeof this.block_id === "object") {
+      if(typeof this.block_id === "object" && this.block_id !== null) {
         end_date.minute(this.block_id.end_minute);
         end_date.hour(this.block_id.end_hour);
       }
