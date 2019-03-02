@@ -5,15 +5,22 @@ const moment = require('moment')
 var Schema = mongoose.Schema;
 
 var appointmentSchema = new Schema({
-    block_id: {type: Schema.Types.ObjectId, ref: 'blocks', required: true},
-    buddy_id: {type: Schema.Types.ObjectId, ref: 'buddies', required: true},
-    category_id: {type: Schema.Types.ObjectId, ref: 'categories', required: true},
-    user_id: {type: Schema.Types.ObjectId, ref: 'users', required: true},
-    room: { type: String, required: true},
+    block_id: {type: Schema.Types.ObjectId, ref: 'blocks', required: true },
+    buddy_id: {type: Schema.Types.ObjectId, ref: 'buddies', required: true },
+    category_id: {type: Schema.Types.ObjectId, ref: 'categories', required: true },
+    user_id: {type: Schema.Types.ObjectId, ref: 'users', required: true },
+    room: { type: String, required: true },
     status: Boolean, //annehmen/ablehnen
     urgency: { type: Boolean, default: false },
-    description: { type: String, required: true},
-    date: { type: Date, required: true }
+    description: { type: String, required: true },
+    //date: { type: Date, required: true },
+    //DATA FROM FULL CALENDAR
+    title: { type: String, required: true },
+    start: { type: Date, required: true },
+    end: { type: Date, required: true },
+    editable: { type: Boolean, default: true },
+    overlap: { type: Boolean, default: true },
+    color: { type: String },
 }, {
     toObject: { virtuals: true },
     toJSON: { virtuals: true }

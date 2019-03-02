@@ -2,20 +2,16 @@ var express = require('express');
 var router = express.Router();
 
 var buddy_controller = require('../controllers/buddy.controller');
+var VerifyToken = require('../verifyToken');
 
 //Get all buddies
-router.get('/', buddy_controller.buddy_list);
+router.get('/', VerifyToken, buddy_controller.buddy_list);
 
 //Get buddy details
-router.get('/:id', buddy_controller.buddy_detail);
+router.get('/:id', VerifyToken, buddy_controller.buddy_detail);
 
-//Create a new buddy
-//router.post('/', buddy_controller.buddy_create);
-
-//Update a buddy
-//router.delete('/:id', buddy_controller.buddy_delete);
-
+/* ONLY BUDDY*/
 //Delete a buddy
-//router.put('/:id', buddy_controller.buddy_update);
+router.delete('/:id', VerifyToken, buddy_controller.buddy_delete);
 
 module.exports = router;

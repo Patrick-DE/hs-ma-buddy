@@ -6,7 +6,6 @@ require('dotenv').load({ path: __dirname + '/.env' }); //process.env.SECRET
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors')
-const serveIndex = require('serve-index')
 const cookieParser = require('cookie-parser')
 // create the app
 const app = express();
@@ -55,6 +54,8 @@ function checkConfigfile() {
 		console.log("==========================================================")
 		sampleFile = `CHALLENGE=true
 SECRET="${Math.random().toString(36).substr(2, 24)}"
+TOKEN_EXPIRE="2"
+MOODLE_IP="127.0.0.1"
 DATABASE="mongodb://127.0.0.1:27017/buddy"
 `;
 		fs.writeFileSync(envPath + "_sample", sampleFile);

@@ -2,8 +2,21 @@ var Appointment = require('../models/appointment.model');
 
 // Display list of all appointments.
 exports.appointment_list = function(req, res, next) {
+    if(req.query.start === undefined || req.query.end === undefined) return res.status(400).send("Please provide a start and end parameter.");
+
     Appointment
-      .find({$or: [ {user_id: req.userId}, {buddy_id: req.userId}]})
+      .find({
+        $and: [{
+          $or: [
+            {user_id: req.userId},
+            {buddy_id: req.userId}
+          ],
+          $and: [
+            {start : {$gte: req.body.start}},
+            {end: {$lte: req.body.start}}
+          ]
+        }]
+      })
       .populate('block_id')
       .exec(function (err, appointments) {
         if (err) return res.send(err.errmsg);
