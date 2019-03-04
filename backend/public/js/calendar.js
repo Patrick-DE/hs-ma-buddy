@@ -20,7 +20,7 @@ $(function() {
         editable: false,
         eventLimit: true, // allow "more" link when too many events
         events: function(_start, _end, timezone, callback) {
-            fetchEvents(_start, _end, timezone, callback);
+            fetchEvents("/all", _start, _end, timezone, callback);
         },
         eventMouseover: function(event, jsEvent, view) {
             $('.fc-content', this).append(calendarMouseoverText(event));

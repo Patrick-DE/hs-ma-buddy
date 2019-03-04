@@ -2,7 +2,7 @@ var Appointment = require('../models/appointment.model');
 const moment = require('moment')
 
 // Display list of all appointments.
-exports.appointment_list = function(req, res, next) {
+exports.own_appointment_list = function(req, res, next) {
     if(req.query.start === undefined || req.query.end === undefined) return res.status(400).send("Please provide a start and end parameter.");
 
     Appointment
@@ -20,10 +20,48 @@ exports.appointment_list = function(req, res, next) {
       })
       .populate('block_id')
       .populate('category_id')
+      .populate('buddy_id')
       .exec(function (err, appointments) {
         if (err) return res.send(err.errmsg);
         res.json(appointments);
     });
+};
+
+// Display list of all appointments ANONymisiert.
+exports.anon_appointment_list = function(req, res, next) {
+  if(req.query.start === undefined || req.query.end === undefined) return res.status(400).send("Please provide a start and end parameter.");
+
+  Appointment
+    .find({
+      $and: [
+        {start : {$gte: req.query.start}},
+        {end: {$lte: req.query.end}}
+      ]
+    })
+    .select('-email -user_id -full_name')
+    .populate('block_id')
+    .populate('category_id')
+    .populate('buddy_id')
+    .exec(function (err, appointments) {
+      if (err) return res.send(err.errmsg);
+      res.json(make_anon(appointments));
+  });
+};
+
+// Display list of all appointments of ONE buddy.
+exports.buddy_appointment_list = function(req, res, next) {
+  if(req.query.start === undefined || req.query.end === undefined) return res.status(400).send("Please provide a start and end parameter.");
+
+  Appointment
+    .find({buddy_id: req.params.id})
+    .select('-email -user_id -full_name')
+    .populate('block_id')
+    .populate('category_id')
+    .populate('buddy_id')
+    .exec(function (err, appointments) {
+      if (err) return res.send(err.errmsg);
+      res.json(make_anon(appointments));
+  });
 };
 
 // Display detail page for a specific appointment.
@@ -87,6 +125,9 @@ exports.appointment_delete = function(req, res, next) {
     });
 };
 
+/*
+*TODO: check for params which should not be editable
+*/
 // Handle appointment update on PUT.
 exports.appointment_update = function(req, res, next) {
     var id = req.params.id;
@@ -100,8 +141,20 @@ exports.appointment_update = function(req, res, next) {
         {new: true}
       )
       .populate('block_id')
+      .populate('category_id')
+      .populate('buddy_id')
       .exec(function(err, appointment){ //{ $set: req.body, $setOnInsert: {}}
         if (err) return res.status(500).send(err.message);
         res.json(appointment);
     });
 };
+
+function make_anon(appointment) {
+  appointment.forEach(element => {
+    element.title = "Termin";
+    element.description = "Beschreibung";
+    element.editable = false;
+  });
+
+  return appointment;
+}

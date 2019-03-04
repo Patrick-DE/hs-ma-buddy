@@ -65,54 +65,54 @@
 						<div id='calendar'></div>
 				</div>
 				<dialog class="mdl-dialog">
-						<h4 class="mdl-dialog__title">Termin</h4>
-						<div class="mdl-dialog__content">
-							<p>
-								Bitte geben Sie alle relevanten Daten für den Termin ein.<br/>
-								Alle notwendigen Informationen sind durch ein * gekennzeichnet.
-							</p>
-							<form id="appointmentForm">
-								<input style="display:none" type="text" id="buddy_id" name="buddy_id">
+					<h4 class="mdl-dialog__title">Termin</h4>
+					<div class="mdl-dialog__content">
+						<p>
+							Bitte geben Sie alle relevanten Daten für den Termin ein.<br/>
+							Alle notwendigen Informationen sind durch ein * gekennzeichnet.
+						</p>
+						<form id="appointmentForm">
+							<input style="display:none" type="text" id="buddy_id" name="buddy_id">
 
-								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<input class="mdl-textfield__input" type="text" id="title" name="title">
-									<label class="mdl-textfield__label" for="title">Title...*</label>
-								</div>
-								<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-									<input class="mdl-textfield__input" type="text" id="description" name="description">
-									<label class="mdl-textfield__label" for="description">Beschreibung...*</label>
-								</div>
-								<div class="mdl-textfield mdl-js-textfield">
-									<input class="mdl-textfield__input" type="text" id="date" name="date">
-									<label class="mdl-textfield__label" for="date"></label>
-								</div>
-								<div class="mdl-textfield mdl-js-textfield mdl-textfield-time">
-									<input class="mdl-textfield__input" type="text" id="start" name="start">
-									<label class="mdl-textfield__label" for="start"></label>
-								</div>
-								<div class="mdl-textfield mdl-js-textfield mdl-textfield-time">
-									<input class="mdl-textfield__input" type="text" id="end" name="end">
-									<label class="mdl-textfield__label" for="end"></label>
-								</div>
-								<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
-									<select class="mdl-selectfield__select" id="category_id" name="category_id">
-										<option value=""></option>
+							<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+								<input class="mdl-textfield__input" type="text" id="title" name="title">
+								<label class="mdl-textfield__label" for="title">Title...*</label>
+							</div>
+							<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+								<input class="mdl-textfield__input" type="text" id="description" name="description">
+								<label class="mdl-textfield__label" for="description">Beschreibung...*</label>
+							</div>
+							<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+								<input class="mdl-textfield__input" type="text" id="date" name="date">
+								<label class="mdl-textfield__label" for="date">Datum...*</label>
+							</div>
+							<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield-time">
+								<input class="mdl-textfield__input" type="text" id="start" name="start">
+								<label class="mdl-textfield__label" for="start">Begin...*</label>
+							</div>
+							<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-textfield-time">
+								<input class="mdl-textfield__input" type="text" id="end" name="end">
+								<label class="mdl-textfield__label" for="end">Ende...*</label>
+							</div>
+							<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
+								<select class="mdl-selectfield__select" id="category_id" name="category_id">
+									<option value=""></option>
+								</select>
+								<label class="mdl-selectfield__label" for="category_id">Kategorie...*</label>
+							</div>
+							<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
+									<select class="mdl-selectfield__select" id="urgency" name="urgency">
+										<option value="0">Nein</option>
+										<option value="1">Ja</option>
 									</select>
-									<label class="mdl-selectfield__label" for="category_id">Kategorie...*</label>
+									<label class="mdl-selectfield__label" for="urgency">Wichtig</label>
 								</div>
-								<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
-										<select class="mdl-selectfield__select" id="urgency" name="urgency">
-											<option value="0">Nein</option>
-											<option value="1">Ja</option>
-										</select>
-										<label class="mdl-selectfield__label" for="urgency">Wichtig</label>
-									</div>
-							</form>
-						</div>
-						<div class="mdl-dialog__actions">
-							<button type="button" class="mdl-button send">Absenden</button>
-							<button type="button" class="mdl-button close">Abbrechen</button>
-						</div>
+						</form>
+					</div>
+					<div class="mdl-dialog__actions">
+						<button type="button" class="mdl-button send">Absenden</button>
+						<button type="button" class="mdl-button close">Abbrechen</button>
+					</div>
 				</dialog>
 				<!--CALENDAR END-->
 			<!-- CONTENT END -->

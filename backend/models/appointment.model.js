@@ -19,7 +19,7 @@ var appointmentSchema = new Schema({
     start: { type: Date, required: true },
     end: { type: Date, required: true },
     editable: { type: Boolean, default: true },
-    overlap: { type: Boolean, default: true },
+    overlap: { type: Boolean, default: false },
     color: { type: String },
 }, {
     toObject: { virtuals: true },

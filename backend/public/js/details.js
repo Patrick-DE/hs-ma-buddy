@@ -1,4 +1,5 @@
 var calendar;
+var dialog;
 
 r(function(){
     const urlParams = new URLSearchParams(window.location.search);
@@ -27,15 +28,17 @@ r(function(){
         },
         eventLimit: true, // allow "more" link when too many events
         dayClick: function(date) {
-            console.log(date);
             document.getElementById("date").value = date.format("DD-MM-YYYY");
             document.getElementById("start").value = date.format("hh:mm");
             document.getElementById("end").value = date.add(30,'minutes').format("hh:mm");
+            $('input').each(function(index, element){
+                if(element.value !== "") element.parentElement.className += " is-dirty";
+            });
             dialog.showModal();
         },
         //events: 'https://fullcalendar.io/demo-events.json'
         events: function(_start, _end, timezone, callback) {
-            fetchEvents(_start, _end, timezone, callback);
+            fetchEvents("buddy/"+buddy_id, _start, _end, timezone, callback);
         },
         eventMouseover: function(event, jsEvent, view) {
             $('.fc-content', this).append(calendarMouseoverText(event));
@@ -50,7 +53,7 @@ r(function(){
     calendar = $('#calendar').fullCalendar('getCalendar');
 
     //REGISTER DIALOG
-    var dialog = document.querySelector('dialog');
+    dialog = document.querySelector('dialog');
     if (! dialog.showModal) {
         dialogPolyfill.registerDialog(dialog);
     }
@@ -104,7 +107,8 @@ function submitAppointment(){
         type: 'POST',
         data: $('#appointmentForm').serialize(),
         success: function(result) {
-            calendar.fullCalendar('refetchEvents');
+            $('#calendar').fullCalendar('refetchEvents');
+            dialog.close();
         },
         error: function(msg) {
             showError(msg);

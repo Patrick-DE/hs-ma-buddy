@@ -92,9 +92,9 @@ function showError(msg){
 /*
 * Functions for all fullcalendar applications
 */
-function fetchEvents(_start, _end, timezone, callback){
+function fetchEvents(path, _start, _end, timezone, callback){
   var _anticache = Math.floor((Math.random() * 1000000) + 1);
-  $.getJSON('/appointment', {start: _start.format('YYYY-MM-DD'), end: _end.format('YYYY-MM-DD'), _: _anticache}, function (doc) {
+  $.getJSON('/appointment/'+path, {start: _start.format('YYYY-MM-DD'), end: _end.format('YYYY-MM-DD'), _: _anticache}, function (doc) {
       var events = [];
       $(doc).each(function() {
           // will be parsed
@@ -105,6 +105,10 @@ function fetchEvents(_start, _end, timezone, callback){
               id: $(this).attr('_id'),
               category: $(this).attr('category_id').name,
               desc: $(this).attr('description'),
+              urgency: $(this).attr('urgency'),
+              overlap: $(this).attr('overlap'),
+              editable: $(this).attr('editable'),
+              buddy_id: $(this).attr('buddy_id')
           });
       });
       callback(events);
@@ -114,7 +118,7 @@ function fetchEvents(_start, _end, timezone, callback){
 }
 
 function calendarMouseoverText(event){
-  return `<div id="${event.id}" class="hover-end">${event.start.format('hh:mm')}-${event.end.format('hh:mm')}<br/>${event.category}</div>`;
+  return `<div id="${event.id}" class="hover-end">${event.start.format('hh:mm')}-${event.end.format('hh:mm')}<br/>${event.category}<br/>${event.buddy_id.fullname}</div>`;
 }
 
 function calendarMouseout(event, jsEvent, view){
