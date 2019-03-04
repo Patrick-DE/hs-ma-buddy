@@ -3,8 +3,8 @@ var Buddy = require('../models/buddy.model');
 // Display list of all buddies.
 exports.buddy_list = function(req, res) {
     Buddy.find(function (err, buddies) {
-        if (err) return console.error(err);
-        res.json(buddies);
+        if (err) return res.send({ err: err.errmsg});
+        res.status(200).send(buddies);
     })
 };
 
@@ -12,38 +12,34 @@ exports.buddy_list = function(req, res) {
 exports.buddy_detail = function(req, res) {
     var id = req.params.id;
     Buddy.findById(id, function (err, buddy) {
-        if (err) return console.error(err);
-        res.json(buddy);
-    })
+        if (err) return res.send({ err: err.errmsg});
+        res.status(200).send(buddy);
+    });
 };
 
 // Handle buddy create on POST.
 exports.buddy_create = function(req, res) {
-    var newBuddy = new Buddy({
-        moodle_id: req.body.moodle_id,
-        name: req.body.name,
-        surename: req.body.surename,
-        mobile: req.body.mobile,
-        email: req.body.email,
-    })
+    var newBuddy = new Buddy(req.body);
     newBuddy.save(function(err) {
-        if (err) return console.error(err);
-        req.send("Buddy " + newBuddy.name + " " + newBuddy.surename + " was added!");
+        if (err) return res.send({ err: err.errmsg});
+        res.status(201).send(newBuddy);
     });
 };
 
-// Handle buddy delete on POST.
+// Handle buddy delete on DELETE.
 exports.buddy_delete = function(req, res) {
+    var id = req.params.id;
     Buddy.findByIdAndDelete(id, function(err, buddy){
-        if (err) return console.error(err);
-        res.send("Buddy " + buddy.name + " " + buddy.surename + " was deleted!");
-    })
+        if (err) return res.send({ err: err.errmsg});
+        res.status(200).send(buddy);
+    });
 };
 
-// Handle buddy update on POST.
+// Handle buddy update on PUT.
 exports.buddy_update = function(req, res) {
-    Buddy.findByIdAndUpdate(id, req.body, function(err, buddy){
-        if (err) return console.error(err);
-        res.send("Buddy " + buddy.name + " " + buddy.surename + " was updated!");
-    })
+    var id = req.params.id;
+    Buddy.findOneAndUpdate(id, req.body, {new: true}, function(err, buddy){ //TODO: check what is allowed to be changed! //{ $set: req.body, $setOnInsert: {}}
+        if (err) return res.send({ err: err.errmsg});
+        res.status(200).send(buddy);
+    });
 };

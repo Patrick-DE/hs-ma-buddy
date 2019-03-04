@@ -1,0 +1,14 @@
+<div class = container>
+<mwl-calendar-month-view
+  [viewDate]=viewDate
+  [events]=events
+  [weekStartsOn]= weekStartsOn>
+</mwl-calendar-month-view>
+<div class= appointments>
+  <div class = checklist *ngFor="let appointment of openAppointments">
+    <span>{{appointment.description}}</span>
+    <button class="checkButton" (click)= accept(appointment)>Accept</button>
+    <button class= "checkButton" (click)= deny(appointment)>Deny</button>
+  </div>
+</div>
+</div>

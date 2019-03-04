@@ -1,0 +1,31 @@
+.container{
+    button{
+        margin-top: 20px;
+        width: 100px;
+        height: 40px;
+    }
+    display: flex;
+    align-content: space-between;
+    flex-direction: column;
+    .dealer-part{
+        display: flex;
+        flex-direction: row;
+        .dealers{
+
+            .dealer{
+              background-color: #558833;
+              margin:20px;
+                .dealer-header{
+                    font-weight :bold;
+                }
+                display: flex;
+                margin: 5px;
+                flex-direction: column;
+              .appointments{
+                margin-top: 5px;
+              }
+            }
+
+        }
+    }
+}

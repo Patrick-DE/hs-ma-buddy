@@ -3,17 +3,33 @@ var mongoose = require('../dbconnection');
 var Schema = mongoose.Schema;
 
 var buddySchema = new Schema({
-    moodle_id: { type: String, required: true, unique: true},
-    name: { type: String, required: true},
-    surename: { type: String, required: true},
+    moodle_id: { type: Number, required: true, unique: true},
+    first_name: { type: String, required: true},
+    last_name: { type: String, required: true},
     mobile: String,
-    email: String,
-    available: Boolean,
+    email2: String,
+    available: { type: Boolean, required: true, default: false},
     room: String,
     blocked: { type: Boolean, required: true, default: false},
-    away: Boolean,
+    away: { type: Boolean, required: true, default: false},
     away_reason: String
+}, {
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true }
 });
+
+buddySchema
+    .virtual('email')
+    .get(function(){
+        return this.first_name + '.' + this.last_name + '@stud.hs-mannheim.de';
+    })
+
+buddySchema
+    .virtual('fullname')
+    .get(function(){
+        return this.first_name + " " + this.last_name;
+    })
+
 var Buddy = mongoose.model('buddies', buddySchema);
 module.exports = Buddy
 

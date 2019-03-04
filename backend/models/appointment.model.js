@@ -1,44 +1,44 @@
 var mongoose = require('../dbconnection');
+var Block = require('./block.model')
+const moment = require('moment')
 
 var Schema = mongoose.Schema;
 
 var appointmentSchema = new Schema({
-    block_id: {type: Schema.Types.ObjectId, ref: 'Block', required: true},
-    buddy_id: {type: Schema.Types.ObjectId, ref: 'Buddy', required: true},
-    category_id: {type: Schema.Types.ObjectId, ref: 'Category', required: true},
-    moodle_id: { type: Number, required: true},
+    block_id: {type: Schema.Types.ObjectId, ref: 'blocks', required: true},
+    buddy_id: {type: Schema.Types.ObjectId, ref: 'buddies', required: true},
+    category_id: {type: Schema.Types.ObjectId, ref: 'categories', required: true},
+    user_id: {type: Schema.Types.ObjectId, ref: 'users', required: true},
     room: { type: String, required: true},
-    first_name: { type: String, required: true},
-    last_name: { type: String, required: true},    
     status: Boolean, //annehmen/ablehnen
     urgency: { type: Boolean, default: false },
     description: { type: String, required: true},
-    start_time: Number,
-    end_time: Number
+    date: { type: Date, required: true }
+}, {
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true }
 });
 
 appointmentSchema
-    .virtual('duration_h')
+    .virtual('start_date')
     .get(function(){
-        return (this.end_time - this.start_time)/60;
+      const start_date = moment(this.date);
+      if(typeof this.block_id === "object") {
+        start_date.minute(this.block_id.start_minute);
+        start_date.hour(this.block_id.start_hour);
+      }
+      return start_date.toDate()
     })
 
 appointmentSchema
-    .virtual('duration_m')
+    .virtual('end_date')
     .get(function(){
-        return (this.end_time - this.start_time);
-    })
-
-appointmentSchema
-    .virtual('start')
-    .get(function(){
-        return this.start_time/60;
-    })
-
-appointmentSchema
-    .virtual('end')
-    .get(function(){
-        return this.end_time/60;
+      const end_date = moment(this.date);
+      if(typeof this.block_id === "object") {
+        end_date.minute(this.block_id.end_minute);
+        end_date.hour(this.block_id.end_hour);
+      }
+      return end_date.toDate()
     })
 
 appointmentSchema

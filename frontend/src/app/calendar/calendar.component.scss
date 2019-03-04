@@ -1,0 +1,29 @@
+.container{
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+.appointments{
+  margin-left: 10px;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  flex-direction: column;
+  align-content: center;
+.checklist{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between;
+  width: 400px;
+  height: 100px;
+
+}
+button{
+  width: 100px;
+  height: 40px;
+}
+}
+}

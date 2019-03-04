@@ -1,0 +1,37 @@
+.container{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    height: 100%;
+    width: 100%;
+    .content{
+        margin-top: 40px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: column;
+        background-color:    #558833;
+        min-width: 40%;
+        min-height: 450px;
+        .header{
+            font-weight: bold;
+            font-size: 30px;
+            margin-bottom: 40px;
+        }
+        .form-group{
+            margin-top:40px;
+            .form-control{
+                margin-left: 10px;
+            }
+            .my_button{
+                margin-top: 60px;
+                height: 30px;
+                width: 60px;
+            }
+            .mylink{
+                margin-top: 60px;
+                margin-left: 150px;
+            }
+        }
+    }
+}
