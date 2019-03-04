@@ -1,4 +1,5 @@
 var Appointment = require('../models/appointment.model');
+const moment = require('moment')
 
 // Display list of all appointments.
 exports.appointment_list = function(req, res, next) {
@@ -12,12 +13,13 @@ exports.appointment_list = function(req, res, next) {
             {buddy_id: req.userId}
           ],
           $and: [
-            {start : {$gte: req.body.start}},
-            {end: {$lte: req.body.start}}
+            {start : {$gte: req.query.start}},
+            {end: {$lte: req.query.end}}
           ]
         }]
       })
       .populate('block_id')
+      .populate('category_id')
       .exec(function (err, appointments) {
         if (err) return res.send(err.errmsg);
         res.json(appointments);
@@ -45,25 +47,25 @@ exports.appointment_detail = function(req, res, next) {
 
 // Handle appointment create on POST.
 exports.appointment_create = function(req, res, next) {
-  if(!req.body.date) {
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      req.body.date = today
-    }
-    var newAppointment = new Appointment({
-      ...req.body,
-      date: today,
-    })
-    //override user_id so it cannot be tampered if send with the request
-    newAppointment.user_id = req.userId;
+  if(!req.body.date || !req.body.category_id) return res.status(400).send({err: "Please provide all required data."});
+  var _start = moment(req.body.date + " " + req.body.start, 'DD-MM-YYYY hh:mm');
+  var _end = moment(req.body.date + " " + req.body.end, 'DD-MM-YYYY hh:mm');
 
-    newAppointment.save(function(err) {
-      if (err) {
-        console.log(err)
-        return res.status(500).send(err.message);
-      }
-        res.status(201).send(newAppointment);
-    });
+  var newAppointment = new Appointment({
+    ...req.body,
+    start: _start,
+    end: _end,
+    //override user_id so it cannot be tampered if send with the request
+    user_id: req.userId
+  });
+
+  newAppointment.save(function(err) {
+    if (err) {
+      console.log(err)
+      return res.status(500).send(err.message);
+    }
+      res.status(201).send(newAppointment);
+  });
 };
 
 // Handle appointment delete on DELETE.

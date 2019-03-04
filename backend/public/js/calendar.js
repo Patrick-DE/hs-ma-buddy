@@ -17,28 +17,20 @@ $(function() {
         weekNumbersWithinDays:true,
         navLinks: true,
         selectOverlap: false,
-        validRange: {
-            start: moment().format("YYYY-MM-DD"),
-            end: moment().add(2,'month').format("YYYY-MM-DD")
-        },
+        editable: false,
         eventLimit: true, // allow "more" link when too many events
-        dayClick: function(date) {
-            console.log(date);
-            dialog.showModal();
+        events: function(_start, _end, timezone, callback) {
+            fetchEvents(_start, _end, timezone, callback);
         },
-        events: 'https://fullcalendar.io/demo-events.json'
+        eventMouseover: function(event, jsEvent, view) {
+            $('.fc-content', this).append(calendarMouseoverText(event));
+        },
+        eventMouseout: function(event, jsEvent, view) {
+            calendarMouseout(event, jsEvent, view);
+        },
     });
 
     // a convenient utility for getting the calendar object.
     // you can call methods on the calendar object directly.
     calendar = $('#calendar').fullCalendar('getCalendar');
-
-    //REGISTER DIALOG
-    var dialog = document.querySelector('dialog');
-    if (! dialog.showModal) {
-        dialogPolyfill.registerDialog(dialog);
-    }
-    dialog.querySelector('.close').addEventListener('click', function() {
-        dialog.close();
-    });
 });

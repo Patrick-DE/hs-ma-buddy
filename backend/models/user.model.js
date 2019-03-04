@@ -13,6 +13,12 @@ var userSchema = new Schema({
     buddy: { type: Schema.Types.ObjectId, ref: 'buddies' },
 });
 
+userSchema
+    .virtual('fullname')
+    .get(function(){
+        return this.first_name + " " + this.last_name;
+    })
+
 var User = mongoose.model('User', userSchema);
 
 module.exports = User;

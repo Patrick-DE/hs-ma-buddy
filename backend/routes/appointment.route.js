@@ -15,9 +15,9 @@ router.get('/:id', VerifyToken, appointment_controller.appointment_detail);
 router.post('/', VerifyToken, appointment_controller.appointment_create);
 
 //Update a appointment
-router.delete('/:id', VerifyToken, appointment_controller.appointment_delete);
+router.put('/:id', VerifyToken, appointment_controller.appointment_update);
 
 //Delete a appointment
-router.put('/:id', VerifyToken, appointment_controller.appointment_update);
+router.delete('/:id', VerifyToken, appointment_controller.appointment_delete);
 
 module.exports = router;

@@ -29,6 +29,26 @@
   
 }
 
+.mdl-card{
+  /*fix overlapping width*/
+  width: auto;
+}
+
+/*DETAIL*/
+#solo-card{
+  margin: auto;
+}
+.mdl-dialog{
+  width:100%;
+}
+.mdl-grid > .mdl-textfield > .mdl-textfield__label{
+  color: rgba(0,0,0,.54);
+}
+.mdl-textfield-time{
+  width: 150px;
+  display: inline-block;
+}
+
 /*Wide card with share menu button*/
 .demo-card-wide > .mdl-card__title {
   color: #fff;
@@ -56,5 +76,8 @@
 @media (min-width: 769px){
   #agenda{
     padding: 20px 10% 20px 10%;
+  }
+  .mdl-dialog{
+    width:50%;
   }
 }

@@ -5,11 +5,11 @@ const moment = require('moment')
 var Schema = mongoose.Schema;
 
 var appointmentSchema = new Schema({
-    block_id: {type: Schema.Types.ObjectId, ref: 'blocks', required: true },
+    block_id: {type: Schema.Types.ObjectId, ref: 'blocks' },
     buddy_id: {type: Schema.Types.ObjectId, ref: 'buddies', required: true },
     category_id: {type: Schema.Types.ObjectId, ref: 'categories', required: true },
     user_id: {type: Schema.Types.ObjectId, ref: 'users', required: true },
-    room: { type: String, required: true },
+    room: { type: String },
     status: Boolean, //annehmen/ablehnen
     urgency: { type: Boolean, default: false },
     description: { type: String, required: true },
@@ -26,6 +26,7 @@ var appointmentSchema = new Schema({
     toJSON: { virtuals: true }
 });
 
+/*
 appointmentSchema
     .virtual('start_date')
     .get(function(){
@@ -47,17 +48,23 @@ appointmentSchema
       }
       return end_date.toDate()
     })
-
+*/
 appointmentSchema
     .virtual('fullname')
     .get(function(){
-        return this.first_name + " " + this.last_name;
+      if(typeof this.user_id === "object" && this.user_id !== null) {
+        return this.user_id.first_name + " " + this.user_id.last_name;
+      }
+      return undefined;
     })
 
 appointmentSchema
     .virtual('email')
     .get(function(){
-        return this.first_name + '.' + this.last_name + '@stud.hs-mannheim.de';
+      if(typeof this.user_id === "object" && this.user_id !== null) {
+        return this.user_id.first_name + '.' + this.user_id.last_name + '@stud.hs-mannheim.de';
+      }
+      return undefined;
     })
 
 

@@ -89,4 +89,40 @@ function showError(msg){
     document.querySelector('#error-toast').MaterialSnackbar.showSnackbar(data);
 }
 
+/*
+* Functions for all fullcalendar applications
+*/
+function fetchEvents(_start, _end, timezone, callback){
+  var _anticache = Math.floor((Math.random() * 1000000) + 1);
+  $.getJSON('/appointment', {start: _start.format('YYYY-MM-DD'), end: _end.format('YYYY-MM-DD'), _: _anticache}, function (doc) {
+      var events = [];
+      $(doc).each(function() {
+          // will be parsed
+          events.push({
+              title: $(this).attr('title'),
+              start: $(this).attr('start'),
+              end: $(this).attr('end'),
+              id: $(this).attr('_id'),
+              category: $(this).attr('category_id').name,
+              desc: $(this).attr('description'),
+          });
+      });
+      callback(events);
+  }).fail(function(msg){
+      showError(msg);
+  });
+}
+
+function calendarMouseoverText(event){
+  return `<div id="${event.id}" class="hover-end">${event.start.format('hh:mm')}-${event.end.format('hh:mm')}<br/>${event.category}</div>`;
+}
+
+function calendarMouseout(event, jsEvent, view){
+  $('#'+event.id).remove();
+}
+
+
+/*
+* For proper injection timing (displaying error)
+*/
 function r(f){/in/.test(document.readyState)?setTimeout('r('+f+')',9):f()}

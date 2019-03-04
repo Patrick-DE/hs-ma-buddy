@@ -20,19 +20,13 @@ r(function() {
         },
         /*events: "/appointment",*/
         events: function(_start, _end, timezone, callback) {
-            var _anticache = Math.floor((Math.random() * 1000000) + 1);
-            $.getJSON('/appointment', {start: _start.format('YYYY-MM-DD'), end: _end.format('YYYY-MM-DD'), _: _anticache}, function (doc) {
-                var events = [];
-                $(doc).find('event').each(function() {
-                    events.push({
-                        title: $(this).attr('title'),
-                        start: $(this).attr('start') // will be parsed
-                    });
-                });
-                callback(events);
-            }).fail(function(msg){
-                showError(msg);
-            });
+            fetchEvents(_start, _end, timezone, callback);
+        },
+        eventMouseover: function(event, jsEvent, view) {
+            $('.fc-content', this).append(calendarMouseoverText(event));
+        },
+        eventMouseout: function(event, jsEvent, view) {
+            calendarMouseout(event, jsEvent, view);
         },
     });
 
