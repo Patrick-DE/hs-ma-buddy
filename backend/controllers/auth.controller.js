@@ -15,7 +15,7 @@ exports.user_login = function (req, res) {
 	provider.valid_request(req, function(err, isValid){
 		if(!isValid || !provider.outcome_service){
 			console.log(err);
-			return res.status(403).send({err: "Forbidden."+err});
+			return res.status(403).send({err: "Forbidden."});
 		}
 	});
 
