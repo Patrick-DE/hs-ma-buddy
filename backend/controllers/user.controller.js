@@ -23,37 +23,16 @@ exports.user_detail = function (req, res) {
 // creates user for register function
 // if no pw set create random pw and send it back else delete pw
 exports.user_create = function (body, callback) {
-    var generatedPass = false;
-    var tmpPass = "";
-    
-    var newUser;
-    if(body.password === undefined){
-        newUser = new User({
-            first_name: body.lis_person_name_given,
-            last_name: body.lis_person_name_family,
-            moodle_id: body.user_id,
-            email: body.lis_person_contact_email_primary
-        });
-        generatedPass = true;
-        tmpPass = Math.random().toString(36).substr(2, 8);
-    }else{
-        newUser = new User({
-            first_name: body.first_name,
-            last_name: body.last_name,
-            moodle_id: body.moodle_id,
-            email: body.email,
-            demo: body.demo
-        });
-        tmpPass = body.password;
-    }
-
-    newUser.password = bcrypt.hashSync(tmpPass, 7);
+    var newUser = new User({
+        first_name: body.lis_person_name_given,
+        last_name: body.lis_person_name_family,
+        moodle_id: body.user_id,
+        email: body.lis_person_contact_email_primary,
+        buddy: body.buddy,
+    });
 
     User.create(newUser, function (err, user) {
-        if (err) return callback(err, null);
-        //if generatedPassword return it
-        if(generatedPass) user.password = tmpPass;
-
+        if (err || !user) return callback(err, null);
         callback(err, user);
     });
 };

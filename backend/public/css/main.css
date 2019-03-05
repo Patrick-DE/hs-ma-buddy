@@ -47,6 +47,12 @@
 .mdl-textfield-time{
   width: 150px;
   display: inline-block;
+  margin: -10px 0px;
+}
+.mdl-textfield-buddy{
+  width: 150px;
+  display: inline-block;
+  margin: -10px 5px;
 }
 
 /*Wide card with share menu button*/

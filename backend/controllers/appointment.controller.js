@@ -1,9 +1,9 @@
 var Appointment = require('../models/appointment.model');
-const moment = require('moment')
+const moment = require('moment');
 
 // Display list of all appointments.
 exports.own_appointment_list = function(req, res, next) {
-    if(req.query.start === undefined || req.query.end === undefined) return res.status(400).send("Please provide a start and end parameter.");
+    if(req.query.start === undefined || req.query.end === undefined) return res.status(400).send({ err: "Please provide a start and end parameter."});
 
     Appointment
       .find({
@@ -21,15 +21,15 @@ exports.own_appointment_list = function(req, res, next) {
       .populate('block_id')
       .populate('category_id')
       .populate('buddy_id')
-      .exec(function (err, appointments) {
+      .exec(function (err, _appointments) {
         if (err) return res.send(err.errmsg);
-        res.json(appointments);
+        res.status(200).json(_appointments);
     });
 };
 
 // Display list of all appointments ANONymisiert.
 exports.anon_appointment_list = function(req, res, next) {
-  if(req.query.start === undefined || req.query.end === undefined) return res.status(400).send("Please provide a start and end parameter.");
+  if(req.query.start === undefined || req.query.end === undefined) return res.status(400).send({err: "Please provide a start and end parameter."});
 
   Appointment
     .find({
@@ -43,14 +43,14 @@ exports.anon_appointment_list = function(req, res, next) {
     .populate('category_id')
     .populate('buddy_id')
     .exec(function (err, appointments) {
-      if (err) return res.send(err.errmsg);
+      if (err) return res.status(500).send({err: err.errmsg});
       res.json(make_anon(appointments));
   });
 };
 
 // Display list of all appointments of ONE buddy.
 exports.buddy_appointment_list = function(req, res, next) {
-  if(req.query.start === undefined || req.query.end === undefined) return res.status(400).send("Please provide a start and end parameter.");
+  if(req.query.start === undefined || req.query.end === undefined) return res.status(400).send({ err: "Please provide a start and end parameter."});
 
   Appointment
     .find({buddy_id: req.params.id})
@@ -59,7 +59,7 @@ exports.buddy_appointment_list = function(req, res, next) {
     .populate('category_id')
     .populate('buddy_id')
     .exec(function (err, appointments) {
-      if (err) return res.send(err.errmsg);
+      if (err) return res.status(500).send({err: err.errmsg});
       res.json(make_anon(appointments));
   });
 };
@@ -67,6 +67,8 @@ exports.buddy_appointment_list = function(req, res, next) {
 // Display detail page for a specific appointment.
 exports.appointment_detail = function(req, res, next) {
     var id = req.params.id;
+    if(req.params.id === undefined) return res.status(400).send({err: "Please provide a valid id."});
+
     Appointment
       .findOne({
         $and: [
@@ -76,7 +78,7 @@ exports.appointment_detail = function(req, res, next) {
       })
       .populate('block_id')
       .exec(function (err, appointment) {
-        if (err) return res.status(500).send(err.message);
+        if (err) return res.status(500).send({err: err.message});
         if (!appointment) return res.status(404).send("not found")
 
         res.json(appointment);
@@ -109,6 +111,7 @@ exports.appointment_create = function(req, res, next) {
 // Handle appointment delete on DELETE.
 exports.appointment_delete = function(req, res, next) {
     var id = req.params.id;
+    if(req.params.id === undefined) return res.status(400).send({err: "Please provide a valid id."});
 
     Appointment
       .findOneAndDelete({
@@ -131,6 +134,10 @@ exports.appointment_delete = function(req, res, next) {
 // Handle appointment update on PUT.
 exports.appointment_update = function(req, res, next) {
     var id = req.params.id;
+    if(req.params.id === undefined) return res.status(400).send({err: "Please provide a valid id."});
+    req.body.start = moment(req.body.date + " " + req.body.start, 'DD-MM-YYYY hh:mm');
+    req.body.end = moment(req.body.date + " " + req.body.end, 'DD-MM-YYYY hh:mm');
+
     Appointment
       .findOneAndUpdate({
         $and: [

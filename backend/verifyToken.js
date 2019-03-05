@@ -1,5 +1,5 @@
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
-var Auth = require('./controllers/chal_auth.controller');
+var Auth = require('./controllers/auth.controller');
 
 function verifyToken(req, res, next) {
 
@@ -18,11 +18,10 @@ function verifyToken(req, res, next) {
 
     // check if token has client ip
     if (decoded.id === undefined) return res.status(500).append("set-cookie", Auth.setCookie("token", null, 1)).send({ err: 'Failed to authenticate token.'});
-    // check if buddy
-    (decoded.buddy === undefined) ? req.buddy = false : req.buddy = true;
-
+    
     // if everything is good, save to request for use in other routes
     req.userId = decoded.id;
+    req.buddyId = decoded.buddy_id;
     next();
   });
 

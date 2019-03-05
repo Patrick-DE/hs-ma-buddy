@@ -53,7 +53,7 @@
 			<!-- CONTENT -->
 			<a name="top" id="top"></a>
         <div class="dashboard-section mdl-typography--text-center">
-          <div id='agenda'></div>
+					<div id='agenda'></div>
 				</div>
 			<!-- MODAL EDIT APPOINTMENT -->
 			<dialog class="mdl-dialog">
@@ -64,6 +64,8 @@
 						Alle notwendigen Informationen sind durch ein * gekennzeichnet.
 					</p>
 					<form id="appointmentForm">
+							<input class="mdl-textfield__input" type="text" id="id" name="id" style="display:none">
+
 						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 							<input class="mdl-textfield__input" type="text" id="title" name="title">
 							<label class="mdl-textfield__label" for="title">Title...*</label>

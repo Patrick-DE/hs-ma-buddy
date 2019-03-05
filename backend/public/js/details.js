@@ -38,7 +38,7 @@ r(function(){
         },
         //events: 'https://fullcalendar.io/demo-events.json'
         events: function(_start, _end, timezone, callback) {
-            fetchEvents("buddy/"+buddy_id, _start, _end, timezone, callback);
+            fetchEvents("/buddy/"+buddy_id, _start, _end, timezone, callback);
         },
         eventMouseover: function(event, jsEvent, view) {
             $('.fc-content', this).append(calendarMouseoverText(event));
@@ -72,30 +72,55 @@ r(function(){
 });
 
 function getBuddy(id){
-	$.getJSON(`buddy/${id}`, function (profile) {
-        $("content-grid").empty();
-        var select = document.getElementById('category_id');
-        var header = ["fullname", "mobile", "email", "email2", "available", "room", "away", "away_reason", "categories"];
-        
-        var formContent = '<div class="mdl-cell" id="solo-card">';
-        formContent += '<div class="demo-card-wide mdl-card mdl-shadow--2dp">';
-        formContent += '<div class="mdl-card__title">';
-        header.forEach(function(key, index){
-            if(key === "fullname") formContent += `<h2 class="mdl-card__title-text">${profile[key]}</h2></div><div class="mdl-card__supporting-text">`;
-            else if(key === "categories"){ 
-                formContent += `${key.toUpperCase()}: `;
-                profile[key].forEach(function(elem, index){
-                    formContent += `${profile[key][index].name}, `;
-                    var opt = document.createElement('option');
-                    opt.value = profile[key][index]._id;
-                    opt.innerHTML = profile[key][index].name;
-                    select.appendChild(opt);
-                });
-            }
-            else if(profile[key] !== undefined) formContent += `${key.toUpperCase()}: ${profile[key]} <br/>`;
+	$.getJSON(`/buddy/${id}`, function (profile) {
+        //Fix for not own profile
+        if(profile.buddy === undefined) profile.buddy = profile;
+
+        $("#categories").empty();
+        var catHTML = "";
+        profile.categories.forEach(function(elem, index){
+            catHTML += `<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-${elem._id}">
+                            <input type="checkbox" id="checkbox-${elem._id}" name="categories" class="mdl-checkbox__input">
+                            <span class="mdl-checkbox__label">${elem.name}</span>
+                        </label>`
         });
-        formContent += `</div></div></div>`;
-        document.getElementsByClassName("content-grid")[0].insertAdjacentHTML("afterbegin",formContent);
+        document.getElementById("categories").insertAdjacentHTML("afterbegin", catHTML);
+
+        $("#data").empty();
+        var dataHTML = "";
+        var headerLocked = ["id", "fullname", "email"];
+        headerLocked.forEach(function(elem, index){
+            //generate all elements for edit /even if empty
+            dataHTML += `<div class="mdl-textfield mdl-js-textfield mdl-textfield-buddy mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="${elem}" name="${elem}" disabled>
+                            <label class="mdl-textfield__label" for="${elem}">${elem}...*</label>
+                        </div>`
+        });
+        var header = ["email2", "mobile", "available", "room", "away", "away_reason"];
+        header.forEach(function(elem, index){
+            //generate all elements for edit /even if empty
+            dataHTML += `<div class="mdl-textfield mdl-js-textfield mdl-textfield-buddy mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input" type="text" id="${elem}" name="${elem}">
+                            <label class="mdl-textfield__label" for="${elem}">${elem}...</label>
+                        </div>`
+        });
+        document.getElementById("data").insertAdjacentHTML("afterbegin", dataHTML);
+        //AutoInsert values
+        var merged = headerLocked.concat(header);
+        merged.forEach(function(elem, index){
+            var cur = document.getElementById(elem);
+            if(profile.buddy[elem] !== undefined) cur.value = profile.buddy[elem];
+        });
+
+        $('input').each(function(index, element){
+            //lock for non owner
+            if(!profile.own){
+                element.setAttribute("disabled", true);
+                if(element.value === "") element.parentElement.style.display = "none";
+            }
+            //mark as autofill dirty for proper label positioning
+            if(element.value !== "") element.parentElement.className += " is-dirty";
+        });
 	}).fail(function (msg) {
         showError(msg);
 	});
@@ -115,3 +140,10 @@ function submitAppointment(){
         }
     });
 }
+
+/*
+<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+    <input class="mdl-textfield__input" type="text" id="title" name="title">
+    <label class="mdl-textfield__label" for="title">Title...*</label>
+</div>
+*/

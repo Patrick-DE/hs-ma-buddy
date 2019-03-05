@@ -1,4 +1,5 @@
 var Buddy = require('../models/buddy.model');
+var Category = require('../models/category.model')
 
 // Display list of all buddies.
 exports.buddy_list = function(req, res, next) {
@@ -15,7 +16,18 @@ exports.buddy_detail = function(req, res, next) {
     Buddy.findById(id).populate('categories').exec(function (err, buddy) {
         if (err) return res.status(500).send({ err: err.errmsg });
         if (buddy === undefined) res.status(404).send({ err: "Buddy not found!"});
-        res.status(200).send(buddy);
+
+        if(buddy.id === req.buddyId){
+            //Attach categories for selecting in buddy profile
+            Category.find(function (err, categories) {
+                if (err || !categories) return res.status(500).send({ err: err.errmsg });
+                //jsonArray = [{buddy: _buddy}, {categories: _categories}, {own: "modifyAndBreakEverything_LuL"}];
+                jsonArray = {buddy, categories, own: "modifyAndBreakEverything_LuL"};
+                res.status(200).send(jsonArray);
+            });
+        }else{
+            res.status(200).send(buddy);
+        }
     });
 };
 
@@ -59,7 +71,7 @@ exports.buddy_update = function(req, res, next) {
     if(req.body.blocked !== undefined) delete req.body.blocked;
     
     var id = req.userId;
-    Buddy.findOneAndUpdate(id, req.body, {new: true}, function(err, buddy){ //TODO: check what is allowed to be changed! //{ $set: req.body, $setOnInsert: {}}
+    Buddy.findOneAndUpdate(id, req.body, {new: true}, function(err, buddy){
         if (err) return res.status(500).send({ err: err.errmsg});
         if (buddy === undefined) res.status(404).send({ err: "Buddy not found!"});
         res.status(200).send(buddy);

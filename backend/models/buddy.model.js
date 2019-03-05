@@ -8,10 +8,10 @@ var buddySchema = new Schema({
     last_name: { type: String, required: true},
     mobile: String,
     email2: String,
-    available: { type: Boolean, required: true, default: false},
+    available: { type: Boolean} ,
     room: String,
     blocked: { type: Boolean, required: true, default: false},
-    away: { type: Boolean, required: true, default: false},
+    away: { type: Boolean },
     away_reason: String,
     categories: [{type: Schema.Types.ObjectId, ref: 'categories'}]
 }, {

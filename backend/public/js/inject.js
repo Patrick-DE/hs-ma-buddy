@@ -95,22 +95,22 @@ function showError(msg){
 */
 function fetchEvents(path, _start, _end, timezone, callback){
   var _anticache = Math.floor((Math.random() * 1000000) + 1);
-  $.getJSON('/appointment/'+path, {start: _start.format('YYYY-MM-DD'), end: _end.format('YYYY-MM-DD'), _: _anticache}, function (doc) {
+  $.getJSON('/appointment'+path, {start: _start.format('YYYY-MM-DD'), end: _end.format('YYYY-MM-DD'), _: _anticache}, function (doc) {
       var events = [];
       $(doc).each(function() {
-          // will be parsed
-          events.push({
-              title: $(this).attr('title'),
-              start: $(this).attr('start'),
-              end: $(this).attr('end'),
-              id: $(this).attr('_id'),
-              category: $(this).attr('category_id').name,
-              desc: $(this).attr('description'),
-              urgency: $(this).attr('urgency'),
-              overlap: $(this).attr('overlap'),
-              editable: $(this).attr('editable'),
-              buddy_id: $(this).attr('buddy_id')
-          });
+        // will be parsed
+        events.push({
+            title: $(this).attr('title'),
+            start: $(this).attr('start'),
+            end: $(this).attr('end'),
+            id: $(this).attr('_id'),
+            category: $(this).attr('category_id').name,
+            desc: $(this).attr('description'),
+            urgency: $(this).attr('urgency'),
+            overlap: $(this).attr('overlap'),
+            editable: $(this).attr('editable'),
+            buddy_id: $(this).attr('buddy_id')
+        });
       });
       callback(events);
   }).fail(function(msg){

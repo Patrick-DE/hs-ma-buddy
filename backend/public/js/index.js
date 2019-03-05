@@ -68,21 +68,26 @@ function deleteAppointment(id){
 
 function editAppointment(id){
     var event = $('#agenda').fullCalendar( 'clientEvents' , id);
+    document.getElementById("id").value = event[0].id;
+    document.getElementById("title").value = event[0].title;
     document.getElementById("date").value = event[0].start.format("DD-MM-YYYY");
-    document.getElementById("start").value = event[0].start.format("HH:MM");
-    document.getElementById("end").value = event[0].end.format("HH:MM");
+    document.getElementById("start").value = event[0].start.format("HH:mm");
+    document.getElementById("end").value = event[0].end.format("HH:mm");
     document.getElementById("description").value = event[0].desc;
-    document.getElementById("urgency").value = event[0].urgency;
+    $('#urgency').val(+event[0].urgency);
     document.getElementById("category").value = event[0].category;
     $('input').each(function(index, element){
         if(element.value !== "") element.parentElement.className += " is-dirty";
     });
     dialog.showModal();
 }
-function sendEditAppointment(id){
+
+function submitAppointment(){
+    var id = document.getElementById("id").value;
     $.ajax({
         url: '/appointment/'+id,
         type: 'PUT',
+        data: $('#appointmentForm').serialize(),
         success: function(result) {
             $('#agenda').fullCalendar('refetchEvents');
         },

@@ -8,8 +8,6 @@ var userSchema = new Schema({
     last_name: { type: String, required: true},      
     moodle_id: { type: Number, required: true, unique: true},
     email: { type: String, required: true, unique: true },
-    password: { type: String, required: true, select: false},
-    demo: { type: Boolean, required: true, default: false}, //TODO: MAKE IT NOT EDITABLE
     buddy: { type: Schema.Types.ObjectId, ref: 'buddies' },
 });
 

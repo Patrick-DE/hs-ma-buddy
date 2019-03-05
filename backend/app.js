@@ -1,3 +1,4 @@
+if (process.env.NODE_ENV === undefined) process.env.NODE_ENV = 'dev';
 const fs = require('fs');
 const path = require('path');
 checkConfigfile();
@@ -10,12 +11,19 @@ const cookieParser = require('cookie-parser')
 // create the app
 const app = express();
 
+if(process.env.NODE_ENV === "production"){
+	console.log = function(error){
+		fs.appendFileSync("tmp/LogMe.txt", error);
+	};
+}
+console.log(process.env.NODE_ENV);
+
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
 // parse requests of content-type - application/json
 app.use(bodyParser.json())
 app.use(cookieParser())
-app.use(cors({origin: true, credentials: true}))
+//app.use(cors({origin: true, credentials: true}))
 
 // Require routes
 var buddy = require('./routes/buddy.route');
@@ -29,15 +37,8 @@ app.use('/block', block);
 app.use('/appointment', appointment);
 app.use('/user', user);
 
-if (process.env.CHALLENGE === 'true') {
-	console.log("use chal_auth.route")
-	var auth = require('./routes/chal_auth.route');
-	app.use('/', auth); //webroot
-} else {
-	console.log("use auth.route")
-	var auth = require('./routes/auth.route');
-	app.use('/', auth); //webroot
-}
+var auth = require('./routes/auth.route');
+app.use('/', auth); //webroot
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -55,7 +56,8 @@ function checkConfigfile() {
 		sampleFile = `CHALLENGE=true
 SECRET="${Math.random().toString(36).substr(2, 24)}"
 TOKEN_EXPIRE="2"
-MOODLE_IP="127.0.0.1"
+CONSUMER_KEY="${Math.random().toString(36).substr(2, 24)}"
+SHARED_SECRET="${Math.random().toString(36).substr(2, 24)}"
 DATABASE="mongodb://127.0.0.1:27017/buddy"
 `;
 		fs.writeFileSync(envPath + "_sample", sampleFile);
