@@ -1,6 +1,6 @@
 {
-  "name": "buddyapp2",
-  "version": "1.0.0",
+  "name": "buddyapp",
+  "version": "0.2.1",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
@@ -16,6 +16,7 @@
     "cors": "^2.8.5",
     "dotenv": "^6.2.0",
     "express": "^4.16.3",
+    "ims-lti": "^3.0.2",
     "jsonwebtoken": "^8.4.0",
     "moment": "^2.23.0",
     "mongoose": "^5.3.1"
@@ -29,5 +30,5 @@
     "url": "https://github.com/Patrick-DE/hs-ma-buddy/issues"
   },
   "homepage": "https://github.com/Patrick-DE/hs-ma-buddy#readme",
-  "description": ""
+  "description": "Hier könnt ihr Termine mit Buddies ausmachen um Fragen oder Probleme zu besprechen."
 }

@@ -79,7 +79,8 @@ function showError(msg){
     var error;
     if (msg.responseJSON !== undefined){
       error = msg.responseJSON.err;
-      if(error.includes("token")) window.location.href = "/login.html";
+      //if(error.includes("token")) window.location.href = "/login.html";
+      if(error.includes("token")) window.location.href = "https://moodle.hs-mannheim.de/course/view.php?id=2662";
     }else{
       error = msg.statusText;
     }

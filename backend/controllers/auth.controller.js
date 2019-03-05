@@ -6,18 +6,23 @@ var BuddyController = require('../controllers/buddy.controller');
  */
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var bcrypt = require('bcryptjs');
+var lti = require ('ims-lti');
 
 exports.user_login = function (req, res) {
 	// if no user exists create user with moodle data
-	console.log(req.hostname);
-	/****************************************************/
-	/*TODO: check for real identifier not fakable things*/
-	const ipWhitelist = ["127.0.0.1", "::ffff:127.0.0.1", "localhost", process.env.MOODLE_IP];
-	if(!ipWhitelist.includes(req.ip)) return res.status(403).send("Forbidden.");
-	/****************************************************/
-  const hostnameWhitelist = ["127.0.0.1", "localhost", "moodle.hs-mannheim.de"]
-	if(!hostnameWhitelist.includes(req.hostname)) return res.status(403).send("Forbidden.");
-	if(req.body.tool_consumer_instance_guid !==  "moodle.hs-mannheim.de") return res.status(403).send("Forbidden.");
+	//https://github.com/omsmith/ims-lti
+	provider = new lti.Provider(process.env.CONSUMER_KEY, process.env.SHARED_SECRET);
+	provider.valid_request(req, function(err, isValid){
+		if(!isValid || !provider.outcome_service){
+			console.log(err);
+			return res.status(403).send({err: "Forbidden."+err});
+		}
+	});
+
+	//weak 'security' checks
+	if(req.headers.referer !== "https://moodle.hs-mannheim.de/") return res.status(403).send({err: "Forbidden.", ref: req.headers.referer});
+	if(req.headers.origin !== "https://moodle.hs-mannheim.de") return res.status(403).send({err: "Forbidden.", or: req.headers.origin});
+	if(req.body.tool_consumer_instance_guid !==  "moodle.hs-mannheim.de") return res.status(403).send({err: "Forbidden.", ip: req.ip, id: req.body.tool_consumer_instance_guid, reqObj: util.inspect(req)});
 
 	User.findOne({ moodle_id: req.body.user_id }, function (err, user) {
 		if (err) {
@@ -42,12 +47,12 @@ exports.user_login = function (req, res) {
 							console.log(err)
 							res.status(500).send({ err: 'Buddyprofile was not successfully created.'})
 						}
-						res.status(201).append("set-cookie", exports.setCookie("token", token, 1)).send({ auth: true, token: token });
+						res.status(302).append("set-cookie", exports.setCookie("token", token, 1)).redirect('/index.html');
 					});
 				}else{
 					var token = create_token(user, req.ip, req.body.role);
 					// return the information including token as JSON
-					res.status(201).append("set-cookie", exports.setCookie("token", token, 1)).send({ auth: true, token: token });
+					res.status(302).append("set-cookie", exports.setCookie("token", token, 1)).redirect('/index.html');
 				}
 			});
 		}else{
@@ -56,7 +61,7 @@ exports.user_login = function (req, res) {
 			//user should exist here
 			var token = create_token(user, req.ip, req.body.role);
 			// return the information including token as JSON
-			res.status(200).append("set-cookie", exports.setCookie("token", token, 1)).send({ auth: true, token: token });
+			res.status(302).append("set-cookie", exports.setCookie("token", token, 1)).redirect('/index.html');
 		}
 	});
 };
