@@ -62,6 +62,44 @@ exports.user_login = function (req, res) {
 				}
 			});
 		});
+	}else{
+		User.findOne({ moodle_id: req.body.user_id }, function (err, user) {
+			if (err) {
+				console.log(err)
+				res.status(500).send({ err: 'Error on the server.'})
+				return
+			}
+	
+			if (!user) {
+				if(req.body.roles === "Instructor"){
+					BuddyController.buddy_create(req, res, function(err, buddy){
+						if (err || !buddy) return res.status(500).send({ err: 'Buddyprofile was not successfully created.'});
+						req.body.buddy = buddy.id;
+	
+						UserController.user_create(req.body, function (err, user){
+							if (err || !user) return res.status(500).send({ err: 'There was a problem registering the user.'})
+	
+							var token = create_token(user, req.ip, user.buddy);
+							// return the information including token as JSON
+							res.status(302).append("set-cookie", exports.setCookie("token", token, 1)).redirect('/index.html');
+						});
+					});
+				}else{
+					UserController.user_create(req.body, function (err, user){
+						if (err || !user) return res.status(500).send({ err: 'There was a problem registering the user.'})
+	
+						var token = create_token(user, req.ip, user.buddy);
+						// return the information including token as JSON
+						res.status(302).append("set-cookie", exports.setCookie("token", token, 1)).redirect('/index.html');
+					});
+				}
+			}else{
+				//user should exist here
+				var token = create_token(user, req.ip, user.buddy);
+				// return the information including token as JSON
+				res.status(302).append("set-cookie", exports.setCookie("token", token, 1)).redirect('/index.html');
+			}
+		});
 	}
 };
 

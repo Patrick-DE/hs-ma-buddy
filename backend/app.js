@@ -1,4 +1,5 @@
-if (process.env.NODE_ENV === undefined) process.env.NODE_ENV = 'production'; //dev|production
+if (process.env.NODE_ENV === undefined) process.env.NODE_ENV = 'dev'; //dev|production
+
 const fs = require('fs');
 const path = require('path');
 checkConfigfile();

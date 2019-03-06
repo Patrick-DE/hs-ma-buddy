@@ -91,6 +91,9 @@
 .android-drawer .mdl-layout-title {
   background: #004594;
 }
+.android-navigation .mdl-navigation__link:hover{
+  border-bottom: 4px solid #004594;
+}
 
 /*kleiner als 900px*/
 @media (max-width: 900px){
