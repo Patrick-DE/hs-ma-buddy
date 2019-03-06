@@ -101,8 +101,8 @@ function fetchEvents(path, _start, _end, timezone, callback){
         // will be parsed
         events.push({
             title: $(this).attr('title'),
-            start: $(this).attr('start'),
-            end: $(this).attr('end'),
+            start: moment($(this).attr('start')).format("HH:mm"),
+            end: moment($(this).attr('end')).format("HH:mm"),
             id: $(this).attr('_id'),
             category: $(this).attr('category_id').name,
             desc: $(this).attr('description'),
@@ -119,7 +119,7 @@ function fetchEvents(path, _start, _end, timezone, callback){
 }
 
 function calendarMouseoverText(event){
-  return `<div id="${event.id}" class="hover-end">${event.start.format('hh:mm')}-${event.end.format('hh:mm')}<br/>${event.category}<br/>${event.buddy_id.fullname}</div>`;
+  return `<div id="${event.id}" class="hover-end">${event.start.format('HH:mm')}-${event.end.format('HH:mm')}<br/>${event.category}<br/>${event.buddy_id.fullname}</div>`;
 }
 
 function calendarMouseout(event, jsEvent, view){

@@ -21,8 +21,10 @@ if(process.env.NODE_ENV === "production"){
 			});
 		}
   });
-	console.log = function(error){
-		fs.appendFileSync(filename, error);
+	console.log = function(msg, req){
+		var d = new Date().toISOString();
+		var errorJSON = {msg, req};
+		fs.appendFileSync(filename, d+"-"+JSON.stringify(errorJSON)+'\n');
 	};
 }
 console.log(process.env.NODE_ENV);
@@ -62,7 +64,7 @@ function checkConfigfile() {
 		console.log("==========================================================")
 		console.log("!!!!!!!!!!!!!!! The '.env' file is missing !!!!!!!!!!!!!!!")
 		console.log("==========================================================")
-		sampleFile = `SECRET="${Math.random().toString(36).substr(2, 24)}"
+		var sampleFile = `SECRET="${Math.random().toString(36).substr(2, 24)}"
 									TOKEN_EXPIRE="2"
 									CONSUMER_KEY="${Math.random().toString(36).substr(2, 24)}"
 									SHARED_SECRET="${Math.random().toString(36).substr(2, 24)}"

@@ -4,7 +4,7 @@ var dialog;
 $(function() {
 // page is now ready, initialize the calendar...
     $('#agenda').fullCalendar({
-        defaultView: 'listWeek',
+        defaultView: 'listMonth',
         locale: 'de',
         // customize the button names,
         // otherwise they'd all just say "list"

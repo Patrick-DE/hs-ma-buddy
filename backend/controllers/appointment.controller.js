@@ -23,7 +23,10 @@ exports.own_appointment_list = function(req, res, next) {
       .populate('category_id')
       .populate('buddy_id')
       .exec(function (err, _appointments) {
-        if (err) return res.send(err.errmsg);
+        if (err){
+          console.log(err, req);
+          return res.send(err.errmsg);
+        } 
         res.status(200).json(_appointments);
     });
 };
@@ -89,8 +92,8 @@ exports.appointment_detail = function(req, res, next) {
 // Handle appointment create on POST.
 exports.appointment_create = function(req, res, next) {
   if(!req.body.date || !req.body.category_id || !req.body.start || !req.body.end || !req.body.description || !req.body.title) return res.status(400).send({err: "Please provide all required data."});
-  var _start = moment(req.body.date + " " + req.body.start, 'DD-MM-YYYY hh:mm');
-  var _end = moment(req.body.date + " " + req.body.end, 'DD-MM-YYYY hh:mm');
+  var _start = moment(req.body.date + " " + req.body.start, 'DD-MM-YYYY HH:mm');
+  var _end = moment(req.body.date + " " + req.body.end, 'DD-MM-YYYY HH:mm');
 
   var newAppointment = new Appointment({
     ...req.body,

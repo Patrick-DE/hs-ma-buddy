@@ -30,8 +30,8 @@ r(function(){
         eventLimit: true, // allow "more" link when too many events
         dayClick: function(date) {
             document.getElementById("date").value = date.format("DD-MM-YYYY");
-            document.getElementById("start").value = date.format("hh:mm");
-            document.getElementById("end").value = date.add(30,'minutes').format("hh:mm");
+            document.getElementById("start").value = date.format("HH:mm");
+            document.getElementById("end").value = date.add(30,'minutes').format("HH:mm");
             $('input').each(function(index, element){
                 if(element.value !== "") element.parentElement.className += " is-dirty";
             });
