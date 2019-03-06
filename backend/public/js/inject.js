@@ -101,8 +101,8 @@ function fetchEvents(path, _start, _end, timezone, callback){
         // will be parsed
         events.push({
             title: $(this).attr('title'),
-            start: moment($(this).attr('start')).format("HH:mm"),
-            end: moment($(this).attr('end')).format("HH:mm"),
+            start: moment($(this).attr('start')).format("YYYY-MM-DD HH:mm"),
+            end: moment($(this).attr('end')).format("YYYY-MM-DD HH:mm"),
             id: $(this).attr('_id'),
             category: $(this).attr('category_id').name,
             desc: $(this).attr('description'),
