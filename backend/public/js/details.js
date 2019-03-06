@@ -129,7 +129,7 @@ function getBuddy(){
             //lock for non owner
             if(!profile.own){
                 element.setAttribute("disabled", true);
-                if(element.value === "" || element.name === "id") element.parentElement.style.display = "none";
+                if(element.value === undefined || element.value === "" || element.name === "id") element.parentElement.style.display = "none";
             }else{
                 document.getElementById("submit").style.display = "block";
             }

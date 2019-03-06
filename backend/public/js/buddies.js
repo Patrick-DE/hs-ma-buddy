@@ -15,7 +15,7 @@ function getBuddies(){
                         formContent += `${obj[key][index].name}, `;
                     });
                 }
-                else if(obj[key] !== undefined) formContent += `${key.toUpperCase()}: ${obj[key]} <br/>`;
+                else if(obj[key] !== undefined && obj[key] !== "") formContent += `${key.toUpperCase()}: ${obj[key]} <br/>`;
             });
             formContent += `</div><div class="mdl-card__actions mdl-card--border">`;
             formContent += `<a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" href="/detail.html?id=${obj["id"]}">Termin ausmachen</a>`;
