@@ -125,7 +125,7 @@ function getBuddy(){
             select.appendChild(opt);
         });
 
-        $('input').each(function(index, element){
+        $('#profileForm input').each(function(index, element){
             //lock for non owner
             if(!profile.own){
                 element.setAttribute("disabled", true);
