@@ -114,8 +114,15 @@ function getBuddy(){
             if(profile.buddy[elem] !== undefined) cur.value = profile.buddy[elem];
         });
         //Set category checkboxes
+        var select = document.getElementById('category_id');
         profile.buddy["categories"].forEach(function(elem, index){
+            //for profile
             document.getElementById("checkbox-"+elem._id).setAttribute("checked", true);
+            //for appointment selection
+            var opt = document.createElement('option');
+            opt.value = elem._id;
+            opt.innerHTML = elem.name;
+            select.appendChild(opt);
         });
 
         $('input').each(function(index, element){
