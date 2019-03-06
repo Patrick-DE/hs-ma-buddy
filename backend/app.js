@@ -53,13 +53,11 @@ function checkConfigfile() {
 		console.log("==========================================================")
 		console.log("!!!!!!!!!!!!!!! The '.env' file is missing !!!!!!!!!!!!!!!")
 		console.log("==========================================================")
-		sampleFile = `CHALLENGE=true
-SECRET="${Math.random().toString(36).substr(2, 24)}"
-TOKEN_EXPIRE="2"
-CONSUMER_KEY="${Math.random().toString(36).substr(2, 24)}"
-SHARED_SECRET="${Math.random().toString(36).substr(2, 24)}"
-DATABASE="mongodb://127.0.0.1:27017/buddy"
-`;
+		sampleFile = `SECRET="${Math.random().toString(36).substr(2, 24)}"
+									TOKEN_EXPIRE="2"
+									CONSUMER_KEY="${Math.random().toString(36).substr(2, 24)}"
+									SHARED_SECRET="${Math.random().toString(36).substr(2, 24)}"
+									DATABASE="mongodb://127.0.0.1:27017/buddy"`;
 		fs.writeFileSync(envPath + "_sample", sampleFile);
     console.log("==========================================================")
     console.log("!!!!!!!!!!!!!!!!!!! Sample file saved !!!!!!!!!!!!!!!!!!!!")
