@@ -19,50 +19,50 @@ exports.user_login = function (req, res) {
 				console.log(err);
 				return res.status(403).send({err: "Forbidden."});
 			}
-		});
-		//weak 'security' checks
-		if(req.headers.referer !== "https://moodle.hs-mannheim.de/") return res.status(403).send({err: "Forbidden.", ref: req.headers.referer});
-		if(req.headers.origin !== "https://moodle.hs-mannheim.de") return res.status(403).send({err: "Forbidden.", or: req.headers.origin});
-		if(req.body.tool_consumer_instance_guid !==  "moodle.hs-mannheim.de") return res.status(403).send({err: "Forbidden.", ip: req.ip, id: req.body.tool_consumer_instance_guid, reqObj: util.inspect(req)});
-	}
-
-	User.findOne({ moodle_id: req.body.user_id }, function (err, user) {
-		if (err) {
-			console.log(err)
-			res.status(500).send({ err: 'Error on the server.'})
-			return
-		}
-
-		if (!user) {
-			if(req.body.roles === "Instructor"){
-				BuddyController.buddy_create(req, res, function(err, buddy){
-					if (err || !buddy) return res.status(500).send({ err: 'Buddyprofile was not successfully created.'});
-					req.body.buddy = buddy.id;
-
-					UserController.user_create(req.body, function (err, user){
-						if (err || !user) return res.status(500).send({ err: 'There was a problem registering the user.'})
-
-						var token = create_token(user, req.ip, user.buddy);
-						// return the information including token as JSON
-						res.status(302).append("set-cookie", exports.setCookie("token", token, 1)).redirect('/index.html');
-					});
-				});
-			}else{
-				UserController.user_create(req.body, function (err, user){
-					if (err || !user) return res.status(500).send({ err: 'There was a problem registering the user.'})
-
+			//weak 'security' checks
+			if(req.headers.referer !== "https://moodle.hs-mannheim.de/") return res.status(403).send({err: "Forbidden.", ref: req.headers.referer});
+			if(req.headers.origin !== "https://moodle.hs-mannheim.de") return res.status(403).send({err: "Forbidden.", or: req.headers.origin});
+			if(req.body.tool_consumer_instance_guid !==  "moodle.hs-mannheim.de") return res.status(403).send({err: "Forbidden.", ip: req.ip, id: req.body.tool_consumer_instance_guid, reqObj: util.inspect(req)});
+			
+			User.findOne({ moodle_id: req.body.user_id }, function (err, user) {
+				if (err) {
+					console.log(err)
+					res.status(500).send({ err: 'Error on the server.'})
+					return
+				}
+		
+				if (!user) {
+					if(req.body.roles === "Instructor"){
+						BuddyController.buddy_create(req, res, function(err, buddy){
+							if (err || !buddy) return res.status(500).send({ err: 'Buddyprofile was not successfully created.'});
+							req.body.buddy = buddy.id;
+		
+							UserController.user_create(req.body, function (err, user){
+								if (err || !user) return res.status(500).send({ err: 'There was a problem registering the user.'})
+		
+								var token = create_token(user, req.ip, user.buddy);
+								// return the information including token as JSON
+								res.status(302).append("set-cookie", exports.setCookie("token", token, 1)).redirect('/index.html');
+							});
+						});
+					}else{
+						UserController.user_create(req.body, function (err, user){
+							if (err || !user) return res.status(500).send({ err: 'There was a problem registering the user.'})
+		
+							var token = create_token(user, req.ip, user.buddy);
+							// return the information including token as JSON
+							res.status(302).append("set-cookie", exports.setCookie("token", token, 1)).redirect('/index.html');
+						});
+					}
+				}else{
+					//user should exist here
 					var token = create_token(user, req.ip, user.buddy);
 					// return the information including token as JSON
 					res.status(302).append("set-cookie", exports.setCookie("token", token, 1)).redirect('/index.html');
-				});
-			}
-		}else{
-			//user should exist here
-			var token = create_token(user, req.ip, user.buddy);
-			// return the information including token as JSON
-			res.status(302).append("set-cookie", exports.setCookie("token", token, 1)).redirect('/index.html');
-		}
-	});
+				}
+			});
+		});
+	}
 };
 
 exports.user_logout = function (req, res) {

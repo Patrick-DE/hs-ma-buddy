@@ -1,4 +1,4 @@
-if (process.env.NODE_ENV === undefined) process.env.NODE_ENV = 'dev';
+if (process.env.NODE_ENV === undefined) process.env.NODE_ENV = 'production'; //dev|production
 const fs = require('fs');
 const path = require('path');
 checkConfigfile();
@@ -12,8 +12,16 @@ const cookieParser = require('cookie-parser')
 const app = express();
 
 if(process.env.NODE_ENV === "production"){
+	const filename = "LogMe.txt";
+	fs.open(filename,'r',function(err, fd){
+    if (err) {
+      fs.writeFile(filename, '', function(err) {
+          if(err) console.log(err);
+			});
+		}
+  });
 	console.log = function(error){
-		fs.appendFileSync("tmp/LogMe.txt", error);
+		fs.appendFileSync(filename, error);
 	};
 }
 console.log(process.env.NODE_ENV);
