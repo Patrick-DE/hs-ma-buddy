@@ -3,6 +3,7 @@ var VerifyToken = require('../verifyToken');
 
 var bcrypt = require('bcryptjs');
 
+/* INTERNAL*/
 // RETURNS ALL THE USERS IN THE DATABASE
 exports.user_list = function (req, res) {
     User.find(function (err, users) {
@@ -11,6 +12,7 @@ exports.user_list = function (req, res) {
     });
 };
 
+/* INTERNAL*/
 // GETS A SINGLE USER FROM THE DATABASE
 exports.user_detail = function (req, res) {
     User.findById(req.params.id, function (err, user) {
@@ -20,6 +22,7 @@ exports.user_detail = function (req, res) {
     });
 };
 
+/* INTERNAL*/
 // creates user for register function
 // if no pw set create random pw and send it back else delete pw
 exports.user_create = function (body, callback) {
@@ -37,6 +40,7 @@ exports.user_create = function (body, callback) {
     });
 };
 
+/* INTERNAL*/
 // DELETES A USER FROM THE DATABASE
 exports.user_delete = function (req, res) {
     User.findByIdAndRemove(req.params.id, function (err, user) {
@@ -45,11 +49,11 @@ exports.user_delete = function (req, res) {
     });
 };
 
+/* INTERNAL*/
 // UPDATES A SINGLE USER IN THE DATABASE
-// Added VerifyToken middleware to make sure only an authenticated user can put to this route
-exports.user_update = /* VerifyToken, */ function (req, res) {
-    User.findByIdAndUpdate(req.params.id, req.body, {new: true}, function (err, user) {
-        if (err) return res.status(500).send({ err: "There was a problem updating the user."});
-        res.status(200).send(user);
+exports.user_update = function (req, callback) {
+    User.findByIdAndUpdate(id, req.body, {new: true}, function (err, user) {
+        if (err || !user) return callback(err, null);
+        callback(err, user);
     });
 };

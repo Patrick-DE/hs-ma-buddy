@@ -1,4 +1,5 @@
 var User = require('../models/user.model');
+var Buddy = require('../models/buddy.model');
 var UserController = require('../controllers/user.controller');
 var BuddyController = require('../controllers/buddy.controller');
 
@@ -13,7 +14,7 @@ exports.user_login = function (req, res) {
 	// if no user exists create user with moodle data
 	if(process.env.NODE_ENV === "production"){
 		//https://github.com/omsmith/ims-lti/
-		provider = new lti.Provider(process.env.CONSUMER_KEY, process.env.SHARED_SECRET);
+		var provider = new lti.Provider(process.env.CONSUMER_KEY, process.env.SHARED_SECRET);
 		provider.valid_request(req, function(err, isValid){
 			if(!isValid || !provider.outcome_service){
 				console.log(err);
@@ -54,11 +55,31 @@ exports.user_login = function (req, res) {
 							res.status(302).append("set-cookie", exports.setCookie("token", token, 1)).redirect('/index.html');
 						});
 					}
+				//user should exist here
 				}else{
-					//user should exist here
-					var token = create_token(user, req.ip, user.buddy);
-					// return the information including token as JSON
-					res.status(302).append("set-cookie", exports.setCookie("token", token, 1)).redirect('/index.html');
+					//if buddy profile does not yet exist create
+					if(req.body.roles === "Instructor" && user.buddy === undefined){
+						//create buddy
+						Buddy.buddy_create(req, res, function(err, buddy){
+							if (err || !buddy) return res.status(500).send({ err: 'Buddyprofile was not successfully created.'});
+							//add buddy.id to user
+							UserController.user_update({buddy: buddy.id}, function (err, user){
+								if (err || !user) return res.status(500).send({ err: 'There was a problem updating your user.'})
+		
+								var token = create_token(user, req.ip, user.buddy);
+								// return the information including token as JSON
+								res.status(302).append("set-cookie", exports.setCookie("token", token, 1)).redirect('/index.html');
+							});
+						});
+					}else{
+						UserController.user_create(req.body, function (err, user){
+							if (err || !user) return res.status(500).send({ err: 'There was a problem registering the user.'})
+		
+							var token = create_token(user, req.ip, user.buddy);
+							// return the information including token as JSON
+							res.status(302).append("set-cookie", exports.setCookie("token", token, 1)).redirect('/index.html');
+						});
+					}
 				}
 			});
 		});
