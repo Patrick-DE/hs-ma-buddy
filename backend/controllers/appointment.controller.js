@@ -1,4 +1,5 @@
 var Appointment = require('../models/appointment.model');
+var mongoose = require('mongoose');
 const moment = require('moment');
 
 // Display list of all appointments.
@@ -38,13 +39,13 @@ exports.anon_appointment_list = function(req, res, next) {
         {end: {$lte: req.query.end}}
       ]
     })
-    .select('-email -user_id -full_name')
+    .select('-email -user_id -fullname')
     .populate('block_id')
     .populate('category_id')
     .populate('buddy_id')
     .exec(function (err, appointments) {
       if (err) return res.status(500).send({err: err.errmsg});
-      res.json(make_anon(appointments));
+      res.status(200).json(make_anon(appointments, req));
   });
 };
 
@@ -54,13 +55,13 @@ exports.buddy_appointment_list = function(req, res, next) {
 
   Appointment
     .find({buddy_id: req.params.id})
-    .select('-email -user_id -full_name')
+    .select('-email -fullname')
     .populate('block_id')
     .populate('category_id')
     .populate('buddy_id')
     .exec(function (err, appointments) {
       if (err) return res.status(500).send({err: err.errmsg});
-      res.json(make_anon(appointments));
+      res.status(200).json(make_anon(appointments, req));
   });
 };
 
@@ -81,7 +82,7 @@ exports.appointment_detail = function(req, res, next) {
         if (err) return res.status(500).send({err: err.message});
         if (!appointment) return res.status(404).send("not found")
 
-        res.json(appointment);
+        res.status(200).json(appointment);
     });
 };
 
@@ -100,11 +101,8 @@ exports.appointment_create = function(req, res, next) {
   });
 
   newAppointment.save(function(err) {
-    if (err) {
-      console.log(err)
-      return res.status(500).send(err.message);
-    }
-      res.status(201).send(newAppointment);
+    if (err) return res.status(500).send(err.message);
+    res.status(201).send(newAppointment);
   });
 };
 
@@ -124,7 +122,7 @@ exports.appointment_delete = function(req, res, next) {
       .exec(function(err, appointment){
         if (err) return res.status(500).send(err.message);
         //does this appointment belong to the user
-        res.send(appointment);
+        res.status(200).send(appointment);
     });
 };
 
@@ -152,15 +150,18 @@ exports.appointment_update = function(req, res, next) {
       .populate('buddy_id')
       .exec(function(err, appointment){ //{ $set: req.body, $setOnInsert: {}}
         if (err) return res.status(500).send(err.message);
-        res.json(appointment);
+        res.status(200).json(appointment);
     });
 };
 
-function make_anon(appointment) {
+function make_anon(appointment, req) {
   appointment.forEach(element => {
-    element.title = "Termin";
-    element.description = "Beschreibung";
-    element.editable = false;
+    if(element.buddy_id.id !== req.buddyId && !element.user_id.equals(mongoose.Types.ObjectId(req.userId))){
+      element.title = "Termin";
+      element.description = "Beschreibung";
+      element.editable = false;
+      //TODO: Try to delete user_id
+    }else{ var yoloswag = "";}
   });
 
   return appointment;

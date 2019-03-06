@@ -79,6 +79,25 @@
   padding: 2%;
 }
 
+/*NAV BAR*/
+.android-logo-image{
+  height: auto;
+  width: 160px;
+}
+.mdl-navigation{
+  border-top: solid;
+  border-top-color: #767777;
+}
+.android-drawer .mdl-layout-title {
+  background: #004594;
+}
+
+/*kleiner als 900px*/
+@media (max-width: 900px){
+  .android-logo-image{
+    margin-top: -10px;
+  }
+}
 @media (min-width: 769px){
   #agenda{
     padding: 20px 10% 20px 10%;
