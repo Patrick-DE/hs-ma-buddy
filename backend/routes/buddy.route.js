@@ -10,6 +10,10 @@ router.get('/', VerifyToken, buddy_controller.buddy_list);
 //Get buddy details
 router.get('/:id', VerifyToken, buddy_controller.buddy_detail);
 
+/* ONLY SELF*/
+//Update a buddy
+router.put('/', VerifyToken, buddy_controller.buddy_update);
+
 /* ONLY BUDDY*/
 //Delete a buddy
 router.delete('/:id', VerifyToken, buddy_controller.buddy_delete);

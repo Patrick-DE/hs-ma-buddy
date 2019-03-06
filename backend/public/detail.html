@@ -30,11 +30,10 @@
 		href="https://fonts.googleapis.com/css?family=Roboto:regular,bold,italic,thin,light,bolditalic,black,medium&amp;lang=en">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="./css/material.min.css">
+	<link rel="stylesheet" href="https://cdn.rawgit.com/kybarg/mdl-selectfield/mdl-menu-implementation/mdl-selectfield.min.css" />
 	<link rel="stylesheet" href="./css/styles.css">
 	<link rel="stylesheet" href="./css/main.css">
 	<link rel="stylesheet" href="./fullcalendar/fullcalendar.css" />
-	<link rel="stylesheet" href="https://cdn.rawgit.com/kybarg/mdl-selectfield/mdl-menu-implementation/mdl-selectfield.min.css" />
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
 
 	<script src="./js/material.min.js"></script>
 	<script src="./fullcalendar/lib/moment.min.js"></script>
@@ -59,6 +58,11 @@
 							<div class="mdl-cell mdl-cell--3-col" id="picture"></div>
 							<div class="mdl-cell mdl-cell--6-col" id="data"></div>
 							<div class="mdl-cell mdl-cell--3-col" id="categories"></div>
+							<div class="mdl-cell mdl-cell--12-col">
+								<div class="mdl-dialog__actions">
+									<button type="button" id="submit" class="mdl-button" style="margin:auto; display: none" onclick="updateBuddy()">Aktualisieren!</button>
+								</div>
+							</div>
 					</form>
 				</div>
 				<!--PROFILE END-->

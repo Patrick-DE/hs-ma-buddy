@@ -1,11 +1,12 @@
 var calendar;
 var dialog;
+var buddy_id;
 
 r(function(){
     const urlParams = new URLSearchParams(window.location.search);
-    const buddy_id = urlParams.get('id');
+    buddy_id = urlParams.get('id');
     document.getElementById("buddy_id").value = buddy_id;
-    getBuddy(buddy_id);
+    getBuddy();
 
     $('#calendar').fullCalendar({
         defaultView: 'month',
@@ -71,8 +72,8 @@ r(function(){
      });*/
 });
 
-function getBuddy(id){
-	$.getJSON(`/buddy/${id}`, function (profile) {
+function getBuddy(){
+	$.getJSON(`/buddy/${buddy_id}`, function (profile) {
         //Fix for not own profile
         if(profile.buddy === undefined) profile.buddy = profile;
 
@@ -80,7 +81,7 @@ function getBuddy(id){
         var catHTML = "";
         profile.categories.forEach(function(elem, index){
             catHTML += `<label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="checkbox-${elem._id}">
-                            <input type="checkbox" id="checkbox-${elem._id}" name="categories" class="mdl-checkbox__input">
+                            <input type="checkbox" id="checkbox-${elem._id}" name="categories" value="${elem._id}" class="mdl-checkbox__input">
                             <span class="mdl-checkbox__label">${elem.name}</span>
                         </label>`
         });
@@ -88,7 +89,7 @@ function getBuddy(id){
 
         $("#data").empty();
         var dataHTML = "";
-        var headerLocked = ["id", "fullname", "email"];
+        var headerLocked = ["fullname", "email"];
         headerLocked.forEach(function(elem, index){
             //generate all elements for edit /even if empty
             dataHTML += `<div class="mdl-textfield mdl-js-textfield mdl-textfield-buddy mdl-textfield--floating-label">
@@ -105,25 +106,34 @@ function getBuddy(id){
                         </div>`
         });
         document.getElementById("data").insertAdjacentHTML("afterbegin", dataHTML);
+
         //AutoInsert values
         var merged = headerLocked.concat(header);
         merged.forEach(function(elem, index){
             var cur = document.getElementById(elem);
             if(profile.buddy[elem] !== undefined) cur.value = profile.buddy[elem];
         });
+        //Set category checkboxes
+        profile.buddy["categories"].forEach(function(elem, index){
+            document.getElementById("checkbox-"+elem._id).setAttribute("checked", true);
+        });
 
         $('input').each(function(index, element){
             //lock for non owner
             if(!profile.own){
                 element.setAttribute("disabled", true);
-                if(element.value === "") element.parentElement.style.display = "none";
+                if(element.value === "" || element.name === "id") element.parentElement.style.display = "none";
+            }else{
+                document.getElementById("submit").style.display = "block";
             }
             //mark as autofill dirty for proper label positioning
             if(element.value !== "") element.parentElement.className += " is-dirty";
         });
 	}).fail(function (msg) {
         showError(msg);
-	});
+    });
+    
+    return 
 }
 
 function submitAppointment(){
@@ -141,9 +151,16 @@ function submitAppointment(){
     });
 }
 
-/*
-<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-    <input class="mdl-textfield__input" type="text" id="title" name="title">
-    <label class="mdl-textfield__label" for="title">Title...*</label>
-</div>
-*/
+function updateBuddy(){
+    $.ajax({
+        url: '/buddy',
+        type: 'PUT',
+        data: $('#profileForm').serialize(),
+        success: function(result) {
+            getBuddy();
+        },
+        error: function(msg) {
+            showError(msg);
+        }
+    });
+}
