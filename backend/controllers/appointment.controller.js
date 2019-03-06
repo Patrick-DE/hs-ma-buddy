@@ -5,6 +5,9 @@ const moment = require('moment');
 // Display list of all appointments.
 exports.own_appointment_list = function(req, res, next) {
     if(req.query.start === undefined || req.query.end === undefined) return res.status(400).send({ err: "Please provide a start and end parameter."});
+    var _start = moment(req.query.start, 'YYYY-MM-DD');
+    var _end = moment(req.query.end, 'YYYY-MM-DD');
+    if(!_start._isValid || !_end._isValid) return res.status(400).send({ err: "Please provide a correct date format."});
 
     Appointment
       .find({
@@ -34,6 +37,9 @@ exports.own_appointment_list = function(req, res, next) {
 // Display list of all appointments ANONymisiert.
 exports.anon_appointment_list = function(req, res, next) {
   if(req.query.start === undefined || req.query.end === undefined) return res.status(400).send({err: "Please provide a start and end parameter."});
+  var _start = moment(req.query.start, 'YYYY-MM-DD');
+  var _end = moment(req.query.end, 'YYYY-MM-DD');
+  if(!_start._isValid || !_end._isValid) return res.status(400).send({ err: "Please provide a correct date format."});
 
   Appointment
     .find({
@@ -55,9 +61,20 @@ exports.anon_appointment_list = function(req, res, next) {
 // Display list of all appointments of ONE buddy.
 exports.buddy_appointment_list = function(req, res, next) {
   if(req.query.start === undefined || req.query.end === undefined) return res.status(400).send({ err: "Please provide a start and end parameter."});
+  var _start = moment(req.query.start, 'YYYY-MM-DD');
+  var _end = moment(req.query.end, 'YYYY-MM-DD');
+  if(!_start._isValid || !_end._isValid) return res.status(400).send({ err: "Please provide a correct date format."});
 
   Appointment
-    .find({buddy_id: req.params.id})
+    .find({
+      $and: [
+        {buddy_id: req.params.id},
+        {$and: [
+          {start : {$gte: req.query.start}},
+          {end: {$lte: req.query.end}}
+        ]}
+      ]
+    })
     .select('-email -fullname')
     .populate('block_id')
     .populate('category_id')
