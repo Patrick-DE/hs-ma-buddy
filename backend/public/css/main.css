@@ -83,10 +83,6 @@
   height: auto;
   width: 160px;
 }
-.mdl-navigation{
-  border-top: solid;
-  border-top-color: #767777;
-}
 .android-drawer .mdl-layout-title {
   background: #004594;
 }
@@ -99,7 +95,12 @@
   .android-logo-image{
     margin-top: -10px;
   }
+  .mdl-navigation{
+    border-top: solid;
+    border-top-color: #767777;
+  }
 }
+/*größer als */
 @media (min-width: 769px){
   #agenda{
     padding: 20px 10% 20px 10%;

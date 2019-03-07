@@ -32,7 +32,7 @@ r(function(){
             document.getElementById("date").value = date.format("DD-MM-YYYY");
             document.getElementById("start").value = date.format("HH:mm");
             document.getElementById("end").value = date.add(30,'minutes').format("HH:mm");
-            $('input').each(function(index, element){
+            $('#appointmentForm input, .mdl-selectfield__select').each(function(index, element){
                 if(element.value !== "") element.parentElement.className += " is-dirty";
             });
             dialog.showModal();
@@ -64,12 +64,6 @@ r(function(){
     dialog.querySelector('.send').addEventListener('click', function() {
         submitAppointment();
     });
-    
-    /*$.getScript("https://cdn.rawgit.com/kybarg/mdl-selectfield/mdl-menu-implementation/mdl-selectfield.min.js", function() {
-        //BREAKS
-        //componentHandler.upgradeElements();
-        alert("Script loaded but not necessarily executed.");
-     });*/
 });
 
 function getBuddy(){
