@@ -111,6 +111,7 @@ exports.appointment_create = function(req, res, next) {
   if(!req.body.date || !req.body.category_id || !req.body.start || !req.body.end || !req.body.description || !req.body.title) return res.status(400).send({err: "Please provide all required data."});
   var _start = moment(req.body.date + " " + req.body.start, 'DD-MM-YYYY HH:mm');
   var _end = moment(req.body.date + " " + req.body.end, 'DD-MM-YYYY HH:mm');
+  if(req.buddyId === req.body.buddy_id) return res.status(400).send({err: "You are not allowed to assign yourself appoitments."});
 
   var newAppointment = new Appointment({
     ...req.body,
