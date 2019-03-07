@@ -24,8 +24,12 @@ $(function() {
             fetchEvents("/own", _start, _end, timezone, callback);
         },
         eventMouseover: function(event, jsEvent, view) {
-            $('.fc-list-item-title', this).append(`<a id="${event.id}" style="float: right" onclick="deleteAppointment('${event.id}')">|Löschen</a>`);
-            $('.fc-list-item-title', this).append(`<a id="${event.id}-e" style="float: right" onclick="editAppointment('${event._id}')">Ändern</a>`);
+            $('.fc-list-item-title', this).append(`<button id="${event.id}" style="float: right" onclick="deleteAppointment('${event.id}')" class="mdl-button mdl-js-button mdl-button--icon">
+                <i class="material-icons">delete</i>
+            </button`);
+            $('.fc-list-item-title', this).append(`<button id="${event.id}-e" style="float: right" onclick="editAppointment('${event.id}')" class="mdl-button mdl-js-button mdl-button--icon">
+                <i class="material-icons">edit</i>
+            </button`);
         },
         eventMouseout: function(event, jsEvent, view) {
             calendarMouseout(event, jsEvent, view);
