@@ -20,11 +20,7 @@ exports.user_login = function (req, res) {
 				console.log(err);
 				return res.status(403).send({err: "Forbidden."});
 			}
-			//weak 'security' checks
-			if(req.headers.referer !== "https://moodle.hs-mannheim.de/") return res.status(403).send({err: "Forbidden.", ref: req.headers.referer});
-			if(req.headers.origin !== "https://moodle.hs-mannheim.de") return res.status(403).send({err: "Forbidden.", or: req.headers.origin});
-			if(req.body.tool_consumer_instance_guid !==  "moodle.hs-mannheim.de") return res.status(403).send({err: "Forbidden.", ip: req.ip, id: req.body.tool_consumer_instance_guid, reqObj: util.inspect(req)});
-			
+
 			User.findOne({ moodle_id: req.body.user_id }, function (err, user) {
 				if (err) {
 					console.log(err);
