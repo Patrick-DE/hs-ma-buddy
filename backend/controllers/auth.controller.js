@@ -27,9 +27,8 @@ exports.user_login = function (req, res) {
 			
 			User.findOne({ moodle_id: req.body.user_id }, function (err, user) {
 				if (err) {
-					console.log(err)
-					res.status(500).send({ err: 'Error on the server.'})
-					return
+					console.log(err);
+					return res.status(500).send({ err: 'Error on the server.'});
 				}
 		
 				//user does not exists yet
@@ -38,11 +37,17 @@ exports.user_login = function (req, res) {
 					if(req.body.roles === "Instructor"){
 						//create buddy
 						BuddyController.buddy_create(req, res, function(err, buddy){
-							if (err || !buddy) return res.status(500).send({ err: 'Buddyprofile was not successfully created.'});
+							if (err || !buddy){ 
+								console.log(err);
+								return res.status(500).send({ err: 'Buddyprofile was not successfully created.'});
+							}
 							req.body.buddy = buddy.id;
 							//create user with buddy detail
 							UserController.user_create(req.body, function (err, user){
-								if (err || !user) return res.status(500).send({ err: 'There was a problem registering the user.'})
+								if (err || !user){ 
+									console.log(err);
+									return res.status(500).send({ err: 'There was a problem registering a buddy user.'})
+								}
 		
 								var token = create_token(user, req.ip, user.buddy);
 								// return the information including token as JSON
@@ -51,7 +56,10 @@ exports.user_login = function (req, res) {
 						});
 					}else{
 						UserController.user_create(req.body, function (err, user){
-							if (err || !user) return res.status(500).send({ err: 'There was a problem registering the user.'})
+							if (err || !user){ 
+								console.log(err);
+								return res.status(500).send({ err: 'There was a problem registering the user.'})
+							}
 		
 							var token = create_token(user, req.ip, user.buddy);
 							// return the information including token as JSON
@@ -64,10 +72,16 @@ exports.user_login = function (req, res) {
 					if(req.body.roles === "Instructor" && user.buddy === undefined){
 						//create buddy
 						Buddy.buddy_create(req, res, function(err, buddy){
-							if (err || !buddy) return res.status(500).send({ err: 'Buddyprofile was not successfully created.'});
+							if (err || !buddy){ 
+								console.log(err);
+								return res.status(500).send({ err: 'Buddyprofile was not successfully created.'});
+							}
 							//add buddy.id to user
 							UserController.user_update({buddy: buddy.id}, function (err, user){
-								if (err || !user) return res.status(500).send({ err: 'There was a problem updating your user.'})
+								if (err || !user){ 
+									console.log(err);
+								 	return res.status(500).send({ err: 'There was a problem updating your user.'})
+								}
 		
 								var token = create_token(user, req.ip, user.buddy);
 								// return the information including token as JSON
@@ -75,13 +89,9 @@ exports.user_login = function (req, res) {
 							});
 						});
 					}else{
-						UserController.user_create(req.body, function (err, user){
-							if (err || !user) return res.status(500).send({ err: 'There was a problem registering the user.'})
-		
-							var token = create_token(user, req.ip, user.buddy);
-							// return the information including token as JSON
-							res.status(302).append("set-cookie", exports.setCookie("token", token, 1)).redirect('/dashboard.html');
-						});
+						var token = create_token(user, req.ip, user.buddy);
+						//return the information including token as JSON
+						res.status(302).append("set-cookie", exports.setCookie("token", token, 1)).redirect('/dashboard.html');
 					}
 				}
 			});
@@ -98,11 +108,17 @@ exports.user_login = function (req, res) {
 			if (!user) {
 				if(req.body.roles === "Instructor"){
 					BuddyController.buddy_create(req, res, function(err, buddy){
-						if (err || !buddy) return res.status(500).send({ err: 'Buddyprofile was not successfully created.'});
+						if (err || !buddy){ 
+							console.log(err);
+							return res.status(500).send({ err: 'Buddyprofile was not successfully created.'});
+						}
 						req.body.buddy = buddy.id;
 	
 						UserController.user_create(req.body, function (err, user){
-							if (err || !user) return res.status(500).send({ err: 'There was a problem registering the user.'})
+							if (err || !user){ 
+								console.log(err);
+								return res.status(500).send({ err: 'There was a problem registering the user.'})
+							}
 	
 							var token = create_token(user, req.ip, user.buddy);
 							// return the information including token as JSON
@@ -111,7 +127,10 @@ exports.user_login = function (req, res) {
 					});
 				}else{
 					UserController.user_create(req.body, function (err, user){
-						if (err || !user) return res.status(500).send({ err: 'There was a problem registering the user.'})
+						if (err || !user){ 
+							console.log(err);
+							return res.status(500).send({ err: 'There was a problem registering the user.'})
+						}
 	
 						var token = create_token(user, req.ip, user.buddy);
 						// return the information including token as JSON
