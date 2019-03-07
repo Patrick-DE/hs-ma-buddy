@@ -12,10 +12,10 @@ var navigation = `<div class="android-header mdl-layout__header mdl-layout__head
                           <!-- Navigation -->
                           <div class="android-navigation-container">
                             <nav class="android-navigation mdl-navigation">
-                                <a class="mdl-navigation__link mdl-typography--text-uppercase" href="/">Dashboard</a>
-                                <a class="mdl-navigation__link mdl-typography--text-uppercase" href="/buddies.html">Buddies</a>
-                                <a class="mdl-navigation__link mdl-typography--text-uppercase" href="/calendar.html">Kalender</a>
-                                <a class="mdl-navigation__link mdl-typography--text-uppercase" href="/contact.html">Kontakt</a>
+                              <a class="mdl-navigation__link mdl-typography--text-uppercase" href="/dashboard.html">Dashboard</a>
+                              <a class="mdl-navigation__link mdl-typography--text-uppercase" href="/buddies.html">Buddies</a>
+                              <a class="mdl-navigation__link mdl-typography--text-uppercase" href="/calendar.html">Kalender</a>
+                              <a class="mdl-navigation__link mdl-typography--text-uppercase" href="/contact.html">Kontakt</a>
                             </nav>
                           </div>
                           <span class="android-mobile-title mdl-layout-title">
@@ -29,7 +29,7 @@ var navigation = `<div class="android-header mdl-layout__header mdl-layout__head
                           <img class="android-logo-image" src="img/logo-white.png">
                         </span>
                         <nav class="mdl-navigation">
-                           <a class="mdl-navigation__link" href="/">Dashboard</a>
+                           <a class="mdl-navigation__link" href="/dashboard.html">Dashboard</a>
                            <a class="mdl-navigation__link" href="/buddies.html">Buddies</a>
                            <a class="mdl-navigation__link" href="/calendar.html">Kalender</a>
                            <a class="mdl-navigation__link" href="/contact.html">Kontakt</a>
@@ -79,8 +79,8 @@ function showError(msg){
     var error;
     if (msg.responseJSON !== undefined && msg.responseJSON.err !== undefined){
       error = msg.responseJSON.err;
-      //if(error.includes("token")) window.location.href = "/login.html";
-      if(error.includes("token")) window.location.href = "https://moodle.hs-mannheim.de/course/view.php?id=2662";
+      if(error.includes("token")) window.location.href = "/";
+      //if(error.includes("token")) window.location.href = "https://moodle.hs-mannheim.de/course/view.php?id=2662";
     }else{
       error = msg.statusText;
     }
