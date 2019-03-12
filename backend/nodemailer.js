@@ -25,10 +25,12 @@ exports.notifyUser = function(_userId, _buddyId, action){
         exports.sendMessage(user.first_name, user.email, action);
     });
 
-    Buddy.findById(id, function(err, buddy){
-        if(err || !buddy) return console.log(`sendMail with buddyId ${_buddyId} returned: ${JSON.stringify(err)}.`);
-        exports.sendMessage(buddy.first_name, buddy.email, action);
-    });
+    if(_buddyId !== undefined){
+        Buddy.findById(_buddyId, function(err, buddy){
+            if(err || !buddy) return console.log(`sendMail with buddyId ${_buddyId} returned: ${JSON.stringify(err)}.`);
+            exports.sendMessage(buddy.first_name, buddy.email, action);
+        });
+    }
 }
 
 exports.sendMessage = function(first_name, _to, action) {
