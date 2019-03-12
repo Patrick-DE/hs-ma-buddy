@@ -1,6 +1,7 @@
 var Appointment = require('../models/appointment.model');
 var mongoose = require('mongoose');
 const moment = require('moment');
+const nodemailer = require('../nodemailer');
 
 // Display list of all appointments.
 exports.own_appointment_list = function(req, res, next) {
@@ -122,6 +123,7 @@ exports.appointment_create = function(req, res, next) {
 
   newAppointment.save(function(err) {
     if (err) return res.status(500).send(err.message);
+    nodemailer.sendMessage(req.userId, "erstellt");
     res.status(201).send(newAppointment);
   });
 };
@@ -141,6 +143,7 @@ exports.appointment_delete = function(req, res, next) {
       .populate('block_id')
       .exec(function(err, appointment){
         if (err) return res.status(500).send(err.message);
+        nodemailer.sendMessage(req.userId, "gelöscht");
         //does this appointment belong to the user
         res.status(200).send(appointment);
     });
@@ -170,6 +173,7 @@ exports.appointment_update = function(req, res, next) {
       .populate('buddy_id')
       .exec(function(err, appointment){ //{ $set: req.body, $setOnInsert: {}}
         if (err) return res.status(500).send(err.message);
+        nodemailer.sendMessage(req.userId, "aktualisiert");
         res.status(200).json(appointment);
     });
 };

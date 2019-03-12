@@ -22,7 +22,7 @@ exports.buddy_detail = function(req, res, next) {
             Category.find(function (err, categories) {
                 if (err || !categories) return res.status(500).send({ err: err.errmsg });
                 //jsonArray = [{buddy: _buddy}, {categories: _categories}, {own: "modifyAndBreakEverything_LuL"}];
-                jsonArray = {buddy, categories, own: "modifyAndBreakEverything_LuL"};
+                var jsonArray = {buddy, categories, own: "modifyAndBreakEverything_LuL"};
                 res.status(200).send(jsonArray);
             });
         }else{
