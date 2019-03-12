@@ -64,6 +64,9 @@ r(function(){
     dialog.querySelector('.send').addEventListener('click', function() {
         submitAppointment();
     });
+    document.getElementById("category_id").addEventListener("click", function(e){
+        	document.getElementById("category_id").parentElement.classList += " is-dirty";
+    });
 });
 
 function getBuddy(){
@@ -113,11 +116,15 @@ function getBuddy(){
             //for profile
             document.getElementById("checkbox-"+elem._id).setAttribute("checked", true);
             //for appointment selection
+            
             var opt = document.createElement('option');
             opt.value = elem._id;
             opt.innerHTML = elem.name;
             select.appendChild(opt);
+            //var option = `<li class="mdl-menu__item mdl-js-ripple-effect" data-value="${elem._id}" tabindex="-1" style="">${elem.name}<span class="mdl-menu__item-ripple-container"><span class="mdl-ripple"></span></span></li>`;
+            //document.getElementsByClassName("mdl-js-menu")[0].insertAdjacentHTML("afterend", option);
         });
+        $.getScript("https://cdn.rawgit.com/kybarg/mdl-selectfield/mdl-menu-implementation/mdl-selectfield.min.js", function() {});
 
         $('#profileForm input').each(function(index, element){
             //lock for non owner
@@ -133,8 +140,6 @@ function getBuddy(){
 	}).fail(function (msg) {
         showError(msg);
     });
-    
-    return 
 }
 
 function submitAppointment(){
