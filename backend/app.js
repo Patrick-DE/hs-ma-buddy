@@ -68,6 +68,13 @@ function checkConfigfile() {
 									TOKEN_EXPIRE="2"
 									CONSUMER_KEY="${Math.random().toString(36).substr(2, 24)}"
 									SHARED_SECRET="${Math.random().toString(36).substr(2, 24)}"
+									SMTP_USER="a@a.de"
+									SMTP_PASS="xxxxx"
+									SMTP_HOST="a.a.net"
+									SMTP_MAIL="a@a.de"
+									SMTP_SECURE="true"
+									SMTP_PORT="587"
+									MOODLE_REDIRECT_URL="a.b.net"
 									DATABASE="mongodb://127.0.0.1:27017/buddy"`;
 		fs.writeFileSync(envPath + "_sample", sampleFile);
     console.log("==========================================================")

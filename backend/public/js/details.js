@@ -89,7 +89,7 @@ function getBuddy(){
         var headerLocked = ["fullname", "email"];
         headerLocked.forEach(function(elem, index){
             //generate all elements for edit /even if empty
-            dataHTML += `<div class="mdl-textfield mdl-js-textfield mdl-textfield-buddy mdl-textfield--floating-label">
+            dataHTML += `<div class="mdl-textfield mdl-js-textfield mdl-textfield-buddy ${(elem === "email" ? "mdl-textfield-buddy-long" : "")} mdl-textfield--floating-label">
                             <input class="mdl-textfield__input" type="text" id="${elem}" name="${elem}" disabled>
                             <label class="mdl-textfield__label" for="${elem}">${elem}...*</label>
                         </div>`

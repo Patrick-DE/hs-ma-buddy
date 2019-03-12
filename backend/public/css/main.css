@@ -53,6 +53,9 @@
   display: inline-block;
   margin: -10px 5px;
 }
+.mdl-textfield-buddy-long{
+  width: 300px;
+}
 
 /*Wide card with share menu button*/
 .demo-card-wide > .mdl-card__title {

@@ -1,7 +1,7 @@
 var Appointment = require('../models/appointment.model');
 var mongoose = require('mongoose');
 const moment = require('moment');
-const nodemailer = require('../nodemailer');
+const Nodemailer = require('../nodemailer');
 
 // Display list of all appointments.
 exports.own_appointment_list = function(req, res, next) {
@@ -112,7 +112,7 @@ exports.appointment_create = function(req, res, next) {
   if(!req.body.date || !req.body.category_id || !req.body.start || !req.body.end || !req.body.description || !req.body.title) return res.status(400).send({err: "Please provide all required data."});
   var _start = moment(req.body.date + " " + req.body.start, 'DD-MM-YYYY HH:mm');
   var _end = moment(req.body.date + " " + req.body.end, 'DD-MM-YYYY HH:mm');
-  if(req.buddyId === req.body.buddy_id) return res.status(400).send({err: "You are not allowed to assign yourself appoitments."});
+  if(process.env.NODE_ENV === "production") if(req.buddyId === req.body.buddy_id) return res.status(400).send({err: "You are not allowed to assign yourself appoitments."});
 
   var newAppointment = new Appointment({
     ...req.body,
@@ -124,7 +124,7 @@ exports.appointment_create = function(req, res, next) {
 
   newAppointment.save(function(err) {
     if (err) return res.status(500).send(err.message);
-    nodemailer.sendMessage(req.userId, "erstellt");
+    Nodemailer.sendMessage(req.userId, "erstellt");
     res.status(201).send(newAppointment);
   });
 };
@@ -144,7 +144,7 @@ exports.appointment_delete = function(req, res, next) {
       .populate('block_id')
       .exec(function(err, appointment){
         if (err) return res.status(500).send(err.message);
-        nodemailer.sendMessage(req.userId, "gelöscht");
+        Nodemailer.sendMessage(req.userId, "gelöscht");
         //does this appointment belong to the user
         res.status(200).send(appointment);
     });
@@ -174,7 +174,7 @@ exports.appointment_update = function(req, res, next) {
       .populate('buddy_id')
       .exec(function(err, appointment){ //{ $set: req.body, $setOnInsert: {}}
         if (err) return res.status(500).send(err.message);
-        nodemailer.sendMessage(req.userId, "aktualisiert");
+        Nodemailer.sendMessage(req.userId, "aktualisiert");
         res.status(200).json(appointment);
     });
 };
