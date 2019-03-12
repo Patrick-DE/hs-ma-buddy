@@ -124,7 +124,7 @@ exports.appointment_create = function(req, res, next) {
 
   newAppointment.save(function(err) {
     if (err) return res.status(500).send(err.message);
-    Nodemailer.sendMessage(req.userId, "erstellt");
+    Nodemailer.sendMessage(req.userId, newAppointment.buddy_id, "erstellt");
     res.status(201).send(newAppointment);
   });
 };
@@ -144,7 +144,7 @@ exports.appointment_delete = function(req, res, next) {
       .populate('block_id')
       .exec(function(err, appointment){
         if (err) return res.status(500).send(err.message);
-        Nodemailer.sendMessage(req.userId, "gelöscht");
+        Nodemailer.sendMessage(req.userId, appointment.buddy_id, "gelöscht");
         //does this appointment belong to the user
         res.status(200).send(appointment);
     });
@@ -176,7 +176,7 @@ exports.appointment_update = function(req, res, next) {
       .populate('buddy_id')
       .exec(function(err, appointment){ //{ $set: req.body, $setOnInsert: {}}
         if (err) return res.status(500).send(err.message);
-        Nodemailer.sendMessage(req.userId, "aktualisiert");
+        Nodemailer.sendMessage(req.userId, appointment.buddy_id, "aktualisiert");
         res.status(200).json(appointment);
     });
 };
@@ -200,7 +200,7 @@ exports.appointment_status = function(req, res, next) {
     .populate('buddy_id')
     .exec(function(err, appointment){ //{ $set: req.body, $setOnInsert: {}}
       if (err) return res.status(500).send(err.message);
-      Nodemailer.sendMessage(req.userId, `${(appointment.status) ? "angenommen": "abgelehnt"}`);
+      Nodemailer.sendMessage(req.userId, undefined, `${(appointment.status) ? "angenommen": "abgelehnt"}`);
       res.status(200).json(appointment);
   });
 };
