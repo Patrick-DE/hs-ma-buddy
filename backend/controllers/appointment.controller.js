@@ -15,7 +15,7 @@ exports.own_appointment_list = function(req, res, next) {
         $and: [{
           $or: [
             {user_id: req.userId},
-            {buddy_id: req.userId}
+            {buddy_id: req.buddyId}
           ],
           $and: [
             {start : {$gte: req.query.start}},
@@ -95,7 +95,7 @@ exports.appointment_detail = function(req, res, next) {
       .findOne({
         $and: [
           {_id: id},
-          {$or: [ {user_id: req.userId}, {buddy_id: req.userId}]}
+          {$or: [ {user_id: req.userId}, {buddy_id: req.buddyId}]}
         ],
       })
       .populate('block_id')
@@ -138,7 +138,7 @@ exports.appointment_delete = function(req, res, next) {
       .findOneAndDelete({
           $and: [
             {_id: id},
-            {$or: [ {user_id: req.userId}, {buddy_id: req.userId}]}
+            {$or: [ {user_id: req.userId}, {buddy_id: req.buddyId}]}
           ]
         })
       .populate('block_id')
@@ -156,15 +156,17 @@ exports.appointment_delete = function(req, res, next) {
 // Handle appointment update on PUT.
 exports.appointment_update = function(req, res, next) {
     var id = req.params.id;
-    if(req.params.id === undefined) return res.status(400).send({err: "Please provide a valid id."});
-    req.body.start = moment(req.body.date + " " + req.body.start, 'DD-MM-YYYY hh:mm');
-    req.body.end = moment(req.body.date + " " + req.body.end, 'DD-MM-YYYY hh:mm');
+    if(id === undefined) return res.status(400).send({err: "Please provide a valid id."});
+    if(req.body.date === undefined) return res.status(400).send({err: "Please provide all data."});
+    req.body.start = moment(req.body.date + " " + req.body.start, 'DD-MM-YYYY HH:mm');
+    req.body.end = moment(req.body.date + " " + req.body.end, 'DD-MM-YYYY HH:mm');
 
     Appointment
       .findOneAndUpdate({
         $and: [
             {_id: id},
-            {$or: [ {user_id: req.userId}, {buddy_id: req.userId}]}
+            {$or: [ {user_id: req.userId}, {buddy_id: req.buddyId}]},
+            {status: false}
           ]},
         req.body,
         {new: true}
@@ -177,6 +179,30 @@ exports.appointment_update = function(req, res, next) {
         Nodemailer.sendMessage(req.userId, "aktualisiert");
         res.status(200).json(appointment);
     });
+};
+
+exports.appointment_status = function(req, res, next) {
+  var id = req.params.id;
+  if(req.params.id === undefined) return res.status(400).send({err: "Please provide a valid id."});
+  if(req.buddyId === undefined) return res.status(400).send({err: "You have to be a buddy to use this function."});
+
+  Appointment
+    .findOneAndUpdate({
+      $and: [
+          {_id: id},
+          {buddy_id: req.buddyId}
+        ]},
+      {status: (req.body.status === "true")},
+      {new: true}
+    )
+    .populate('block_id')
+    .populate('category_id')
+    .populate('buddy_id')
+    .exec(function(err, appointment){ //{ $set: req.body, $setOnInsert: {}}
+      if (err) return res.status(500).send(err.message);
+      Nodemailer.sendMessage(req.userId, `${(appointment.status) ? "angenommen": "abgelehnt"}`);
+      res.status(200).json(appointment);
+  });
 };
 
 function make_anon(appointment, req) {

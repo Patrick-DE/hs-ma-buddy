@@ -19,6 +19,7 @@ function createTransporter(){
 }
 
 exports.sendMessage = function(_userId, action) {
+    if(process.env.NODE_ENV !== "production") return;
     if(transporter === null){
         createTransporter();
     }

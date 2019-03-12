@@ -23,6 +23,9 @@ router.post('/', VerifyToken, appointment_controller.appointment_create);
 //Update a appointment
 router.put('/:id', VerifyToken, appointment_controller.appointment_update);
 
+//Update the status of an appointment
+router.put('/status/:id', VerifyToken, appointment_controller.appointment_status);
+
 //Delete a appointment
 router.delete('/:id', VerifyToken, appointment_controller.appointment_delete);
 

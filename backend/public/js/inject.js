@@ -106,6 +106,7 @@ function fetchEvents(path, _start, _end, timezone, callback){
             id: $(this).attr('_id'),
             category: $(this).attr('category_id').name,
             desc: $(this).attr('description'),
+            status: $(this).attr('status'),
             urgency: $(this).attr('urgency'),
             overlap: $(this).attr('overlap'),
             editable: $(this).attr('editable'),
@@ -119,7 +120,7 @@ function fetchEvents(path, _start, _end, timezone, callback){
 }
 
 function calendarMouseoverText(event){
-  return `<div id="${event.id}" class="hover-end">${event.start.format('HH:mm')}-${event.end.format('HH:mm')}<br/>${event.category}<br/>${event.buddy_id.fullname}</div>`;
+  return `<div id="${event.id}" class="hover-end">${event.start.format('HH:mm')}-${event.end.format('HH:mm')}<br/>${(event.status === undefined) ? "Bestätigung ausstehend" : event.status}<br/>${event.category}<br/>${event.buddy_id.fullname}</div>`;
 }
 
 function calendarMouseout(event, jsEvent, view){

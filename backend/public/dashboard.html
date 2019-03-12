@@ -59,12 +59,13 @@
 			<dialog class="mdl-dialog">
 				<h4 class="mdl-dialog__title">Termin</h4>
 				<div class="mdl-dialog__content">
-					<p>
-						Bitte geben Sie alle relevanten Daten für den Termin ein.<br/>
-						Alle notwendigen Informationen sind durch ein * gekennzeichnet.
+					<p id="instructions">
+
 					</p>
-					<form id="appointmentForm">
-							<input class="mdl-textfield__input" type="text" id="id" name="id" style="display:none">
+					<div id="status" style="font-size:25px;color:#000000;padding: 2% 0px;"></div>
+					
+					<form id="appointmentForm" name="appointmentForm">
+						<input style="display:none" class="mdl-textfield__input" type="text" id="id" name="id">
 
 						<div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
 							<input class="mdl-textfield__input" type="text" id="title" name="title">
@@ -91,12 +92,12 @@
 							<label class="mdl-textfield__label" for="category"></label>
 						</div>
 						<div class="mdl-selectfield mdl-js-selectfield mdl-selectfield--floating-label">
-								<select class="mdl-selectfield__select" id="urgency" name="urgency">
-									<option value="0">Nein</option>
-									<option value="1">Ja</option>
-								</select>
-								<label class="mdl-selectfield__label" for="urgency">Wichtig</label>
-							</div>
+							<select class="mdl-selectfield__select" id="urgency" name="urgency">
+								<option value="0">Nein</option>
+								<option value="1">Ja</option>
+							</select>
+							<label class="mdl-selectfield__label" for="urgency">Wichtig</label>
+						</div>
 					</form>
 				</div>
 				<div class="mdl-dialog__actions">

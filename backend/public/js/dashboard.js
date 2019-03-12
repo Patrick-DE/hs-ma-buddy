@@ -24,16 +24,28 @@ $(function() {
             fetchEvents("/own", _start, _end, timezone, callback);
         },
         eventMouseover: function(event, jsEvent, view) {
-            $('.fc-list-item-title', this).append(`<button id="${event.id}" style="float: right" onclick="deleteAppointment('${event.id}')" class="mdl-button mdl-js-button mdl-button--icon">
+            $('.fc-list-item-title', this).append(`<button id="${event.id}-d" data-tooltip="Delete" style="float: right" onclick="deleteAppointment('${event.id}')" class="mdl-button mdl-js-button mdl-button--icon">
                 <i class="material-icons">delete</i>
             </button`);
-            $('.fc-list-item-title', this).append(`<button id="${event.id}-e" style="float: right" onclick="editAppointment('${event.id}')" class="mdl-button mdl-js-button mdl-button--icon">
+            $('.fc-list-item-title', this).append(`<button id="${event.id}-e" data-tooltip="Edit" style="float: right" onclick="editAppointment('${event.id}')" class="mdl-button mdl-js-button mdl-button--icon">
                 <i class="material-icons">edit</i>
             </button`);
+            if(event.status === undefined){
+                $('.fc-list-item-title', this).append(`<button id="${event.id}-d" data-tooltip="Accept" style="float: right" onclick="statusAppointment('${event.id}','false')" class="mdl-button mdl-js-button mdl-button--icon">
+                    <i class="material-icons">block</i>
+                </button`);
+                $('.fc-list-item-title', this).append(`<button id="${event.id}-a" data-tooltip="Deny" style="float: right" onclick="statusAppointment('${event.id}','true')" class="mdl-button mdl-js-button mdl-button--icon">
+                    <i class="material-icons">done</i>
+                </button`);
+            }
         },
         eventMouseout: function(event, jsEvent, view) {
-            calendarMouseout(event, jsEvent, view);
+            $('#'+event.id+"-d").remove();
             $('#'+event.id+"-e").remove();
+            if(event.status === undefined){
+                $('#'+event.id+"-d").remove();
+                $('#'+event.id+"-a").remove();
+            }
         },
     });
     
@@ -80,9 +92,26 @@ function editAppointment(id){
     document.getElementById("description").value = event[0].desc;
     $('#urgency').val(+event[0].urgency);
     document.getElementById("category").value = event[0].category;
-    $('input').each(function(index, element){
-        if(element.value !== "") element.parentElement.className += " is-dirty";
-    });
+    if(event[0].status !== undefined){
+        $('input').each(function(index, element){
+            element.disabled = true;
+            if(element.value !== "") element.parentElement.className += " is-dirty";
+        });
+        document.getElementById("urgency").disabled=true;
+        document.getElementsByClassName("send")[0].style.display="none";
+        document.getElementById("instructions").innerHTML = `Der Termin wurde angenommen. Somit sind keine Änderungen mehr möglich!<br/>
+                                                            Falls doch Änderungen gewünscht sind, lösche den Termin und erstellen einen neuen.`;
+    }else{
+        $('input').each(function(index, element){
+            if(element.name !== "category") element.disabled = false;
+            if(element.value !== "") element.parentElement.className += " is-dirty";
+        });
+        document.getElementById("urgency").disabled=false;
+        document.getElementsByClassName("send")[0].style.display="block";
+        document.getElementById("instructions").innerHTML = `Bitte geben Sie alle relevanten Daten für den Termin ein.<br/>
+                                                            Alle notwendigen Informationen sind durch ein * gekennzeichnet.`;
+    }
+    document.getElementById("status").innerText = `Angenommen: ${(event[0].status === undefined) ? "Warten auf Bestätigung!" : event[0].status}`
     dialog.showModal();
 }
 
@@ -92,6 +121,20 @@ function submitAppointment(){
         url: '/appointment/'+id,
         type: 'PUT',
         data: $('#appointmentForm').serialize(),
+        success: function(result) {
+            $('#agenda').fullCalendar('refetchEvents');
+        },
+        error: function(msg) {
+            showError(msg);
+        }
+    });
+}
+
+function statusAppointment(id, _status){
+    $.ajax({
+        url: '/appointment/status/'+id,
+        type: 'PUT',
+        data: {status: _status},
         success: function(result) {
             $('#agenda').fullCalendar('refetchEvents');
         },
