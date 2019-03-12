@@ -3,6 +3,7 @@
   "version": "0.2.1",
   "main": "app.js",
   "scripts": {
+    "start_prod": "SET NODE_ENV=production && node app.js",
     "start": "SET NODE_ENV=development && node app.js",
     "create-demo-data": "node create_demo_data.js",
     "test": "echo \"Error: no test specified\" && exit 1"
