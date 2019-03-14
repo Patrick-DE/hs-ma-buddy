@@ -112,3 +112,9 @@
     width:50%;
   }
 }
+/*Menu fix for mobile devices*/
+@media (max-width: 1024px){
+	.mdl-layout__header .mdl-layout__drawer-button {
+		display: block;
+	}
+}
